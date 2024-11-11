@@ -16,8 +16,14 @@ a, button{
 }
 
 a:hover, button:hover{
-  opacity: .8
+  opacity: .8;
 
+}
+
+@media screen and (max-width: 768px) {
+  #root{
+    padding: 0 1rem;
+  }
 }
 
 

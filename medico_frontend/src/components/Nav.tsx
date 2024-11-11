@@ -32,7 +32,7 @@ function Nav() {
     },
   ];
   return (
-    <nav className=" font-sans w-full  flex justify-between items-center py-4 sticky top-0 z-10 bg-white">
+    <nav className=" font-sans w-full  flex justify-between items-center py-4 sticky top-0 z-10 bg-white border-b-2 border-gray-200">
       <div onClick={() => navigate("/")} className="cursor-pointer">
         <Logo />
       </div>

@@ -1,20 +1,21 @@
-import { Circle } from "lucide-react";
-import doc1 from  "../assets/assets_frontend/doc1.png"
-import doc2 from  "../assets/assets_frontend/doc2.png";
-import doc3 from  "../assets/assets_frontend/doc3.png";
-import doc4 from  "../assets/assets_frontend/doc4.png";
+import { ChevronDown, ChevronUp, Circle } from "lucide-react";
+import doc1 from "../assets/assets_frontend/doc1.png";
+import doc2 from "../assets/assets_frontend/doc2.png";
+import doc3 from "../assets/assets_frontend/doc3.png";
+import doc4 from "../assets/assets_frontend/doc4.png";
 
-import doc5 from  "../assets/assets_frontend/doc5.png";
-import doc6 from  "../assets/assets_frontend/doc6.png";
-import doc7 from  "../assets/assets_frontend/doc7.png";
-import doc8 from  "../assets/assets_frontend/doc8.png";
-import doc9 from  "../assets/assets_frontend/doc9.png";
-import doc10 from  "../assets/assets_frontend/doc10.png";
+import doc5 from "../assets/assets_frontend/doc5.png";
+import doc6 from "../assets/assets_frontend/doc6.png";
+import doc7 from "../assets/assets_frontend/doc7.png";
+import doc8 from "../assets/assets_frontend/doc8.png";
+import doc9 from "../assets/assets_frontend/doc9.png";
+import doc10 from "../assets/assets_frontend/doc10.png";
 import doc11 from "../assets/assets_frontend/doc11.png";
-import doc12 from  "../assets/assets_frontend/doc12.png";
-import doc13 from  "../assets/assets_frontend/doc13.png";
-import doc14 from  "../assets/assets_frontend/doc14.png";
+import doc12 from "../assets/assets_frontend/doc12.png";
+import doc13 from "../assets/assets_frontend/doc13.png";
+import doc14 from "../assets/assets_frontend/doc14.png";
 import doc15 from "../assets/assets_frontend/doc15.png";
+import { useState } from "react";
 
 type Doctors = {
   name: string;
@@ -111,10 +112,12 @@ const TopDoctors = () => {
     {
       name: "Michael King",
       speciality: "Pediatrician",
-      image:doc15,
+      image: doc15,
       availability: true,
     },
   ];
+
+  const [doctorsToShow, setDoctorsToShow] = useState(10);  
 
   return (
     <section className="flex flex-col items-center py-10">
@@ -123,29 +126,28 @@ const TopDoctors = () => {
         Simply browse through our extensive list of top doctors
       </div>
 
-      <div className="flex flex-wrap  gap-4">
-        {doctors.map((doctor, index) => {
+      <div className="flex flex-wrap  gap-4 justify-center mb-10">
+        {doctors.slice(0,doctorsToShow).map((doctor, index) => {
           const { name, speciality, availability, image } = doctor;
 
           return (
             <div
               key={index}
-              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col  shadow border shadow-sm items-start"
+              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col  shadow border shadow-sm items-start group"
             >
-            
               <img
                 src={image}
                 alt="doctor"
-                className="w-full h-[272px] rounded-t-md hover:bg-green-500 object-cover"
+                className="w-full h-[272px] rounded-t-md group-hover:bg-green-500 hover:bg-green-500 object-cover"
               />
 
               <div className="p-4 flex flex-col gap-2 text-xs items-start">
                 <div
                   className={` flex items-center justify-start gap-2  ${
                     availability ? "text-green-500" : "text-gray-500"
-                  }  ` }
+                  }  `}
                 >
-                  <Circle size={14}/>
+                  <Circle size={14} />
                   <span>{availability ? "Available" : "Not Available"}</span>
                 </div>
                 <div className="text-sm font-medium">Dr. {name}</div>
@@ -155,6 +157,19 @@ const TopDoctors = () => {
           );
         })}
       </div>
+      
+      {
+        doctorsToShow === 10 ? 
+        <div className="flex  gap-4 justify-center items-center cursor-pointer bg-gray-200 rounded-full py-2 px-4 text-gray-700" onClick={()=>{setDoctorsToShow(doctors.length + 1)}}>   
+        <span>more</span>
+        <ChevronDown />
+      </div> : <div className="flex  gap-4 justify-center items-center cursor-pointer bg-gray-200 rounded-full py-2 px-4 text-gray-700" onClick={()=>{setDoctorsToShow(10)}}>
+      <span>less</span>
+      <ChevronUp />
+      </div>
+
+      }
+      
     </section>
   );
 };
