@@ -7,4 +7,17 @@
   text-align: center;
 }
 
+a, button{
+  cursor: pointer;
+  opacity: 1;
+  transition: 0.1s;
+  transition-behavior: smooth;
+
+}
+
+a:hover, button:hover{
+  opacity: .8
+
+}
+
 
