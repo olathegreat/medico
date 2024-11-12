@@ -3,8 +3,7 @@ import cors from "cors"
 import dotenv from "dotenv"
 import mongoose from "mongoose"
 import {v2 as cloudinary} from "cloudinary"
-
-
+import UserRoutes from "./routes/UserRoutes"    
 
 
 dotenv.config();
@@ -26,12 +25,13 @@ app.use(cors());
 
 app.use(express.json());
 
-app.get('/health', async(req:Request, res:Response)=>{
+app.get('/health', async(req:Request, res:Response)=>{ 
     res.send({
         message: "health is okay!"
     })
 })
 
+app.use('/api/v1/user', UserRoutes)
 
 app.listen(process.env.PORT, ()=>{
     console.log(`server is running on port ${process.env.PORT}`)
