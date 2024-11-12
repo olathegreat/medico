@@ -2,7 +2,7 @@ import mongoose, {Schema, Document, ObjectId} from "mongoose"
 import bcrypt from "bcryptjs"
 import crypto from "crypto"
 
-interface UserDocument extends Document {
+export interface UserDocument extends Document {
     _id: ObjectId;
     fullname: string;
     email: string;
@@ -12,7 +12,11 @@ interface UserDocument extends Document {
     birthday?: string;
     picture?: string;
     password: string;
+    passwordResetToken?: string;
+    passwordResetExpires?: Date;
+    passwordChangedAt?: Date;
     correctPassword: (candidatePassword: string, userPassword: string) => Promise<boolean>;
+    changedPasswordAfter: (JWTTimestamp: number) => boolean;    
 }
 
 
@@ -57,7 +61,10 @@ const userSchema = new Schema<UserDocument>({
         required: [true,'Password is required'],
         select: false,
         minLength: 8,
-    }
+    },
+    passwordChangedAt:Date,
+    passwordResetToken:String,
+    passwordResetExpires:Date, 
 
 })
 
@@ -68,7 +75,14 @@ userSchema.pre('save', async function(next){
 })
 userSchema.methods.correctPassword = async function(candidatePassword:string, userPassword:string){
     return await bcrypt.compare(candidatePassword, userPassword);
-}   
+} 
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp: number): boolean {
+    if (this.passwordChangedAt) {
+        const changedTimestamp = Math.floor(this.passwordChangedAt.getTime() / 1000);
+        return JWTTimestamp < changedTimestamp;
+    }
+    return false;
+}; 
 const User = mongoose.model("User", userSchema)
 
 export default User;
