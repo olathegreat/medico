@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
-import { CopyrightIcon, SeparatorHorizontal } from "lucide-react";
+import { CopyrightIcon } from "lucide-react";
 import { Separator } from "./ui/separator";
 
 type NavLinks = {
