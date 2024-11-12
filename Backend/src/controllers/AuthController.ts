@@ -123,7 +123,7 @@ export const updateCurrentUser = async (req: AuthenticatedRequest, res: Response
         
         if(req.file){
             const imageUrl = await uploadImage(req.file as Express.Multer.File);   
-            existingUser.picture = picture;
+            existingUser.picture = imageUrl;
         }
        
         
