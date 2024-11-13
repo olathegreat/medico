@@ -28,6 +28,7 @@ app.use(express.json());
 app.get('/health', async(req:Request, res:Response)=>{ 
     res.send({
         message: "health is okay!"
+        
     })
 })
 

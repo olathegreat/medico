@@ -27,7 +27,8 @@ const userSchema = new Schema<UserDocument>({
     
     fullname:{
         type:String,
-        required: [true,'Name is required'] 
+        required: [true,'Name is required'] ,
+        trim:true
         
 
 
@@ -51,6 +52,8 @@ const userSchema = new Schema<UserDocument>({
     phone:{
         type: String,
         unique:true,
+        sparse: true,
+        minLength: 9,
     },
     birthday:{
         type: String,

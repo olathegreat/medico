@@ -33,10 +33,13 @@ export const protect = async (req: AuthenticatedRequest, res: Response, next: Ne
 
   // 4) Check if user changed password after the token was issued
   if (freshUser.changedPasswordAfter(decoded.iat)) {
-    return next(new Error('User recently changed password! Please log in again'));
+    return next(new Error('User recently changed password! Please log in again')); 
   }
-
+  
   // GRANT ACCESS TO PROTECTED ROUTE
   req.user = freshUser;
   next();
 };
+
+
+

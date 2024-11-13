@@ -55,7 +55,7 @@ function Nav() {
       </div>
 
       <div className="hidden md:block">
-        <button className="bg-green-600 px-4 text-white font-normal py-2 rounded-full">
+        <button onClick={()=>navigate('/signup')} className="bg-green-600 px-4 text-white font-normal py-2 rounded-full">
           Create Account
         </button>
       </div>
