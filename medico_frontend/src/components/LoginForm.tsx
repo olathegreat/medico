@@ -29,7 +29,7 @@ const LoginForm: React.FC = () => {
         setTimeout(() => {
           navigate("/profile");
         }, 2000);   
-        // navigate("/profile");
+      
       } else {
         throw new Error("User details are missing");
       }

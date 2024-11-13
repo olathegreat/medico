@@ -26,7 +26,9 @@ const SignupForm: React.FC = () => {
         console.log(response);
         toast.success("Registration successful");
         setApiRequest(false);
-        navigate("/profile");
+        setTimeout(() => {
+          navigate("/profile");
+        }, 2000);  
       } else {
         throw new Error("User details are missing");
       }
