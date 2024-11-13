@@ -1,5 +1,5 @@
 import express from "express";
-import { createUser, loginUser, updateCurrentUser } from "../controllers/AuthController";
+import { createUser, getUser, loginUser, updateCurrentUser } from "../controllers/AuthController";
 import { protect } from "../midlleware/auth";
 import multer from 'multer'
 
@@ -12,6 +12,7 @@ const upload = multer({ storage, limits:{
 router.post("/register", createUser);
 router.post("/login", loginUser);
 router.patch('/update-user', protect,upload.single("picture"), updateCurrentUser);    
+router.get('/', protect, getUser)
 
 export default router;
 

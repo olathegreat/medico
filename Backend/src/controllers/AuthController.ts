@@ -5,12 +5,7 @@ import dotenv from "dotenv"
 import cloudinary from "cloudinary";    
 import mongoose, { ObjectId } from "mongoose";
 
-
-
-
 dotenv.config();
-
-
 
 type UserType = {
     _id: ObjectId | undefined;
@@ -136,3 +131,30 @@ export const updateCurrentUser = async (req: AuthenticatedRequest, res: Response
     }
 };
 
+export const getUser = async(req:AuthenticatedRequest, res:Response):Promise<void> =>{
+
+             try{
+                const existingUser = await User.findById(req.user!._id  );
+                if (!existingUser) {
+                    res.status(404).json({ message: "User not found" });
+                    return;
+                }
+                res.json(existingUser); 
+             }catch(err){
+                console.log(err);
+                res.status(500).json({ message: "Error Updating User" });
+
+             }
+}
+
+// export const forgotPassword = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+
+//     const user = await User.findOne({email: req.body.email});
+//      if(!user){
+//         return res.status(404).json({message: "There is no existing user with email"})
+//      }   
+
+//      const resetToken = user.createPasswordResetToken();
+
+
+// }
