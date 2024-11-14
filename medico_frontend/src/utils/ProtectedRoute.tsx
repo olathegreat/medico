@@ -1,9 +1,32 @@
 
-
+import { useState, useEffect } from "react";
+import axiosInstance from "../utils/axios";
+import { useDispatch, UseDispatch } from "react-redux";
+import { toast } from "sonner";
 import { Navigate, Outlet } from 'react-router-dom'
 
 function ProtectedRoute() {
   const isAuthenticated = true;
+  const token = sessionStorage.getItem("token");
+  const bearerToken = "Bearer " + token;
+  const [userDetails, setUserDetails] = useState({});
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const response = await axiosInstance.get("/user/", {
+        headers: {
+          Authorization: bearerToken,
+        },
+      });
+      console.log(response);
+
+      // dispatch(response)
+
+      // setUserDetails(response);
+    };
+    getUser();
+  }, []);
 
 //   if(isLoading){
 //     return <div>...loading</div>;

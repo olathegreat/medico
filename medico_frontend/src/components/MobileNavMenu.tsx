@@ -1,7 +1,7 @@
 import { MenuIcon } from "lucide-react"
 
   
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Sheet, SheetContent, SheetDescription, SheetTitle, SheetTrigger } from "./ui/sheet";
 import Logo from "./Logo";
 
@@ -32,7 +32,7 @@ const MobileNavMenu = () => {
           link: "/contact",
         },
       ];
-
+  const navigate = useNavigate();
   return (
     <Sheet>
         <SheetTrigger>
@@ -57,6 +57,10 @@ const MobileNavMenu = () => {
                 );
               })
            }
+
+<button onClick={()=>navigate('/signup')} className="bg-green-600 px-4 flex text-white font-normal py-2 rounded-full">
+          Create Account
+        </button>
             </SheetDescription>
            
         </SheetContent>

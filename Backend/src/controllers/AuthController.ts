@@ -3,7 +3,7 @@ import User, { UserDocument } from "../models/UserModel";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import cloudinary from "cloudinary";
-import mongoose, { ObjectId } from "mongoose";
+import  { ObjectId } from "mongoose";
 
 dotenv.config();
 
@@ -58,9 +58,10 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            res.status(400).json({
-                message: "User already exists"
+            res.status(400).json({ 
+                message: "Email already taken"
             })
+            return;
         }
         const newUser = await User.create(req.body)
 
@@ -68,7 +69,8 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     } catch (err: any) {
 
 
-        res.status(400).json(err)
+        res.status(400).json(err);
+        return;
 
     }
 

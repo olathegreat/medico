@@ -14,6 +14,7 @@ router.post("/login", loginUser);
 router.patch('/', protect,upload.single("picture"), updateCurrentUser);    
 router.get('/', protect, getUser)
 
+ 
 export default router;
 
 

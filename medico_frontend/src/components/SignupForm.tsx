@@ -6,11 +6,18 @@ import { toast } from "sonner";
 import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
 import { Toaster } from "./ui/sonner";
+import { AxiosResponse } from "axios";
+
+export interface ResponseType extends AxiosResponse {
+  token: string;
+}
 
 const SignupForm: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserType | null>(null);
 
-  const [errorMessages, setErrorMessages] = useState<{ [key: string]: string }>({});
+  const [errorMessages, setErrorMessages] = useState<{ [key: string]: string }>(
+    {}
+  );
   const [passwordShow, setPasswordShow] = useState(false);
   const [apiRequest, setApiRequest] = useState(false);
   const navigate = useNavigate();
@@ -23,20 +30,28 @@ const SignupForm: React.FC = () => {
     try {
       if (userDetails) {
         const response = await axiosInstance.post("/user/", userDetails);
-        console.log(response);
+        const { token } = response as ResponseType;
+        sessionStorage.setItem("token", token);
         toast.success("Registration successful");
         setApiRequest(false);
         setTimeout(() => {
           navigate("/profile");
-        }, 2000);  
+        }, 2000);
       } else {
         throw new Error("User details are missing");
       }
     } catch (err: any) {
+      console.log(err.response?.data?.message);
+      let messages: { [key: string]: string } = {};
+      const errorDetails = err.response?.data?.errors;
+      if (err.response?.data?.message) {
+        if (err.response?.data?.message?.includes("Email")) {
+          messages.email = err.response?.data?.message;
+          setErrorMessages(messages);
+          console.log(errorMessages);
+        }
+      }
       if (err.response?.data?.errors) {
-        const errorDetails = err.response?.data?.errors;
-        let messages: { [key: string]: string } = {};
-
         // Check for specific field errors and update the errorMessages state
         if (errorDetails.password) {
           messages.password = errorDetails.password.message;
@@ -52,9 +67,10 @@ const SignupForm: React.FC = () => {
         }
 
         setErrorMessages(messages);
-      } else {
-        setErrorMessages({ general: "An error occurred during registration." });
       }
+      // else {
+      //   setErrorMessages({ general: "An error occurred during registration." });
+      // }
 
       setApiRequest(false);
     }
@@ -63,12 +79,16 @@ const SignupForm: React.FC = () => {
   return (
     <form
       onSubmit={formSubmit}
-      className="flex flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full md:w-[400px]"
+      className="flex flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full sm:w-[400px]"
     >
       <Toaster visibleToasts={1} position="top-right" richColors />
       <div className="flex flex-col gap-0 items-start">
-        <span className="text-green-700 font-medium text-xl">Create Account</span>
-        <span className="text-gray-800 text-xs">Please sign up to book an appointment</span>
+        <span className="text-green-700 font-medium text-xl">
+          Create Account
+        </span>
+        <span className="text-gray-800 text-xs">
+          Please sign up to book an appointment
+        </span>
       </div>
 
       {/* Full Name Field */}
@@ -94,7 +114,9 @@ const SignupForm: React.FC = () => {
           }`}
         />
         {errorMessages.fullname && (
-          <span className="text-red-600 text-xs text-start">{errorMessages.fullname}</span>
+          <span className="text-red-600 text-xs text-start">
+            {errorMessages.fullname}
+          </span>
         )}
       </div>
 
@@ -121,7 +143,9 @@ const SignupForm: React.FC = () => {
           }`}
         />
         {errorMessages.email && (
-          <span className="text-red-600 text-xs text-start">{errorMessages.email}</span>
+          <span className="text-red-600 text-xs text-start">
+            {errorMessages.email}
+          </span>
         )}
       </div>
 
@@ -143,12 +167,14 @@ const SignupForm: React.FC = () => {
               phone: e.target.value,
             } as UserType)
           }
-          className={`py-1 border rounded-md outline-none ${
+          className={`p-1 border rounded-md outline-none ${
             errorMessages.phone ? "border-red-500" : "border-gray-400"
           }`}
         />
         {errorMessages.phone && (
-          <span className="text-red-600 text-xs text-start">{errorMessages.phone}</span>
+          <span className="text-red-600 text-xs text-start">
+            {errorMessages.phone}
+          </span>
         )}
       </div>
 
@@ -193,11 +219,16 @@ const SignupForm: React.FC = () => {
         </div>
 
         {errorMessages.password && (
-          <span className="text-red-600 text-xs text-start">{errorMessages.password}</span>
+          <span className="text-red-600 text-xs text-start">
+            {errorMessages.password}
+          </span>
         )}
       </div>
 
-      <button className="bg-green-500 py-1 px-4 text-white rounded-md flex justify-center" disabled={apiRequest}>
+      <button
+        className="bg-green-500 py-1 px-4 text-white rounded-md flex justify-center"
+        disabled={apiRequest}
+      >
         {apiRequest ? <LoadingButton /> : "Create Account"}
       </button>
 

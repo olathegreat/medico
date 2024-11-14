@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
 import { Toaster } from "./ui/sonner";
+import { ResponseType } from "./SignupForm";
 
 const LoginForm: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserType | null>(null);
@@ -24,18 +25,23 @@ const LoginForm: React.FC = () => {
       if (userDetails) {
         const response = await axiosInstance.post("/user/login/", userDetails);
         console.log(response);
+        const {token} = response as ResponseType
+        sessionStorage.setItem("token", token )
         toast.success("login successful");
         setApiRequest(false);
-        setTimeout(() => {
-          navigate("/profile");
-        }, 2000);   
+        // setTimeout(() => {
+        //   navigate("/profile");
+        // }, 2000);   
       
       } else {
+        toast.error("User details are missing")
         throw new Error("User details are missing");
+        
       }
     } catch (err: any) {
         console.log(err?.response?.data?.message)
         setErrorMessages(err?.response?.data?.message);
+        
       
 
       setApiRequest(false);
@@ -45,7 +51,7 @@ const LoginForm: React.FC = () => {
   return (
     <form
       onSubmit={formSubmit}
-      className="flex flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full md:w-[400px]"
+      className="flex flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full sm:w-[400px]"
     >
       <Toaster visibleToasts={1} position="top-right" richColors />
       <div className="flex flex-col gap-0 items-start">
