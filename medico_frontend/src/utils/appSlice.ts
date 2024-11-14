@@ -22,6 +22,7 @@ const appSlice = createSlice({
         },
         saveUser: (state, action) =>{
             state.user = action.payload;
+            
         }
     }
 })

@@ -6,7 +6,7 @@ export type UserType = {
     gender?: "male" | "female" | "other";
     phone?: string;
     birthday?: string;
-    picture?: string;
+    picture?: string ;
     password: string;
 
 }

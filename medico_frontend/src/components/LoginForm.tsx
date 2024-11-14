@@ -24,14 +24,15 @@ const LoginForm: React.FC = () => {
     try {
       if (userDetails) {
         const response = await axiosInstance.post("/user/login/", userDetails);
-        console.log(response);
-        const {token} = response as ResponseType
+        
+        const {token} = response.data as ResponseType
+        
         sessionStorage.setItem("token", token )
         toast.success("login successful");
         setApiRequest(false);
-        // setTimeout(() => {
-        //   navigate("/profile");
-        // }, 2000);   
+        setTimeout(() => {
+          navigate("/profile");
+        }, 2000);   
       
       } else {
         toast.error("User details are missing")

@@ -23,22 +23,17 @@ export const protect = async (req: AuthenticatedRequest, res: Response, next: Ne
   }
 
   // 2) Verification token
-  const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
+    const freshUser = await User.findById(decoded.id);
+    if (!freshUser) throw new Error('User no longer exists');
+    if (freshUser.changedPasswordAfter(decoded.iat)) throw new Error('Password recently changed');
+    req.user = freshUser;
+    next();
+} catch (error:any) {
+    res.status(401).json({ message: error.message || 'Unauthorized' });
+}
 
-  // 3) Check if user still exists
-  const freshUser = await User.findById(decoded.id) as UserDocument | null;
-  if (!freshUser) {
-    return next(new Error('The user belonging to this token no longer exists'));
-  }
-
-  // 4) Check if user changed password after the token was issued
-  if (freshUser.changedPasswordAfter(decoded.iat)) {
-    return next(new Error('User recently changed password! Please log in again')); 
-  }
-  
-  // GRANT ACCESS TO PROTECTED ROUTE
-  req.user = freshUser;
-  next();
 };
 
 
