@@ -21,7 +21,7 @@ function ProtectedRoute() {
         },
       });
       
-
+      sessionStorage.setItem("sessionUserInfo", JSON.stringify(response?.data))
       dispatch(saveUser(response.data))
 
       // setUserDetails(response);

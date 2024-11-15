@@ -3,10 +3,11 @@ import { Toaster } from "./ui/sonner";
 import { UserCircle } from "lucide-react";
 
 import { Separator } from "./ui/separator";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../utils/axios";
 import LoadingButton from "./loadingButton";
 import { toast } from "sonner";
+import { saveUser } from "../utils/appSlice";
 
 interface FormDataType {
   _id?: string | undefined;
@@ -21,6 +22,7 @@ interface FormDataType {
 
 const ProfileUpdateForm = () => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
   const [existingUserData, setExistingUserData] = useState<FormDataType>({
     email: "",
     fullname: "",
@@ -28,10 +30,12 @@ const ProfileUpdateForm = () => {
   const [formActive, setFormActive] = useState(false);
   const storedUser = useSelector((state: any) => state.app.user);
   const [formLoading, setFormLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   useEffect(() => {
     console.log(storedUser);
     setExistingUserData(storedUser);
+    setPreviewImage(storedUser?.picture)
   }, [storedUser]);
 
   const profileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -69,7 +73,11 @@ const ProfileUpdateForm = () => {
         },
       });
       console.log(res);
-      toast.success("Updated Successfully")
+      toast.success("Updated Successfully");
+      dispatch(saveUser({...existingUserData
+        , picture: previewImage
+      }))
+      
       setFormLoading(false);
       setFormActive(false)
       
@@ -104,28 +112,34 @@ const ProfileUpdateForm = () => {
             />
           </span>
 
-          {existingUserData?.picture &&
-          typeof existingUserData.picture === "string" ? (
+          {previewImage &&
+          typeof previewImage === "string" ? (
             <img
-              src={existingUserData?.picture}
+              src={previewImage}
               className="w-40 h-40 rounded-md object-cover"
               alt="profile-pics"
             />
           ) : (
-            <span className="text-2xl font-semibold bg-green-600 flex items-center justify-center">{existingUserData?.fullname?.charAt(0)}</span>
+            <span className="text-5xl w-full h-full  bg-green-600 flex items-center  justify-center">{existingUserData?.fullname?.charAt(0)}</span>
           )}
         </label>
         <input
-          disabled={formActive}
+          disabled={!formActive}
           type="file"
           ref={fileInputRef}
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
-              setExistingUserData({
-                ...existingUserData,
-                picture: e.target.files[0],
-              });
+              const file = e.target.files[0];
+              const previewUrl = URL.createObjectURL(file);
+        
+              setPreviewImage(previewUrl); // Set the preview URL for display
+        
+              setExistingUserData((prevData) => ({
+                ...prevData,
+                picture: file, // Store the actual file for backend upload
+              }));
             }
+          
           }}
           name="picture"
           hidden
@@ -231,7 +245,8 @@ const ProfileUpdateForm = () => {
 
         :
 
-        <button disabled={!formActive || formLoading} className="border border-blue-600 flex items-center justify-center  rounded-full py-2 px-4" type="submit">
+        <button disabled={!formActive || formLoading} className={`border border-blue-600 flex
+         items-center justify-center  ${formLoading && "bg-green-600"} rounded-full py-2 px-4`} type="submit">
          {
           formLoading ? <LoadingButton/> : "  Save Information"
          }
