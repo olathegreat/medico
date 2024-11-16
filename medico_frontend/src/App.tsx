@@ -8,11 +8,22 @@ import UserProfilePage from './pages/UserProfilePage'
 import ContactPage from './pages/ContactPage'
 import {useState, useEffect} from "react"
 import AboutPage from './pages/AboutPage'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { toggleDarkMode } from './utils/appSlice'
 
 
 
 function App() {
+  const savedSessionDarkModeState = sessionStorage.getItem("darkmode")
+  ? JSON.parse(sessionStorage.getItem("darkmode")!)
+  : false;
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    dispatch(toggleDarkMode(savedSessionDarkModeState))
+    
+
+  },[])
   const darkMode = useSelector((state: any)=>state.app.darkMode );
   const [darkModeState, setDarkModeState] = useState(false);
 

@@ -17,8 +17,9 @@ const appSlice = createSlice({
     name: "app",
     initialState,
     reducers: {
-        toggleDarkMode: (state) => {
-            state.darkMode = !state.darkMode
+        toggleDarkMode: (state, action) => {
+            state.darkMode = action.payload;
+            sessionStorage.setItem("darkmode", JSON.stringify(state.darkMode));
         },
         saveUser: (state, action) =>{
             state.user = action.payload;

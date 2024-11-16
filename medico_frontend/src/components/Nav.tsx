@@ -132,7 +132,7 @@ function Nav() {
               <div className=" flex items-center gap-4" >
                 Dark Mode <span className="cursor-pointer mt-1"> <Switch className="border border-green-500" checked={darkModeState} onCheckedChange={
                   ()=>{
-                    dispatch(toggleDarkMode())
+                    dispatch(toggleDarkMode(!darkMode))
                   }
                 }/>
 

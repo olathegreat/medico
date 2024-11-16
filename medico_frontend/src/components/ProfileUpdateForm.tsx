@@ -1,4 +1,4 @@
-import {  useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Toaster } from "./ui/sonner";
 import { UserCircle } from "lucide-react";
 
@@ -8,6 +8,7 @@ import axiosInstance from "../utils/axios";
 import LoadingButton from "./loadingButton";
 import { toast } from "sonner";
 import { saveUser } from "../utils/appSlice";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 interface FormDataType {
   _id?: string | undefined;
@@ -31,18 +32,27 @@ const ProfileUpdateForm = () => {
   const storedUser = useSelector((state: any) => state.app.user);
   const [formLoading, setFormLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
-
+  const darkMode = DarkModeSetterFunction();
+useEffect(() => {
+    console.log("Dark mode active:", darkMode);
+}, [darkMode]);
   useEffect(() => {
     console.log(storedUser);
     setExistingUserData(storedUser);
-    setPreviewImage(storedUser?.picture)
+    setPreviewImage(storedUser?.picture);
   }, [storedUser]);
 
   const profileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-     setFormLoading(true);
-    const updatedFormData = new FormData();
     
+    const updatedFormData = new FormData();
+    if(existingUserData === storedUser){
+        toast.error("change a data");
+
+        return;
+    }
+
+    setFormLoading(true);
 
     updatedFormData.append("fullname", existingUserData.fullname);
 
@@ -74,25 +84,25 @@ const ProfileUpdateForm = () => {
       });
       console.log(res);
       toast.success("Updated Successfully");
-      dispatch(saveUser({...existingUserData
-        , picture: previewImage
-      }))
-      
+      dispatch(saveUser({ ...existingUserData, picture: previewImage }));
+
       setFormLoading(false);
-      setFormActive(false)
-      
+      setFormActive(false);
     } catch (err) {
       console.log(err);
-      setFormLoading(false)
+      setFormLoading(false);
     }
   };
 
   // if(!storedUser){
-  //   return <LoadingButton color="green"/> 
+  //   return <LoadingButton color="green"/>
   // }
 
   return (
-    <form onSubmit={profileUpdate} className="md:w-[400px] px-4 md:px-10 flex flex-col gap-5">
+    <form
+      onSubmit={profileUpdate}
+      className="md:w-[400px] px-4 md:px-10 flex flex-col gap-5"
+    >
       <Toaster />
       <div>
         <label
@@ -112,15 +122,16 @@ const ProfileUpdateForm = () => {
             />
           </span>
 
-          {previewImage &&
-          typeof previewImage === "string" ? (
+          {previewImage && typeof previewImage === "string" ? (
             <img
               src={previewImage}
               className="w-40 h-40 rounded-md object-cover"
               alt="profile-pics"
             />
           ) : (
-            <span className="text-5xl w-full h-full  bg-green-600 flex items-center  justify-center">{existingUserData?.fullname?.charAt(0)}</span>
+            <span className="text-5xl w-full h-full  bg-green-600 flex items-center  justify-center">
+              {existingUserData?.fullname?.charAt(0)}
+            </span>
           )}
         </label>
         <input
@@ -130,17 +141,16 @@ const ProfileUpdateForm = () => {
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
               const file = e.target.files[0];
-            
+
               const previewUrl = URL.createObjectURL(file);
-        
+
               setPreviewImage(previewUrl); // Set the preview URL for display
-        
+
               setExistingUserData((prevData) => ({
                 ...prevData,
                 picture: file, // Store the actual file for backend upload
               }));
             }
-          
           }}
           name="picture"
           hidden
@@ -153,16 +163,25 @@ const ProfileUpdateForm = () => {
             disabled={!formActive}
             type="text"
             placeholder="Fullname"
-            onChange={(e)=>{setExistingUserData({...existingUserData,fullname: e.target.value})}}
+            onChange={(e) => {
+              setExistingUserData({
+                ...existingUserData,
+                fullname: e.target.value,
+              });
+            }}
             value={existingUserData?.fullname}
-            className={`w-full text-xl cursor-pointer ${formActive && "border-b border-gray-300"} 
+            className={`w-full text-xl cursor-pointer ${
+              formActive && "border-b border-gray-300"
+            }  ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+            }
             px-3 py-2 focus:outline-none focus:ring-2 font-medium focus:ring-blue-500`}
           />
         </div>
 
         <Separator />
 
-        <div className="underline text-start">BASIC INFORMATION</div>
+        <div className="underline text-start">CONTACT INFORMATION</div>
 
         <div className="flex gap-10 items-center">
           <label className="text-start text-sm w-[70px]">Email Id</label>
@@ -171,9 +190,10 @@ const ProfileUpdateForm = () => {
             type="email"
             placeholder="Email"
             value={existingUserData?.email}
-            
-            className="w-full cursor-pointer rounded-md flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full cursor-pointer rounded-md flex-1
+            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+            }`}
           />
         </div>
 
@@ -184,9 +204,16 @@ const ProfileUpdateForm = () => {
             type="text"
             placeholder="Phone"
             value={existingUserData?.phone}
-            onChange={(e)=>{setExistingUserData({...existingUserData,phone: e.target.value})}}
-            className="w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              setExistingUserData({
+                ...existingUserData,
+                phone: e.target.value,
+              });
+            }}
+            className={`w-full cursor-pointer rounded-md  b flex-1
+            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500   ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+            }`}
           />
         </div>
 
@@ -197,9 +224,16 @@ const ProfileUpdateForm = () => {
             type="text"
             placeholder="Address"
             value={existingUserData?.address}
-            onChange={(e)=>{setExistingUserData({...existingUserData,address: e.target.value})}}
-            className="w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              setExistingUserData({
+                ...existingUserData,
+                address: e.target.value,
+              });
+            }}
+            className={`w-full cursor-pointer rounded-md  b flex-1
+            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+            }`}
           />
         </div>
 
@@ -210,14 +244,20 @@ const ProfileUpdateForm = () => {
           <select
             disabled={!formActive}
             value={existingUserData?.gender}
-            onChange={(e)=>{setExistingUserData({...existingUserData, gender: e.target.value as "male" | "female" | "other"})}}
-            className="w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onChange={(e) => {
+              setExistingUserData({
+                ...existingUserData,
+                gender: e.target.value as "male" | "female" | "other",
+              });
+            }}
+            className={`w-full cursor-pointer rounded-md  b flex-1
+            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500   ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+            }`}
           >
             <option value="male">male</option>
             <option value="female">female</option>
             <option value="other">Others</option>
-
           </select>
         </div>
 
@@ -227,37 +267,41 @@ const ProfileUpdateForm = () => {
             disabled={!formActive}
             type="date"
             placeholder="Date of birth"
-            onChange={(e)=>{setExistingUserData({...existingUserData,birthday: e.target.value})}}
+            onChange={(e) => {
+              setExistingUserData({
+                ...existingUserData,
+                birthday: e.target.value,
+              });
+            }}
             value={existingUserData?.birthday}
-            className="w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className={`w-full cursor-pointer rounded-md  b flex-1
+            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+            }`}
           />
         </div>
       </div>
 
       <div className="flex gap-5 justify-center ">
-        {
-          !formActive ?     
-       
-        
-        <div className="border border-blue-600  rounded-full cursor-pointer py-2 px-6" onClick={()=>setFormActive(true)}>
-            Edit 
-        </div>
-
-        :
-
-        <button disabled={!formActive || formLoading} className={`border border-blue-600 flex
-         items-center justify-center  ${formLoading && "bg-green-600"} rounded-full py-2 px-4`} type="submit">
-         {
-          formLoading ? <LoadingButton/> : "  Save Information"
-         }
-         
-        
-
-        </button>
-
-}
-
+        {!formActive ? (
+          <div
+            className="border border-blue-600  rounded-full cursor-pointer py-2 px-6"
+            onClick={() => setFormActive(true)}
+          >
+            Edit
+          </div>
+        ) : (
+          <button
+            disabled={!formActive || formLoading}
+            className={`border border-blue-600 flex
+         items-center justify-center  ${
+           formLoading && "bg-green-600"
+         } rounded-full py-2 px-4`}
+            type="submit"
+          >
+            {formLoading ? <LoadingButton /> : "  Save Information"}
+          </button>
+        )}
       </div>
     </form>
   );
