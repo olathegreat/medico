@@ -3,7 +3,7 @@ import User, { UserDocument } from "../models/UserModel";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import cloudinary from "cloudinary";
-import  { ObjectId } from "mongoose";
+import { ObjectId } from "mongoose";
 
 dotenv.config();
 
@@ -58,7 +58,7 @@ export const createUser = async (req: Request, res: Response): Promise<void> => 
     try {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            res.status(400).json({ 
+            res.status(400).json({
                 message: "Email already taken"
             })
             return;
@@ -102,7 +102,11 @@ const uploadImage = async (file: Express.Multer.File) => {
     const image = file
     const base64Image = Buffer.from(image.buffer).toString("base64");
     const dataURI = `data:${image.mimetype};base64,${base64Image}`;
-    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI);
+    const uploadResponse = await cloudinary.v2.uploader.upload(dataURI, {
+        quality: "auto",
+        fetch_format: "auto",
+        timeout:180000
+    });
 
     return uploadResponse.url;
 

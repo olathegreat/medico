@@ -1,11 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User, { UserDocument } from '../models/UserModel';
-
+ 
 interface DecodedToken {
   id: string;
   iat: number;
 }
+  
 
 // Extend the Request interface to include `user` with the correct type.
 interface AuthenticatedRequest extends Request {

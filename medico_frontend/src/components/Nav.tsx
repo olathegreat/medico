@@ -8,7 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { saveUser } from "../utils/appSlice";
+import { saveUser, toggleDarkMode } from "../utils/appSlice";
+import { Switch } from "./ui/switch";
+
 
 // }
 type NavLinks = {
@@ -16,27 +18,27 @@ type NavLinks = {
   link: string;
 };
 
-interface FormDataType {
-  _id?: string | undefined;
-  fullname: string;
-  email: string;
-  address?: string;
-  gender?: "male" | "female" | "other";
-  phone?: string;
-  birthday?: string;
-  picture?: File | string;
-}
+
 
 function Nav() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<any>({})
   const existinguserInfo = useSelector((state: any)=>state.app.user);
+  const savedUserData = sessionStorage.getItem("sessionUserInfo")
+  ? JSON.parse(sessionStorage.getItem("sessionUserInfo")!)
+  : {};
+
   
 
   useEffect(()=>{
+     if(savedUserData.fullname){
+      setUserInfo(savedUserData);
+    
+     }else{
       setUserInfo(existinguserInfo);
-      
+     }  
   },[existinguserInfo])
+
   const navLinks: NavLinks[] = [
     {
       title: "Home",
@@ -61,10 +63,22 @@ function Nav() {
   const logOutFunction = () =>{
     dispatch(saveUser({}));
     navigate("/");
+    sessionStorage.removeItem("sessionUserInfo")
 
   }
+
+  const darkMode = useSelector((state: any)=>state.app.darkMode );
+  const [darkModeState, setDarkModeState] = useState(false);
+  
+
+  useEffect(()=>{
+       setDarkModeState(darkMode);
+
+
+  },[darkMode])
+
   return (
-    <nav className=" font-sans w-full  flex justify-between items-center py-4 sticky top-0 z-10 bg-white border-b-2 border-gray-200">
+    <nav className={` font-sans w-full  flex justify-between items-center py-4 sticky top-0 z-10 ${darkModeState ? "bg-gray-900" : "bg-white"}  border-b-2 border-gray-200`}>
       <div onClick={() => navigate("/")} className="cursor-pointer">
         <Logo />
       </div>
@@ -75,7 +89,7 @@ function Nav() {
           return (
             <span>
               <Link
-                className="hover:border-b-green-600 hover:border-b-2 text-gray-700"
+                className={`hover:border-b-green-600 hover:border-b-2 ${darkModeState ? "text-gray-300" : "text-gray-700"}`}
                 key={index}
                 to={link}
               >
@@ -106,7 +120,7 @@ function Nav() {
              <ChevronDown/>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="bg-white py-3 border rounded-md shadow">
+          <DropdownMenuContent className={`${!darkModeState ? "bg-white text-gray-700": "bg-gray-800 text-white"} py-3 border rounded-md shadow`}>
             <DropdownMenuItem className="pl-2 pr-4">
               <Link to="/profile">
                 Profile
@@ -115,8 +129,14 @@ function Nav() {
             </DropdownMenuItem>
 
             <DropdownMenuItem className="pl-2 pr-4">
-              <div>
-                Dark Mode
+              <div className=" flex items-center gap-4" >
+                Dark Mode <span className="cursor-pointer mt-1"> <Switch className="border border-green-500" checked={darkModeState} onCheckedChange={
+                  ()=>{
+                    dispatch(toggleDarkMode())
+                  }
+                }/>
+
+                </span>
               </div>
 
             </DropdownMenuItem>

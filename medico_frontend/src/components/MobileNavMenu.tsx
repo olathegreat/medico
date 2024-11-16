@@ -50,6 +50,7 @@ const MobileNavMenu = () => {
   const logOutFunction = () =>{
     dispatch(saveUser({}));
     navigate("/");
+    sessionStorage.removeItem("sessionUserInfo")
 
   }
   return (

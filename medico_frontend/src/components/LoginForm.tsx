@@ -32,7 +32,7 @@ const LoginForm: React.FC = () => {
         setApiRequest(false);
         setTimeout(() => {
           navigate("/profile");
-        }, 2000);   
+        }, 1000);   
       
       } else {
         toast.error("User details are missing")

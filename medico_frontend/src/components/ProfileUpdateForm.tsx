@@ -130,6 +130,7 @@ const ProfileUpdateForm = () => {
           onChange={(e) => {
             if (e.target.files && e.target.files[0]) {
               const file = e.target.files[0];
+            
               const previewUrl = URL.createObjectURL(file);
         
               setPreviewImage(previewUrl); // Set the preview URL for display

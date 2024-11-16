@@ -16,6 +16,7 @@ import doc13 from "../assets/assets_frontend/doc13.png";
 import doc14 from "../assets/assets_frontend/doc14.png";
 import doc15 from "../assets/assets_frontend/doc15.png";
 import { useState } from "react";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 type Doctors = {
   name: string;
@@ -121,7 +122,7 @@ const TopDoctors = () => {
 
   return (
     <section className="flex flex-col items-center py-10">
-      <div className=" text-3xl mb-2 text-gray-700">Top Doctors to Book</div>
+      <div className={`${DarkModeSetterFunction() ? "text-gray-200" : "text-gray-700"} text-3xl mb-2 `}>Top Doctors to Book</div>
       <div className="text-center font-light text-gray-500 mb-8 md:w-[50%]">
         Simply browse through our extensive list of top doctors
       </div>
@@ -133,7 +134,7 @@ const TopDoctors = () => {
           return (
             <div
               key={index}
-              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col  shadow border shadow-sm items-start group"
+              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105  shadow border shadow-sm items-start group"
             >
               <img
                 src={image}
