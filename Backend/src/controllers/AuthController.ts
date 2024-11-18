@@ -153,7 +153,7 @@ export const getUser = async (req: AuthenticatedRequest, res: Response): Promise
         res.json(existingUser);
     } catch (err) {
         console.log(err);
-        res.status(500).json({ message: "Error Updating User" });
+        res.status(500).json({ message: "Error getting User" });
 
     }
 }
