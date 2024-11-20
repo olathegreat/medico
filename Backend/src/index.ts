@@ -32,7 +32,7 @@ app.get('/health', async(req:Request, res:Response)=>{
         message: "health is okay!"
         
     })
-})
+}) 
 
 app.use('/api/v1/user', UserRoutes)
 app.use('/api/v1/doctor', DoctorRoutes)

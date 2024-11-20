@@ -10,6 +10,10 @@ import {useState, useEffect} from "react"
 import AboutPage from './pages/AboutPage'
 import { useDispatch, useSelector } from 'react-redux'
 import { toggleDarkMode } from './utils/appSlice'
+import AdminLoginPage from './pages/AdminPages/AdminLoginPage'
+import DoctorLoginPage from './pages/DoctorPages/DoctorLoginPage'
+import AdminProtectedRoute from './utils/AdminProtectedRoute'
+import AdminProfilePage from './pages/AdminPages/AdminProfilePage'
 
 
 
@@ -60,6 +64,25 @@ function App() {
         />
       </Route>
       <Route path="*" element= {<h1>You are lost, go back</h1>}/>
+
+
+
+
+      {/* admin page */}
+      <Route path='/admin-login' element={<AdminLoginPage/>}/>
+      <Route element={<AdminProtectedRoute/>}>
+        <Route
+          path="/admin-profile"
+          element={
+            <AdminProfilePage/>
+          }
+        />
+      </Route>
+      
+
+
+      {/* doctor page */}
+      <Route path='/doctor-login' element={<DoctorLoginPage/>}/>
     </Routes>
     
   )

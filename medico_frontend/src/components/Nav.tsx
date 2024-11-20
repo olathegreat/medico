@@ -64,6 +64,7 @@ function Nav() {
     dispatch(saveUser({}));
     navigate("/");
     sessionStorage.removeItem("sessionUserInfo")
+    
 
   }
 
@@ -79,8 +80,24 @@ function Nav() {
 
   return (
     <nav className={` font-sans w-full  flex justify-between items-center py-4 sticky top-0 z-10 ${darkModeState ? "bg-gray-900" : "bg-white"}  border-b-2 border-gray-200`}>
-      <div onClick={() => navigate("/")} className="cursor-pointer">
-        <Logo />
+      <div  >
+
+        <div  onClick={() => navigate("/")} className="cursor-pointer" >
+            <Logo />
+
+
+        </div>
+        
+        {userInfo?.data?.name ? (
+          <span
+            onClick={() => navigate("/admin-profile")}
+            className="border border-green-500 py-1 px-3 rounded-full cursor-pointer"
+          >
+            Admin
+          </span>
+        ) : (
+          ""
+        )}
       </div>
 
       <div className="hidden md:flex gap-6   ">

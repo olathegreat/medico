@@ -65,13 +65,29 @@ const uploadImage = async (file: Express.Multer.File) => {
         fetch_format: "auto",
         timeout:180000
     });
+    
 
     return uploadResponse.url;
 
+
 }
+
+// const uploadImageStream = (file: Express.Multer.File): Promise<string> => {
+//     return new Promise((resolve, reject) => {
+//         const stream = cloudinary.v2.up.upload_stream(
+//             { folder: "doctors" },
+//             (error:any, result:any) => {
+//                 if (result) resolve(result.url);
+//                 else reject(error);
+//             }
+//         );
+//         stream.end(file.buffer);
+//     });
+// };
 
 export const createDoctor = async(req: Request, res: Response) : Promise<void>=>{
     const {email} = req.body;
+    console.log(req.body)
 
     try{
         const existingDoctor = await Doctor.findOne({email});
@@ -154,6 +170,7 @@ export const getOneDoctor = async(req: Request, res: Response) : Promise<void>=>
 
     }catch(err){
         console.log(err);
+
         res.status(500).json({
             message: "error getting users"
         })
@@ -172,14 +189,14 @@ export const updateDoctor = async (req: AuthenticatedRequest, res: Response): Pr
             return;
         }
 
-        existingDoctor.name = name;
-        existingDoctor.address1 = address1;
-        existingDoctor.address2 = address2;
-        existingDoctor.speciality = speciality;
-        existingDoctor.experience = experience;
-        existingDoctor.degree = degree;
-        existingDoctor.fee = fee;
-        existingDoctor.about = about;
+        existingDoctor.name = name || existingDoctor.name;
+        existingDoctor.address1 = address1 || existingDoctor.address1;
+        existingDoctor.address2 = address2 || existingDoctor.address2;
+        existingDoctor.speciality = speciality || existingDoctor.speciality;
+        existingDoctor.experience = experience || existingDoctor.experience;
+        existingDoctor.degree = degree || existingDoctor.degree;
+        existingDoctor.fee = fee || existingDoctor.fee;
+        existingDoctor.about = about || existingDoctor.about;
 
         if(req.file){
             const imageUrl = await uploadImage(req.file as Express.Multer.File);
@@ -187,7 +204,11 @@ export const updateDoctor = async (req: AuthenticatedRequest, res: Response): Pr
         }
 
         await existingDoctor.save();
+        
 
+        res.status(201).json({
+            existingDoctor
+        })
 
 
 

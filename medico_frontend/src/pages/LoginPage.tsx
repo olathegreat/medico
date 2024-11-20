@@ -1,5 +1,4 @@
 import { useSelector } from "react-redux"
-import Footer from "../components/Footer"
 import LoginForm from "../components/LoginForm"
 import Nav from "../components/Nav"
 import { useNavigate } from "react-router-dom"
@@ -11,7 +10,7 @@ const LoginPage = () => {
   const savedUserInfo = useSelector((state: any)=>state.app.user)
   const navigate = useNavigate();
 
-  if(savedUserInfo){
+  if(savedUserInfo.fullname){
     toast.success("You are already logged in")
     
     setTimeout(()=>navigate("/profile"), 1000)

@@ -107,7 +107,7 @@ export const loginAdmin = async (req: Request, res: Response): Promise<void> => 
         res.status(400).json({
             message: "Please provide email and password"
         })
-        return;
+        return; 
     }
 
     const admin = await Admin.findOne({email}).select("+password");
@@ -122,3 +122,15 @@ export const loginAdmin = async (req: Request, res: Response): Promise<void> => 
     createSendToken(admin as unknown as AdminType, 200, res)
 }
 
+
+export const getAdmin = async (req:AuthenticatedRequest , res: Response): Promise<void> =>{
+     const data = req.admin
+    try{
+        res.status(200).json({
+            data
+        })
+
+    }catch(err: any){
+        console.log(err)
+    }
+}

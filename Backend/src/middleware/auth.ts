@@ -21,9 +21,12 @@ export const protect = async (req: AuthenticatedRequest, res: Response, next: Ne
   }
   if (!token) {
     return next(new Error('You are not logged in! Please log in to get access'));
+    
   }
 
   // 2) Verification token
+
+
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET as string) as DecodedToken;
     const freshUser = await User.findById(decoded.id);

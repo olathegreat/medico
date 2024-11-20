@@ -47,6 +47,7 @@ const doctorSchema = new Schema<DoctorDocument>({
         required: [true, "A doctor must have a degree"],
         trim: true,
     },
+    
     password:{
         type: String,
         required: [true,'Password is required'],

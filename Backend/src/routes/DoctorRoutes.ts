@@ -13,7 +13,7 @@ const upload = multer({ storage, limits:{
     fileSize: 5* 1024 *1024
 } }); 
 
-router.post('/', adminAccess, createDoctor);
+router.post('/', adminAccess, upload.single('picture'), createDoctor);
 router.post('/login-doctor', loginDoctor)
 router.patch('/:id',adminOrDoctorAccess, upload.single('picture'),updateDoctor )
 router.get('/', getDoctors);

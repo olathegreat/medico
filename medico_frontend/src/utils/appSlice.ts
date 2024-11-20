@@ -1,16 +1,20 @@
 import {createSlice} from "@reduxjs/toolkit"
-import { UserType } from "./types";
+import { AdminType, DoctorType, UserType } from "./types";
 
 interface AppState {
     darkMode: boolean;
     user: UserType | {};
+    admin: AdminType | {};
+    doctor: DoctorType | {};
 }   
 
 
 
 const initialState: AppState = {
     darkMode: false,
-    user:{}
+    user:{},
+    admin:{},
+    doctor:{}
 }
 
 const appSlice = createSlice({
@@ -24,11 +28,21 @@ const appSlice = createSlice({
         saveUser: (state, action) =>{
             state.user = action.payload;
             
-        }
+        },
+        saveAdmin: (state, action) =>{
+            state.admin = action.payload;
+            
+        },
+        saveDoctor: (state, action) =>{
+            state.doctor = action.payload;
+            
+        },
+
+
     }
 })
 
 
 
-export const {toggleDarkMode,saveUser} = appSlice.actions    
+export const {toggleDarkMode,saveUser, saveDoctor, saveAdmin} = appSlice.actions    
 export default appSlice.reducer

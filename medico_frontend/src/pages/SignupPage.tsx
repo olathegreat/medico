@@ -9,7 +9,7 @@ const SignupPage = () => {
   const savedUserInfo = useSelector((state: any)=>state.app.user)
   const navigate = useNavigate();
 
-  if(savedUserInfo){
+  if(savedUserInfo.fullname){
     toast.success("You are already logged in")
 
     
