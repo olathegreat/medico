@@ -1,6 +1,6 @@
 import mongoose , {Schema, Document, ObjectId} from "mongoose"
 import bcrypt from "bcryptjs"
-import crypto from "crypto"
+
 
 
 
@@ -10,6 +10,7 @@ export interface AdminDocument extends Document {
     email: string;
     address1?: string;
     address2?: string;
+    
     
     about:string;
     picture?: string;

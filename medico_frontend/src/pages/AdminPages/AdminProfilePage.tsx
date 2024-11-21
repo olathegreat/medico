@@ -4,6 +4,7 @@ import { useState } from "react";
 import Dashboard from "../../components/AdminComponents/Dashboard";
 import DarkModeSetterFunction from "../../utils/DarkModeSetterFunction";
 import AddDoctor from "../../components/AdminComponents/AddDoctor";
+import AllDoctors from "../../components/AdminComponents/AllDoctors"
 
 const AdminProfilePage = () => {
   const [activeSideNav, setActiveSideNav] = useState("Dashboard");
@@ -76,6 +77,9 @@ const AdminProfilePage = () => {
           {activeSideNav === "Dashboard" && <Dashboard />}
 
           {activeSideNav === "Add Doctor" && <AddDoctor />}
+
+          { activeSideNav == "Doctors List" && <AllDoctors/>}
+          
         </section>
       </div>
     </div>

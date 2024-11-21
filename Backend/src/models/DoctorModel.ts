@@ -15,6 +15,7 @@ export interface DoctorDocument extends Document {
     degree: string;
     fee:number;
     about:string;
+    availability?:string;
     picture?: string;
     password: string;
     passwordResetToken?: string;
@@ -77,6 +78,10 @@ const doctorSchema = new Schema<DoctorDocument>({
     },
     picture: {
         type: String
+    },
+     availability:{
+        type: String,
+        default: "Available"
     }
 
 

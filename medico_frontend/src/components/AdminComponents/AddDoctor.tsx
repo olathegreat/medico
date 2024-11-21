@@ -36,6 +36,7 @@ const AddDoctor = () => {
     fee: 0,
     about: "",
     password: "",
+   
   });
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const darkMode = DarkModeSetterFunction();
@@ -100,7 +101,12 @@ const AddDoctor = () => {
           fee: 0,
           about: "",
           password: "",
+          address1:"",
+          experience:"",
+          picture:undefined,
+          address2:""
         });
+        setPreviewImage(null)
 
       setFormLoading(false);
     } catch (err: any) {
@@ -268,7 +274,7 @@ const AddDoctor = () => {
               <option value="" disabled selected>
                 Select speciality
               </option>
-              <option>General Physcian</option>
+              <option>General Physician</option>
 
               <option>Gynaecologist</option>
               <option>Dermatologist</option>
@@ -341,7 +347,7 @@ const AddDoctor = () => {
           </div>
         </div>
 
-        <div className="flex  flex-col md:h-[85px] gap-4 md:flex-row">
+        <div className="flex  flex-col md:h-[70px] gap-4 md:flex-row">
           <div className="flex flex-col flex-1 gap-1 items-start">
             <label className="text-start text-sm "> Doctor password</label>
             <div

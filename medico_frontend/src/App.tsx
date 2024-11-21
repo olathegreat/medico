@@ -14,6 +14,7 @@ import AdminLoginPage from './pages/AdminPages/AdminLoginPage'
 import DoctorLoginPage from './pages/DoctorPages/DoctorLoginPage'
 import AdminProtectedRoute from './utils/AdminProtectedRoute'
 import AdminProfilePage from './pages/AdminPages/AdminProfilePage'
+import AllDoctors from './pages/AllDoctors'
 
 
 
@@ -55,6 +56,7 @@ function App() {
       <Route path='/login' element={<LoginPage/>}/>
       <Route path="/contact" element={<ContactPage/>}/>
       <Route path="/about" element={<AboutPage/>}/>
+      <Route path="/doctors" element={<AllDoctors/>}/>
       <Route element={<ProtectedRoute />}>
         <Route
           path="/profile"

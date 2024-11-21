@@ -138,11 +138,14 @@ export const loginDoctor = async (req: Request, res: Response): Promise<void> =>
 
 
 export const getDoctors =  async(req: Request, res: Response) : Promise<void>=>{
+    const { speciality } = req.query;
+
 
 
     try{
-        const allDoctors = await Doctor.find();
-        if(!allDoctors){
+        const query = speciality ? { speciality } : {}; // Construct query based on speciality
+        const allDoctors = await Doctor.find(query).select("availability name speciality picture");
+       if(!allDoctors){
             res.status(404).json({ message: "No Doctors not found" });
             return;
         }
