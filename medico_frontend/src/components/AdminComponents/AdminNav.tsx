@@ -1,6 +1,6 @@
 // type NavProps = {
 
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import Logo from "../Logo";
 import MobileNavMenu from "../MobileNavMenu";
 import {
