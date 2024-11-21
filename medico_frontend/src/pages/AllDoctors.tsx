@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import { Circle } from "lucide-react";
 import axiosInstance from "../utils/axios";
+import { useNavigate } from "react-router-dom";
 
 const AllDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -28,6 +29,8 @@ const AllDoctors = () => {
 
     getDoctors();
   }, [selectedSpeciality]);
+
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col gap-5 md:gap-10 text-gray-700">
@@ -58,7 +61,7 @@ const AllDoctors = () => {
                 selectedSpeciality === ""
                   ? "bg-green-100 border-green-800"
                   : "hover:bg-gray-100"
-              } duration-100 ease-linear rounded-md text-[8px] md:text-[16px] rounded-md py-1 md:py-2 px-2 md:px-8`}
+              } duration-100 ease-linear  text-[8px] md:text-[16px] rounded-md py-1 md:py-2 px-2 md:px-8`}
                
               >All</button>
           </div>
@@ -66,10 +69,11 @@ const AllDoctors = () => {
 
         <div className="flex flex-wrap  gap-4 justify-center md:justify-start md:py-10 mb-10">
           {doctors.map((item, index) => {
-            const { name, speciality, availability, picture } = item;
+            const { _id, name, speciality, availability, picture } = item;
 
             return (
               <div
+               onClick={()=>navigate(`/doctors/${_id}`)}
                 key={index}
                 className="w-[200px] h-[300px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105   border shadow-sm items-start group"
               >

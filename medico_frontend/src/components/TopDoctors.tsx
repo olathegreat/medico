@@ -9,6 +9,7 @@ type Doctors = {
   speciality: string;
   picture: string;
   availability: string;
+  _id: string;
 };
 const TopDoctors = () => {
   const [doctors, setDoctors] = useState<Doctors[]>([]);
@@ -40,12 +41,13 @@ const TopDoctors = () => {
 
       <div className="flex flex-wrap  gap-4 justify-center mb-10">
         {doctors.slice(0, 6).map((doctor, index) => {
-          const { name, speciality, availability, picture } = doctor;
+          const { _id, name, speciality, availability, picture } = doctor;
 
           return (
             <div
+              onClick={() => navigate(`/doctors/${_id}`)}
               key={index}
-              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105  shadow border shadow-sm items-start group"
+              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105  border shadow-sm items-start group"
             >
               <img
                 src={picture}
