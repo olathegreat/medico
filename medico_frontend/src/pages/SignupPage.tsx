@@ -21,6 +21,8 @@ const SignupPage = () => {
         <Nav/>
         <div className="flex justify-center">
         <SignupForm/>
+        
+
         </div>
 
         <Toaster/>

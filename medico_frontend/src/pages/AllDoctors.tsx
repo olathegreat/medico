@@ -77,6 +77,7 @@ const AllDoctors = () => {
                 key={index}
                 className="w-[200px] h-[300px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105   border shadow-sm items-start group"
               >
+                
                 <img
                   src={picture}
                   alt="doctor"
