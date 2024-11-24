@@ -7,6 +7,7 @@ import { BadgeCheckIcon, Circle, InfoIcon } from "lucide-react";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
 import { Toaster } from "../components/ui/sonner";
+import { useSelector } from "react-redux";
 
 type DayArrayType = {
   day: string;
@@ -47,9 +48,15 @@ const Doctor = () => {
       time:"",
       doctor:""
     });
+    const userInfo = useSelector((state:any)=>state.app.user);
+    const navigate = useNavigate()
 
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if(!userInfo){
+            navigate('/login')
+    }
     
     console.log(appointmentDetails);
     const token = sessionStorage.getItem("token");
@@ -96,6 +103,11 @@ const Doctor = () => {
     console.log(response)
 
     toast.success("appointment set");
+    setAppointmentDetails({
+      day:"",
+      time:"",
+      doctor:""
+    })
   }catch(err){
     console.log(err)
   }

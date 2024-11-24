@@ -65,7 +65,7 @@ export const userGetAppointments = async(req: AuthenticatedUser, res: Response):
 
         const userAppointments = await Appointment.find({user: req.user!._id, cancelled: false}).populate({
             path: 'user', select: "fullname picture birthday"
-        }).populate({path: 'doctor', select: "name speciality address1 address2 fee picture"})
+        }).populate({path: 'doctor', select: "name speciality address1 address2 fee picture"}).sort('-createdAt')
         
 
         if(!userAppointments){
@@ -116,7 +116,7 @@ export const adminGetAllAppointments = async(req: AuthenticatedUser, res: Respon
     }
     try{
 
-        const allAppointments = await Appointment.find().populate({
+        const allAppointments = await Appointment.find({cancelled:false}).populate({
             path: 'user', select: "fullname picture birthday"
         }).populate({path: 'doctor', select: "name fee"})
         
@@ -139,11 +139,11 @@ export const updateAppointment = async(req:AuthenticatedUser, res: Response):Pro
    console.log(req!.user);
    
    
-    if(!req.user){
-        res.status(400).json({
-            message: "you are not authorised"
-        })
-    }
+    // if(!req.user){
+    //     res.status(400).json({
+    //         message: "you are not authorised"
+    //     })
+    // }
 
     const {id} = req.params
     try{

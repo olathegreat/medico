@@ -3,7 +3,9 @@ import Nav from "../components/Nav";
 import { AppointmentType } from "../utils/types";
 import axiosInstance from "../utils/axios";
 import { Separator } from "../components/ui/separator";
-import { PaystackButton } from 'react-paystack'
+import { PaystackButton } from "react-paystack";
+import { useSelector } from "react-redux";
+import LoadingButton from "../components/loadingButton";
 
 const MyAppointments = () => {
   const [userAppointments, setUserAppointments] = useState<AppointmentType[]>([
@@ -17,12 +19,14 @@ const MyAppointments = () => {
     },
   ]);
 
-  const publicKey = "pk_test_11b6d13855f8f9eb3242100dfff4043e5d8dac5e"
-  const amount = 1000000 // Remember, set in kobo!
-  const [email, setEmail] = useState("")
-  const [name, setName] = useState("")
-  const [phone, setPhone] = useState("")
+  const publicKey = "pk_test_11b6d13855f8f9eb3242100dfff4043e5d8dac5e";
+  const userInfo = useSelector((state: any) => state.app.user);
+
+  const email = userInfo?.email;
+  const name = userInfo?.fullname;
+  const [phone, setPhone] = useState("");
   const [reload, setReload] = useState(false);
+  const [cancelLoading, setCancelLoading] = useState(false);
   const [activeAppointment, setActiveAppointment] = useState<AppointmentType>({
     date: "",
     time: "",
@@ -30,32 +34,32 @@ const MyAppointments = () => {
     payment: false,
     isCompleted: false,
     _id: "",
-  })
-const updateAppointmentPayment = async (appointment:AppointmentType) => {
-    console.log(activeAppointment)
+  });
+  const updateAppointmentPayment = async (appointment: AppointmentType) => {
+    console.log(activeAppointment);
     const patchUrl = "/appointment/" + appointment._id;
-    
-   
-    
-    const response = await axiosInstance.patch(patchUrl, {payment: true},{
+
+    const response = await axiosInstance.patch(
+      patchUrl,
+      { payment: true },
+      {
         headers: {
           "Content-Type": "application/json",
           authorization: bearerToken,
         },
       }
     );
-    setReload(!reload)
+    setReload(!reload);
 
     console.log(response);
   };
 
-
   const componentProps = {
-    email: email || "test@example.com", 
-    // amount, 
+    email: email || "test@example.com",
+    // amount,
     metadata: {
-      name: name || "John Doe", 
-      phone: phone || "0000000000", 
+      name: name || "John Doe",
+      phone: phone || "0000000000",
     },
     publicKey,
     text: "Pay Now with card",
@@ -66,10 +70,9 @@ const updateAppointmentPayment = async (appointment:AppointmentType) => {
     // },
     onClose: () => alert("Transaction closed!"),
   };
-  
+
   const token = sessionStorage.getItem("token");
   const bearerToken = token ? "Bearer " + token : "";
-  
 
   useEffect(() => {
     const getUserAppointments = async () => {
@@ -90,19 +93,23 @@ const updateAppointmentPayment = async (appointment:AppointmentType) => {
     getUserAppointments();
   }, [reload]);
 
-  const cancelAppointment = async (appointment:AppointmentType) => {
+  const cancelAppointment = async (appointment: AppointmentType) => {
     const patchUrl = "/appointment/" + appointment._id;
+    setActiveAppointment(appointment);
 
     // userAppointments && setUserAppointments({...userAppointments, cancelled: true});
-    
-    const response = await axiosInstance.patch(patchUrl, {cancelled: true},{
+
+    const response = await axiosInstance.patch(
+      patchUrl,
+      { cancelled: true },
+      {
         headers: {
           "Content-Type": "application/json",
           authorization: bearerToken,
         },
       }
     );
-    setReload(!reload)
+    setReload(!reload);
 
     console.log(response);
   };
@@ -115,10 +122,10 @@ const updateAppointmentPayment = async (appointment:AppointmentType) => {
         <div className="flex flex-col gap-2">
           {userAppointments.map((item) => (
             <div className="flex flex-col md:flex-row gap-2 md:justify-between border-b border-b-gray-200 pb-2">
-              <div className="flex gap-2">
+              <div className="flex gap-4">
                 <div className="w-32 h-44 bg-gray-200 rounded-md">
                   <img
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover rounded-md"
                     src={item?.doctor?.picture}
                   />
                 </div>
@@ -150,18 +157,17 @@ const updateAppointmentPayment = async (appointment:AppointmentType) => {
               </div>
 
               <div className="flex flex-col justify-end gap-2">
-              
                 {!item?.payment ? (
-                    <div onClick={()=>setActiveAppointment(item)}>
-                        
+                  <div onClick={() => setActiveAppointment(item)}>
                     <PaystackButton
-                     amount={item?.doctor?.fee ? item?.doctor.fee * 100 : 0 }
-                    onSuccess={()=>{
-                        updateAppointmentPayment(item)
-                    }}
-                    
-                    className="paystack-button px-3 py-1 bg-green-600 text-white border border-gray-400 cursor-pointer " {...componentProps} />
-                    </div>
+                      amount={item?.doctor?.fee ? item?.doctor.fee * 100 : 0}
+                      onSuccess={() => {
+                        updateAppointmentPayment(item);
+                      }}
+                      className="paystack-button w-full px-3 py-1 bg-green-600 text-white  cursor-pointer "
+                      {...componentProps}
+                    />
+                  </div>
                 ) : (
                   <div className="px-3 py-1 bg-green-600 text-white border border-gray-400 cursor-pointer">
                     Paid
@@ -172,7 +178,16 @@ const updateAppointmentPayment = async (appointment:AppointmentType) => {
                     onClick={() => cancelAppointment(item)}
                     className="px-3 py-1  border border-gray-400 cursor-pointer"
                   >
-                    Cancel Appointment
+                    {cancelLoading && activeAppointment._id === item._id ? (
+                      <LoadingButton color="gray" />
+                    ) : (
+                      <button
+                        onClick={() => cancelAppointment(item)}
+                        className="px-3 py-1  cursor-pointer"
+                      >
+                        Cancel Appointment
+                      </button>
+                    )}
                   </button>
                 )}
               </div>

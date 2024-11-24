@@ -1,9 +1,11 @@
 import { ArrowRight } from "lucide-react";
 import groupProfile from "../assets/assets_frontend/group_profiles.png";
 import headerImg from "../assets/assets_frontend/header_img.png";
+import { useNavigate } from "react-router-dom";
 
 
 const Hero = () => {
+  const navigate = useNavigate()
   return (
     <section className="w-full  bg-gradient-to-br from-green-500 to-green-600 rounded-md flex flex-col-reverse md:flex-row  pt-20 px-6 md:px-20 ">
       <div className="flex flex-col flex-1 justify-center gap-1 md:gap-4 py-2 md:py-10 mb-10">
@@ -24,7 +26,7 @@ const Hero = () => {
         </div>
 
         <button className="bg-white px-4 text-green-500 font-normal py-2 hover:gap-2 rounded-full  flex justify-center md:w-fit ">
-            <span>Book Appointment</span>
+            <span onClick={(()=>navigate('/doctors'))}>Book Appointment</span>
 
           
           <ArrowRight/>

@@ -6,6 +6,7 @@ interface AppState {
     user: UserType | {};
     admin: AdminType | {};
     doctor: DoctorType | {};
+    adminDataReload: boolean;
 }   
 
 
@@ -14,7 +15,8 @@ const initialState: AppState = {
     darkMode: false,
     user:{},
     admin:{},
-    doctor:{}
+    doctor:{},
+    adminDataReload:false
 }
 
 const appSlice = createSlice({
@@ -37,6 +39,10 @@ const appSlice = createSlice({
             state.doctor = action.payload;
             
         },
+        toggleAdminDataReload: (state) => {
+            state.adminDataReload = !state.adminDataReload;
+            
+        },
 
 
     }
@@ -44,5 +50,5 @@ const appSlice = createSlice({
 
 
 
-export const {toggleDarkMode,saveUser, saveDoctor, saveAdmin} = appSlice.actions    
+export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin} = appSlice.actions    
 export default appSlice.reducer

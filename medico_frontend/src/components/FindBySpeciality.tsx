@@ -5,6 +5,7 @@ import dermatologist from "../assets/assets_frontend/Dermatologist.svg";
 import neurologist from "../assets/assets_frontend/Neurologist.svg";    
 import gastroenterologist from "../assets/assets_frontend/Gastroenterologist.svg";
 import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -14,6 +15,7 @@ type Speciality = {
 }
 
 const FindBySpeciality = () => {
+    const navigate = useNavigate();
 
     const speciality: Speciality[] = [
         {
@@ -55,7 +57,7 @@ const FindBySpeciality = () => {
             speciality.map((speciality, index) => {
                 const {title, image} = speciality
                 return (
-                    <div  key={index} className="flex flex-col gap-2 items-center cursor-pointer w-[126px] hover:bg-green-500 hover:text-white rounded-md p-2">   
+                    <div  onClick={()=>navigate(`/doctors?speciality=${title}`)} key={index} className="flex flex-col gap-2 items-center cursor-pointer w-[126px] hover:bg-green-500 hover:text-white rounded-md p-2">   
                         <img src={image} alt="" className="w-full object-cover" />
                         <span className={`font-thin text-xs ${DarkModeSetterFunction() ? "text-gray-500" : "text-gray-800"}`}>{title}</span>
                     </div>

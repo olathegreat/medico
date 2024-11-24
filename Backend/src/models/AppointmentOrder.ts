@@ -10,6 +10,7 @@ export interface AppointmentDocument extends Document {
     cancelled?: boolean;
     payment?: boolean;
     isCompleted?: boolean;
+    createdAt?:string;
 
 }
 
@@ -42,7 +43,11 @@ const appointmentSchema = new Schema<AppointmentDocument>({
     isCompleted:{
         type:Boolean,
         default: false
-    }
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+      }
      
 })
 

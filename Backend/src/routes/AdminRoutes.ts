@@ -1,5 +1,5 @@
 import express from "express"
-import { createAdmin, getAdmin, loginAdmin } from "../controllers/AdminController"
+import { createAdmin, getAdmin, loginAdmin, userDoctorAndAppointmentData } from "../controllers/AdminController"
 import { adminAccess } from "../middleware/adminChecker"
 import multer from 'multer'
 
@@ -15,7 +15,8 @@ const upload = multer({ storage, limits:{
 
 router.post('/', createAdmin)
 router.post('/login-admin', loginAdmin)
-router.get('/', adminAccess, getAdmin )
+router.get('/', adminAccess, getAdmin );
+router.get('/user-doctor-appointment-statistics', adminAccess, userDoctorAndAppointmentData)
 
 
 

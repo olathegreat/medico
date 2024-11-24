@@ -2,11 +2,14 @@ import { useState, useEffect } from "react";
 import Nav from "../components/Nav";
 import { Circle } from "lucide-react";
 import axiosInstance from "../utils/axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AllDoctors = () => {
   const [doctors, setDoctors] = useState([]);
-  const [selectedSpeciality, setSelectedSpeciality] = useState<string>("");
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const speciality = searchParams.get("speciality");
+  const [selectedSpeciality, setSelectedSpeciality] = useState<string>(speciality || "");
 
   const specialityArray = [
     "General Physician",

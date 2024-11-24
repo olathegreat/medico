@@ -1,7 +1,9 @@
 
+import { useNavigate } from "react-router-dom";
 import appointmentImg from "../assets/assets_frontend/appointment_img.png";
 
 const BookAppointmentBanner = () => {
+  const navigate = useNavigate();
   return (
     <section className="w-full md:h-[305px]  md:relative bg-gradient-to-br from-green-500 to-green-600 rounded-md flex flex-col md:flex-row  pt-20 px-6 md:px-20  ">
       <div className="flex flex-col md:w-[60%] justify-center gap-1 md:gap-4 py-2 md:py-10 mb-10">
@@ -10,8 +12,8 @@ const BookAppointmentBanner = () => {
           <span> With 100+ Trusted Doctors</span>
         </div>
 
-        <button className="bg-white px-4 text-green-500 font-normal py-2 hover:gap-2 rounded-full  flex justify-center md:w-fit ">
-          <span>Create Account</span>
+        <button onClick={()=>navigate('/signup')} className="bg-white px-4 text-green-500 font-normal py-2 hover:gap-2 rounded-full  flex justify-center md:w-fit ">
+          <span >Create Account</span>
         </button>
       </div>
 

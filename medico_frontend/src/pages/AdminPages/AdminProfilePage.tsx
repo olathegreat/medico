@@ -1,13 +1,17 @@
 import { BookUser, Calendar, Home, PlusSquareIcon, Users } from "lucide-react";
 import AdminNav from "../../components/AdminComponents/AdminNav";
-import { useState } from "react";
+import {  useState } from "react";
 import Dashboard from "../../components/AdminComponents/Dashboard";
 import DarkModeSetterFunction from "../../utils/DarkModeSetterFunction";
 import AddDoctor from "../../components/AdminComponents/AddDoctor";
 import AllDoctors from "../../components/AdminComponents/AllDoctors"
 
+
+
+
 const AdminProfilePage = () => {
   const [activeSideNav, setActiveSideNav] = useState("Dashboard");
+  
   const sideNavArray = [
     {
       name: "Dashboard",
@@ -18,6 +22,7 @@ const AdminProfilePage = () => {
       icon: <Calendar />,
     },
     {
+
       name: "Add Doctor",
       icon: <PlusSquareIcon />,
     },
@@ -40,7 +45,7 @@ const AdminProfilePage = () => {
     >
       <AdminNav />
       <div className="flex  ">
-        <section className="hidden h-90vh md:flex bg-white  flex-col w-[320px] py-5 gap-2 pt-3 border shadow-sm">
+        <section className="hidden min-h-[88vh] md:flex bg-white  flex-col w-[320px] py-5 gap-2 pt-3 border shadow-sm">
           {sideNavArray.map((item) => (
             <div
               onClick={() => setActiveSideNav(item.name)}
@@ -75,6 +80,7 @@ const AdminProfilePage = () => {
             ))}
           </section>
           {activeSideNav === "Dashboard" && <Dashboard />}
+
 
           {activeSideNav === "Add Doctor" && <AddDoctor />}
 

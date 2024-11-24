@@ -4,6 +4,9 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv"
 import cloudinary from "cloudinary";
 import { ObjectId } from "mongoose";
+import User from "../models/UserModel";
+import Doctor from "../models/DoctorModel";
+import Appointment from "../models/AppointmentOrder";
 
 
 dotenv.config();
@@ -132,5 +135,25 @@ export const getAdmin = async (req:AuthenticatedRequest , res: Response): Promis
 
     }catch(err: any){
         console.log(err)
+    }
+}
+
+
+export const userDoctorAndAppointmentData = async (req:AuthenticatedRequest , res: Response): Promise<void> =>{
+    
+
+    try{
+        const userNumber = await User.find().countDocuments();
+        const doctorNumber = await Doctor.find().countDocuments();
+        const appointmentNumber = await Appointment.find({cancelled: false}).countDocuments();
+
+
+        res.status(200).json({
+            userNumber, doctorNumber, appointmentNumber
+        })
+
+    }catch(err){
+        res.status(500).json(err);
+        return;
     }
 }
