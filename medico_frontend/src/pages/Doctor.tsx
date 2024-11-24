@@ -11,6 +11,8 @@ import { Toaster } from "../components/ui/sonner";
 type DayArrayType = {
   day: string;
   date: string | number;
+  month: string | number;
+  year: string | number;
 };
 
 type AppointmentDetails = {
@@ -40,12 +42,63 @@ const Doctor = () => {
   const [relatedDoctorsArray, setRelatedDoctorsArray] = useState([]);
   const [selectedSpeciality, setSelectedSpeciality] = useState<string>("");
   const [appointmentDetails, setAppointmentDetails] =
-    useState<AppointmentDetails>({});
+    useState<AppointmentDetails>({
+      day:"",
+      time:"",
+      doctor:""
+    });
 
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
+    console.log(appointmentDetails);
+    const token = sessionStorage.getItem("token");
+  const bearerToken = token ? "Bearer " + token : "";
 
-    toast.success("clicked");
+    // Format the selected date
+    const selectedDay = days.find(
+      (day) => day.day === appointmentDetails.day && day.date === appointmentDetails.date
+    );
+  
+    if (!selectedDay) {
+      toast.error("Please select a valid date");
+      return;
+    }
+  
+    const formattedDate = new Intl.DateTimeFormat("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }).format(
+      new Date(
+        Number(selectedDay.year),
+        Number(selectedDay.month) - 1, // Convert month to a number and adjust (0-indexed)
+        Number(selectedDay.date) // Convert date to a number
+      )
+    );
+    
+  
+
+  try{
+
+  
+    const response = await axiosInstance.post('/appointment/',{
+      // day: appointmentDetails.day ,
+      date: formattedDate,
+      time: appointmentDetails.time,
+      doctor: id
+    }, {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: bearerToken,
+      },
+    })
+    console.log(response)
+
+    toast.success("appointment set");
+  }catch(err){
+    console.log(err)
+  }
   };
 
   useEffect(() => {
@@ -57,10 +110,13 @@ const Doctor = () => {
 
       const dayOfTheWeek = day.toLocaleString("en-us", { weekday: "short" });
       const dayOfTheMonth = day.getDate();
+      const month = day.getMonth() + 1;
+      const year = day.getFullYear();
 
-      daysArray.push({ day: dayOfTheWeek, date: dayOfTheMonth });
+      daysArray.push({ day: dayOfTheWeek, date: dayOfTheMonth , month ,year });
     }
     setDays(daysArray);
+    
   }, []);
 
   const appointmentTimeArray = [
@@ -106,6 +162,8 @@ const Doctor = () => {
 
     getDoctors();
   }, [selectedSpeciality, id]);
+
+
 
   return (
     <div className="flex flex-col gap-5 md:gap-10 text-gray-700">
@@ -170,6 +228,7 @@ const Doctor = () => {
                         ...appointmentDetails,
                         day: item.day,
                         date: item.date,
+                        
                       });
                     }}
                     className={` ${

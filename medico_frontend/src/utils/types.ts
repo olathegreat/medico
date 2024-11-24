@@ -40,3 +40,15 @@ export type AdminType={
     picture?: string;
     password: string;
 }
+
+export type AppointmentType={
+    date: string;
+    time: string;
+    cancelled: boolean;
+    payment: boolean;
+    isCompleted: boolean;
+    _id: string | undefined;
+    user?: UserType;
+    doctor?: DoctorType;
+
+}

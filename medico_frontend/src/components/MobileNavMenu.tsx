@@ -84,6 +84,12 @@ const MobileNavMenu = () => {
               Profile
             </Link>
           }
+           {
+            userInfo?.fullname && 
+            <Link to="/appointment">
+              My Appointment
+            </Link>
+          }
           {navLinks.map((navItem, index) => {
             const { title, link } = navItem;
             return (

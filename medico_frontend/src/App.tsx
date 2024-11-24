@@ -16,6 +16,7 @@ import AdminProtectedRoute from './utils/AdminProtectedRoute'
 import AdminProfilePage from './pages/AdminPages/AdminProfilePage'
 import AllDoctors from './pages/AllDoctors'
 import Doctor from './pages/Doctor'
+import MyAppointments from './pages/MyAppointments'
 
 
 
@@ -64,6 +65,14 @@ function App() {
           path="/profile"
           element={
             <UserProfilePage/>
+          }
+        />
+      </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/appointments"
+          element={
+            <MyAppointments/>
           }
         />
       </Route>

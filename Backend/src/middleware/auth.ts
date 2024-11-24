@@ -14,6 +14,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 export const protect = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
+   
   // 1) Getting token and check if it's there
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {

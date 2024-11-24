@@ -72,22 +72,11 @@ const uploadImage = async (file: Express.Multer.File) => {
 
 }
 
-// const uploadImageStream = (file: Express.Multer.File): Promise<string> => {
-//     return new Promise((resolve, reject) => {
-//         const stream = cloudinary.v2.up.upload_stream(
-//             { folder: "doctors" },
-//             (error:any, result:any) => {
-//                 if (result) resolve(result.url);
-//                 else reject(error);
-//             }
-//         );
-//         stream.end(file.buffer);
-//     });
-// };
+
 
 export const createDoctor = async(req: Request, res: Response) : Promise<void>=>{
     const {email} = req.body;
-    console.log(req.body)
+    
 
     try{
         const existingDoctor = await Doctor.findOne({email});

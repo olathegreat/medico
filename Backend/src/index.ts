@@ -6,6 +6,7 @@ import {v2 as cloudinary} from "cloudinary"
 import UserRoutes from "./routes/UserRoutes"    
 import DoctorRoutes from "./routes/DoctorRoutes"
 import AdminRoutes from "./routes/AdminRoutes"
+import AppointmentRoutes from "./routes/AppointmentRoutes"
 
 
 dotenv.config();
@@ -37,7 +38,8 @@ app.get('/health', async(req:Request, res:Response)=>{
 app.use('/api/v1/user', UserRoutes)
 app.use('/api/v1/doctor', DoctorRoutes)
 app.use('/api/v1/admin', AdminRoutes)
-
+app.use('/api/v1/appointment' , AppointmentRoutes)
+        
 app.listen(process.env.PORT, ()=>{
     console.log(`server is running on port ${process.env.PORT}`)
 })

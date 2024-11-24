@@ -144,6 +144,15 @@ function Nav() {
               </Link>
 
             </DropdownMenuItem>
+           
+                <DropdownMenuItem className="pl-2 pr-4">
+              <Link to="/appointments">
+                My Appointments
+              </Link>
+
+            </DropdownMenuItem>
+
+            
 
             <DropdownMenuItem className="pl-2 pr-4">
               <div className=" flex items-center gap-4" >
