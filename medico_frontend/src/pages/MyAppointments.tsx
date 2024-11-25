@@ -19,7 +19,7 @@ const MyAppointments = () => {
     },
   ]);
 
-  const publicKey = "pk_test_11b6d13855f8f9eb3242100dfff4043e5d8dac5e";
+  const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
   const userInfo = useSelector((state: any) => state.app.user);
 
   const email = userInfo?.email;
@@ -97,7 +97,7 @@ const MyAppointments = () => {
     const patchUrl = "/appointment/" + appointment._id;
     setActiveAppointment(appointment);
 
-    // userAppointments && setUserAppointments({...userAppointments, cancelled: true});
+    setCancelLoading(true);
 
     const response = await axiosInstance.patch(
       patchUrl,

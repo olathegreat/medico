@@ -16,7 +16,7 @@ interface AuthenticatedRequest extends Request {
 
 export const adminAccess = async (req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
     let token;
-    console.log(req)
+    
 
     if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
         token = req.headers.authorization.split(' ')[1];

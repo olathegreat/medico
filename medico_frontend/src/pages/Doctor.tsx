@@ -54,7 +54,7 @@ const Doctor = () => {
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if(!userInfo){
+    if(!userInfo?.fullname){
             navigate('/login')
     }
     
@@ -108,6 +108,7 @@ const Doctor = () => {
       time:"",
       doctor:""
     })
+    navigate('/appointments')
   }catch(err){
     console.log(err)
   }

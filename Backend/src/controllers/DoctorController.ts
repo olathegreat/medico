@@ -170,9 +170,9 @@ export const getOneDoctor = async(req: Request, res: Response) : Promise<void>=>
 }
 
 export const updateDoctor = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
-    const {name,  address1 , address2 , speciality, experience, degree, fee, about} = req.body;
+    const {name,  address1 , address2 , speciality, experience, degree, fee, about, availability} = req.body;
     const {id} = req.params;
-    
+    console.log(req.body)
     try{
         const existingDoctor = await Doctor.findById(id);
 
@@ -189,6 +189,7 @@ export const updateDoctor = async (req: AuthenticatedRequest, res: Response): Pr
         existingDoctor.degree = degree || existingDoctor.degree;
         existingDoctor.fee = fee || existingDoctor.fee;
         existingDoctor.about = about || existingDoctor.about;
+        existingDoctor.availability = availability || existingDoctor.availability;
 
         if(req.file){
             const imageUrl = await uploadImage(req.file as Express.Multer.File);
