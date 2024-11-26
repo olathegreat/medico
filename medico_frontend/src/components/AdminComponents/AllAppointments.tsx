@@ -50,17 +50,19 @@ const AllAppointments = () => {
   },[]);
 
   return (
-    <div className="flex flex-col overflow-x-hidden w-inherit gap-5 px-8 py-4">
+    <div className=" w-full flex flex-col  gap-5 px-1 py-2 md:px-8 md:py-4">
       <div className="text-start">All Appointments</div>
 
       {/* <div className="flex">
           
 
        </div> */}
-       <div className="overflow-x-scroll  w-[90vw] bg-red-500 rounded-lg border border-gray-200 shadow-sm">
+       <div className="w-full lg:w-[92%] xl:w-full  overflow-x-scroll xl:overflow-x-hidden  flex 
+        rounded-lg   
+       shadow-md border">
 
        
-      <table className="w-content bg-white">
+      <table className="w-content md:w-full bg-white">
         <thead className="bg-gray-100 text-sm uppercase text-gray-600">
           <tr>
             <th className="px-4 py-2 text-start">#</th>
@@ -75,8 +77,8 @@ const AllAppointments = () => {
           {appointments.map((item, index) => (
             <tr key={index} className="border-t border-gray-200 hover:bg-gray-50" >
               <td className="px-4 py-2 text-start text-sm">{index + 1}</td>
-              <td className="px-4 py-2 flex gap-2 items-center text-sm">
-                <div>
+              <td className="px-4 py-2 flex gap-2  items-center text-sm">
+                <div className="w-fit">
                   {item?.user?.picture ? (
                     <img
                       src={item?.user?.picture}
@@ -108,7 +110,7 @@ const AllAppointments = () => {
                 </div>
                 <div> {item?.doctor?.name}</div>
               </td>
-              <td className="text-start px-4 py-2 text-sm">{item?.doctor?.fee}</td>
+              <td className="text-start text-nowrap px-4 py-2 text-sm">&#8358; {item?.doctor?.fee}</td>
             </tr>
           ))}
         </tbody>

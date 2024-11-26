@@ -5,6 +5,7 @@
   margin: 0 auto;
   padding: 0rem 2rem;
   text-align: center;
+  overflow-x: hidden;
 }
 
 a, button{
