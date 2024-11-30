@@ -3,14 +3,16 @@ import Doctor, {DoctorDocument} from "../models/DoctorModel";
 import jwt from "jsonwebtoken"
 import dotenv from "dotenv"
 import cloudinary from "cloudinary"
-import {ObjectId } from "mongoose";
+import {Mongoose, ObjectId } from "mongoose";
+import Appointment from "../models/AppointmentOrder";
+import mongoose from "mongoose";
 
 
 dotenv.config();
 
 
 type DoctorType = {
-    _id: ObjectId;
+    _id?: ObjectId;
     name: string;
     email: string;
     address1?: string;
@@ -25,7 +27,7 @@ type DoctorType = {
 }
 
 interface AuthenticatedRequest extends Request {
-    user?: DoctorDocument | undefined;
+    doctor?: DoctorDocument | undefined;
 }
 
 const signToken = (id: ObjectId) => {
@@ -45,6 +47,7 @@ const createSendToken = (user: DoctorType, statusCode: number, res: Response): v
     // user.password = undefined;
 
     res.cookie("jwt", token, cookieOptions);
+    console.log(user);
 
     res.status(statusCode).json({
         status: "success",
@@ -150,10 +153,14 @@ export const getDoctors =  async(req: Request, res: Response) : Promise<void>=>{
 }
 
 
-export const getOneDoctor = async(req: Request, res: Response) : Promise<void>=>{
-    const {id} = req.params;
+export const getOneDoctor = async(req: AuthenticatedRequest, res: Response) : Promise<void>=>{
+      const {id} = req.params;
+    // console.log(req.doctor)
+    //   req.doctor &&  console.log(req.doctor);
+    //   const id = req.params ? req.params.id : req.doctor && req.doctor._id
+   
     try{
-        const doctor = await Doctor.findById(id);
+        const doctor =  await Doctor.findById(id) //: req.doctor && await Doctor.findById(req.doctor._id );
         if(!doctor){
             res.status(404).json({ message: "No Doctors not found" });
             return;
@@ -236,3 +243,51 @@ export const deleteDoctor =  async (req: AuthenticatedRequest, res: Response): P
     }
 
 }
+
+export const doctorAppointmentData = async (req:AuthenticatedRequest , res: Response): Promise<void> =>{
+     const {id} = req.params
+     try{
+        
+        const stats = await Appointment.aggregate([
+            {
+                $match: { doctor: new mongoose.Types.ObjectId(id) }, // Match appointments for the doctor
+            },
+            {
+                $lookup: {
+                    from: "doctors", // The collection where doctors are stored
+                    localField: "doctor", // Field in Appointment referencing Doctor
+                    foreignField: "_id", // Field in Doctor referencing itself
+                    as: "doctorData", // Alias for the joined data
+                },
+            },
+            {
+                $unwind: "$doctorData", // Unwind the joined doctorData array
+            },
+            {
+                $group: {
+                    _id: null, // Group all data
+                    earning: { $sum: "$doctorData.fee" }, // Sum of doctor fees
+                    appointment: { $sum: 1 }, // Count total appointments
+                    uniquePatients: { $addToSet: "$user" }, // Collect unique user IDs (patients)
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    earning: 1,
+                    appointment: 1,
+                    uniquePatients: 1,
+                    patientCount: { $size: "$uniquePatients" }, // Count unique patients
+                },
+            },
+        ]);
+
+        res.status(200).json(stats);
+
+     }catch(err){
+        res.status(500).json(err);
+        return;
+     }
+
+
+} 

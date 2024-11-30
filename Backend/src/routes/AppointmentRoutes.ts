@@ -10,6 +10,7 @@ router.post('/', protect, createAppointment);
 router.get('/user-appointment', protect, userGetAppointments) ;
 router.get('/doctor-appointment', adminOrDoctorAccess, doctorGetAppointments);
 router.get('/', adminOrDoctorAccess, adminGetAllAppointments );
+router.get('/doctor-appointment', adminOrDoctorAccess, doctorGetAppointments)
 router.patch('/:id' , protect , updateAppointment);
 router.patch('/admin-or-doctor/:id', adminOrDoctorAccess, updateAppointment)
 

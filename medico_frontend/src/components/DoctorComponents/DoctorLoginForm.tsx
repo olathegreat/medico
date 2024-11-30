@@ -1,6 +1,6 @@
 import { Eye, EyeClosed } from "lucide-react";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios";
 import { toast } from "sonner";
 import { UserType } from "../../utils/types";
@@ -28,10 +28,12 @@ const DoctorLoginForm: React.FC = () => {
         const {token} = response.data as ResponseType
         
         sessionStorage.setItem("token", token )
+       
+        sessionStorage.setItem("doctorId", response.data.data.user._id)
         toast.success("login successful");
         setApiRequest(false);
         setTimeout(() => {
-          navigate("/profile");
+          navigate("/doctor-profile");
         }, 1000);   
       
       } else {

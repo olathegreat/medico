@@ -1,18 +1,15 @@
-// type NavProps = {
 
 import {  useNavigate } from "react-router-dom";
 import Logo from "../Logo";
-import MobileNavMenu from "../MobileNavMenu";
 import { DropdownMenu, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { saveUser, toggleDarkMode } from "../../utils/appSlice";
+import { saveDoctor,  toggleDarkMode } from "../../utils/appSlice";
 import { Switch } from "../ui/switch";
 
 
-// }
 
 
 
@@ -20,15 +17,17 @@ import { Switch } from "../ui/switch";
 function DoctorNav() {
   const navigate = useNavigate();
   const [userInfo, setUserInfo] = useState<any>({})
-  const existinguserInfo = useSelector((state: any)=>state.app.user);
-  const savedUserData = sessionStorage.getItem("adminDoctorSessionInfo")
-  ? JSON.parse(sessionStorage.getItem("adminDoctorSessionInfo")!)
+  const existinguserInfo = useSelector((state: any)=>state.app.doctor);
+  const savedUserData = sessionStorage.getItem("doctorSessionInfo")
+  ? JSON.parse(sessionStorage.getItem("doctorSessionInfo")!)
   : {};
 
   
 
+  
+
   useEffect(()=>{
-     if(savedUserData.fullname){
+     if(savedUserData.name){
       setUserInfo(savedUserData);
     
      }else{
@@ -40,9 +39,13 @@ function DoctorNav() {
   const dispatch = useDispatch();
   
   const logOutFunction = () =>{
-    dispatch(saveUser({}));
-    navigate("/");
-    sessionStorage.removeItem("adminDoctorSessionInfo")
+    dispatch(saveDoctor({}));
+    navigate("/doctor-login");
+    sessionStorage.removeItem("doctorSessionInfo");
+    sessionStorage.removeItem("token");
+    sessionStorage.removeItem("doctorId")
+    sessionStorage.removeItem("darkmode")
+
 
   }
 
@@ -58,10 +61,10 @@ function DoctorNav() {
 
   return (
     <nav className={` font-sans w-full  flex justify-between items-center py-4 sticky top-0 z-10 ${darkModeState ? "bg-gray-900" : "bg-white"}  border-b-2 border-gray-200`}>
-      <div onClick={() => navigate("/")} className="cursor-pointer">
+      <div  className="cursor-pointer flex gap-2">
         <Logo />
 
-        {userInfo?.data?.name ? (
+        {userInfo?.name ? (
           <span
             onClick={() => navigate("/doctor-profile")}
             className="border border-green-500 py-1 px-3 rounded-full cursor-pointer"
@@ -74,27 +77,27 @@ function DoctorNav() {
       </div>
 
 
-      {!userInfo?.data?.name ? (
+      {!userInfo?.name ? 
         <div className="block">
           <div
-            onClick={() => navigate("/admin-login")}
-            className="bg-green-600 px-4 text-white font-normal py-2 rounded-full"
+            onClick={() => navigate("/doctor-login")}
+            className="bg-green-600 px-4 text-white font-normal py-2 rounded-full cursor-pointer"
           >
-            Admin Login
+            Doctor Login
           </div>
         </div>
-      ) : (
+       : 
         <div className="hidden md:block">
           <DropdownMenu>
             <DropdownMenuTrigger className="flex gap-2 items-center">
-              {userInfo?.data?.picture ? (
+              {userInfo?.picture ? (
                 <img
                   className="rounded-full w-10 h-10 object-cover cursor-pointer"
-                  src={userInfo?.data?.picture}
+                  src={userInfo?.picture}
                 />
               ) : (
                 <span className="border-gray-300 rounded-full w-10 h-10 flex items-center justify-center text-xl font-medium object-cover cursor-pointer border bg-gray-100">
-                  {userInfo?.data?.name?.charAt(0).toUpperCase()}
+                  {userInfo?.name?.charAt(0).toUpperCase()}
                 </span>
               )}
 
@@ -132,12 +135,14 @@ function DoctorNav() {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-      )}
+      }
 {
-          userInfo?.data?.name   &&(
+          userInfo?.name   &&(
       <div className="block md:hidden">
-       <MobileNavMenu /> 
-        
+       {/* <MobileNavMenu />  */}
+       <button className="text-red-600" onClick={logOutFunction}>
+                  LogOut
+                </button>
        
       </div>
           )}

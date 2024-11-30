@@ -17,6 +17,8 @@ import AdminProfilePage from './pages/AdminPages/AdminProfilePage'
 import AllDoctors from './pages/AllDoctors'
 import Doctor from './pages/Doctor'
 import MyAppointments from './pages/MyAppointments'
+import DoctorProtectedRoute from './utils/DoctorProtectedRoute'
+import DoctorProfilePage from './pages/DoctorPages/DoctorProfilePage'
 
 
 
@@ -96,6 +98,16 @@ function App() {
 
       {/* doctor page */}
       <Route path='/doctor-login' element={<DoctorLoginPage/>}/>
+      <Route element={<DoctorProtectedRoute/>}>
+
+        <Route
+          path="/doctor-profile"
+          element={
+            <DoctorProfilePage/>
+            
+          }
+        />
+      </Route>
     </Routes>
     
   )

@@ -62,7 +62,8 @@ export const adminOrDoctorAccess = async (req: AuthenticatedRequest, res: Respon
             req.admin = freshAdmin;
           }
           if(freshDoctor){
-            req.doctor = freshDoctor
+            req.doctor = freshDoctor;
+            
           }
         
         next()

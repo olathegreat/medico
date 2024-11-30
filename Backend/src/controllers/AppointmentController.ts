@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import Appointment, {AppointmentDocument} from "../models/AppointmentOrder";
-import {ObjectId} from "mongoose";
+import mongoose, {ObjectId} from "mongoose";
 import Doctor, { DoctorDocument } from "../models/DoctorModel";
 import User, { UserDocument } from "../models/UserModel";
 import { AdminDocument } from "../models/AdminModel";
@@ -117,6 +117,35 @@ export const adminGetAllAppointments = async(req: AuthenticatedUser, res: Respon
     try{
 
         const allAppointments = await Appointment.find({cancelled:false}).populate({
+            path: 'user', select: "fullname picture birthday"
+        }).populate({path: 'doctor', select: "name fee"})
+        
+
+        if(!allAppointments){
+            res.status(404).json({message: "No appointments"});
+            return;
+        }
+
+        res.status(200).json(allAppointments)
+
+    }catch(err){
+        console.log(err);
+        res.status(500).json({err})
+    }
+
+}
+
+export const doctorGetAllAppointments = async(req: AuthenticatedUser, res: Response):Promise<void> =>{
+
+    if(!req.doctor){
+        res.status(400).json({
+            message: "you are not authorised to get all appointments"
+        })
+        return;
+    }
+    try{
+
+        const allAppointments = await Appointment.find({cancelled:false,  doctor: req.doctor._id}).populate({
             path: 'user', select: "fullname picture birthday"
         }).populate({path: 'doctor', select: "name fee"})
         

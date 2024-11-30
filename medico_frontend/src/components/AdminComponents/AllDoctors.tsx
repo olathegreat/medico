@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../utils/axios";
-import { DoctorType } from "../../utils/types";
 
 type Doctors = {
   _id: string;
