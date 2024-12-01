@@ -81,6 +81,7 @@ const DoctorProfilePage = () => {
           
 
           {activeSideNav === "Profile" && <DoctorProfileUpdateForm />}
+          
            {activeSideNav == "Appointment" && (
             <div className="w-full  md:w-inherit">
               <DoctorAllAppointments/>

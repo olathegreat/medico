@@ -91,7 +91,7 @@ const DoctorAllAppointments = () => {
                     </span>
                   )}
                 </div>
-                <div className="text-nowrap"> {item?.user?.fullname}</div>
+                <div className="text-nowrap mt-3"> {item?.user?.fullname}</div>
               </td>
               <td className="text-start text-nowrap px-4 py-2 text-sm">{item?.user?.birthday && calculateAge(item.user.birthday)} years</td>
               <td className="text-start text-nowrap px-4 py-2 text-sm">{item?.date + " " + item?.time}</td>
@@ -110,7 +110,7 @@ const DoctorAllAppointments = () => {
                 </div>
                 <div> {item?.doctor?.name}</div>
               </td>
-              <td className="text-start text-nowrap px-4 py-2 text-sm">&#8358; {item?.doctor?.fee}</td>
+              <td className="text-start text-nowrap px-4 py-2 text-sm">$ {item?.doctor?.fee}</td>
             </tr>
           ))}
         </tbody>

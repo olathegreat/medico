@@ -41,7 +41,7 @@ const Dashboard = () => {
     
       },[adminDataReload])
   return (
-    <div className="flex  text-gray-700 flex-col p-5 px-10 items-start gap-10 ">
+    <div className="flex  text-gray-700 flex-col py-5 p-2 md:p-5 md:px-10 items-start gap-10 ">
         <div className=" flex w-full gap-5 justify-center md:justify-start flex-wrap">
 
             <div className="flex items-center justify-start gap-2 bg-white p-4  rounded-md border shadow-sm flex-1">
@@ -83,6 +83,8 @@ const Dashboard = () => {
         </div>
 
         <Bookings/>
+        
+
         
 
 

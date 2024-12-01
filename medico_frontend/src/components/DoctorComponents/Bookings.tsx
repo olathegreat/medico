@@ -67,7 +67,7 @@ const Bookings = () => {
 
       <div className="flex flex-col ">
         {appointments?.slice(0,5).map((item, index) => (
-          <div key={index} className="flex justify-between items-center py-3 px-5 duration-100 ease-linear hover:bg-gray-200">
+          <div key={index} className="flex justify-between items-center py-3 px-2 md:px-5 duration-100 ease-linear hover:bg-gray-200">
             <div className="flex gap-3 items-center">
               {item?.doctor?.picture ? (
                 <img
@@ -82,7 +82,7 @@ const Bookings = () => {
 
               <div className="flex flex-col">
                 <div className="font-medium text-sm text-start">Dr {item?.doctor?.name}</div>
-                <div className="text-xs text-gray-400">Book on {item?.date + "," + item?.time}</div>
+                <div className="text-xs text-start text-gray-400">Book on {item?.date + "," + item?.time}</div>
                 </div>
             </div>
 

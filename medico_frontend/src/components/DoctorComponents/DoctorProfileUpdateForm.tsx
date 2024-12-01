@@ -1,13 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Toaster } from "../ui/sonner";
 import { UserCircle } from "lucide-react";
-
-import { Separator } from "../ui/separator";
 import { useDispatch, useSelector } from "react-redux";
 import axiosInstance from "../../utils/axios";
 import LoadingButton from "../loadingButton";
 import { toast } from "sonner";
-import { saveDoctor, saveUser } from "../../utils/appSlice";
+import { saveDoctor } from "../../utils/appSlice";
 import DarkModeSetterFunction from "../../utils/DarkModeSetterFunction";
 
 interface FormDataType {
@@ -22,7 +20,8 @@ interface FormDataType {
   fee: number;
   about: string;
   picture?: File;
-  password: string;
+ 
+  availability?: string;
 }
 
 const DoctorProfileUpdateForm = () => {
@@ -35,16 +34,16 @@ const DoctorProfileUpdateForm = () => {
     degree: "",
     fee: 0,
     about: "",
-    password: "",
+    
   });
   const [formActive, setFormActive] = useState(false);
   const storedUser = useSelector((state: any) => state.app.doctor);
   const [formLoading, setFormLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const darkMode = DarkModeSetterFunction();
-useEffect(() => {
+  useEffect(() => {
     console.log("Dark mode active:", darkMode);
-}, [darkMode]);
+  }, [darkMode]);
   useEffect(() => {
     console.log(storedUser);
     setExistingUserData(storedUser);
@@ -53,41 +52,52 @@ useEffect(() => {
 
   const profileUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    
-    const updatedFormData = new FormData();
-    if(existingUserData === storedUser){
-        toast.error("change a data");
 
-        return;
+    const updatedFormData = new FormData();
+    if (existingUserData === storedUser) {
+      toast.error("change a data");
+
+      return;
     }
 
     setFormLoading(true);
 
-    updatedFormData.append("fullname", existingUserData.name);
+    updatedFormData.append("name", existingUserData.name);
 
     updatedFormData.append("email", existingUserData.email);
+    updatedFormData.append("speciality", existingUserData.speciality);
+    updatedFormData.append("degree", existingUserData.degree);
+    updatedFormData.append("fee", String(existingUserData.fee));
+    updatedFormData.append("about", existingUserData.about);
     if (existingUserData.picture instanceof File) {
       updatedFormData.append("picture", existingUserData.picture);
     }
     if (existingUserData.address1) {
-      updatedFormData.append("address", existingUserData.address1);
+      updatedFormData.append("address1", existingUserData.address1);
     }
     if (existingUserData.address2) {
-      updatedFormData.append("address", existingUserData.address2);
+      updatedFormData.append("address2", existingUserData.address2);
     }
-  
-   
-    
+    if (existingUserData.experience) {
+      updatedFormData.append("experience", existingUserData.experience);
+    }
+    if (existingUserData.availability) {
+      updatedFormData.append("availability", existingUserData.availability);
+    }
 
     try {
       const token = sessionStorage.getItem("token");
       const bearerToken = token ? "Bearer " + token : "";
-      const res = await axiosInstance.patch("/doctor/"+ existingUserData._id, updatedFormData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          authorization: bearerToken,
-        },
-      });
+      const res = await axiosInstance.patch(
+        "/doctor/" + existingUserData._id,
+        updatedFormData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            authorization: bearerToken,
+          },
+        }
+      );
       console.log(res);
       toast.success("Updated Successfully");
       dispatch(saveDoctor({ ...existingUserData, picture: previewImage }));
@@ -100,14 +110,12 @@ useEffect(() => {
     }
   };
 
-  // if(!storedUser){
-  //   return <LoadingButton color="green"/>
-  // }
+
 
   return (
     <form
       onSubmit={profileUpdate}
-      className="md:w-[400px] px-4 md:px-10 flex flex-col gap-5"
+      className="md:w-[500px] px-4 md:px-10 flex flex-col gap-5"
     >
       <Toaster />
       <div>
@@ -163,7 +171,7 @@ useEffect(() => {
         />
       </div>
       <div className="flex flex-col gap-4">
-        <div className="flex gap-10">
+        <div className="flex flex-col items-start gap-2">
           {/* <label className="font-semibold">Full Name</label> */}
           <input
             disabled={!formActive}
@@ -178,98 +186,171 @@ useEffect(() => {
             value={existingUserData?.name}
             className={`w-full text-xl cursor-pointer ${
               formActive && "border-b border-gray-300"
-            }  ${
-              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
-            }
+            }  ${darkMode ? "bg-gray-800 text-white " : " text-gray-600"}
             px-3 py-2 focus:outline-none focus:ring-2 font-medium focus:ring-blue-500`}
           />
+          <div className="flex justify-between text-gray-500 items-center gap-1">
+            <input
+              type="text"
+              placeholder="degree"
+              value={existingUserData?.degree}
+              onChange={(e) => {
+                setExistingUserData({
+                  ...existingUserData,
+                  degree: e.target.value,
+                });
+              }}
+              className="w-14  pl-1 "
+              disabled={!formActive}
+            />
+            -
+            <select
+              value={existingUserData?.speciality}
+              onChange={(e) => {
+                setExistingUserData({
+                  ...existingUserData,
+                  speciality: e.target.value,
+                });
+              }}
+              className="disabled:appearance-none ml-2"
+              disabled={!formActive}
+            >
+              <option value="" disabled selected>
+                Select speciality
+              </option>
+              <option>General Physician</option>
+
+              <option>Gynaecologist</option>
+              <option>Dermatologist</option>
+              <option>Pediatrician</option>
+              <option>Neurologist</option>
+              <option>Gastroenterologist</option>
+            </select>
+            <select
+              value={existingUserData?.experience}
+              onChange={(e) => {
+                setExistingUserData({
+                  ...existingUserData,
+                  experience: e.target.value,
+                });
+              }}
+              className="w-20 disabled:appearance-none text-sm"
+              disabled={!formActive}
+            >
+              <option value="" disabled selected>
+                Select experience
+              </option>
+              <option>1 year</option>
+
+              <option>2 years</option>
+              <option>3 years</option>
+              <option>4 years</option>
+              <option>5 years</option>
+              <option>6 years</option>
+              <option>7 years</option>
+              <option>8 years</option>
+              <option>9 years</option>
+              <option>9+ years</option>
+            </select>
+          </div>
         </div>
 
-        <Separator />
+        {/* <Separator /> */}
 
-        <div className="underline text-start">CONTACT INFORMATION</div>
+        <div className="flex  flex-col gap-1 items-start">
+          <div>About:</div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Email Id</label>
-          <input
-            disabled
-            type="email"
-            placeholder="Email"
-            value={existingUserData?.email}
-            className={`w-full cursor-pointer rounded-md flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
-              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
-            }`}
-          />
-        </div>
-
-        {/* <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Phone</label>
-          <input
-            disabled={!formActive}
-            type="text"
-            placeholder="Phone"
-            value={existingUserData?.phone}
+          <textarea
+            value={existingUserData?.about}
             onChange={(e) => {
               setExistingUserData({
                 ...existingUserData,
-                phone: e.target.value,
+                about: e.target.value,
               });
             }}
-            className={`w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500   ${
-              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
-            }`}
-          />
-        </div> */}
-
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Address1</label>
-          <input
+            className="w-full resize-none text-gray-600 disabled:appearance-none text-sm"
             disabled={!formActive}
-            type="text"
-            placeholder="Address"
-            value={existingUserData?.address1}
-            onChange={(e) => {
-              setExistingUserData({
-                ...existingUserData,
-                address1: e.target.value,
-              });
-            }}
-            className={`w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
-              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
-            }`}
           />
         </div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Address2</label>
-          <input
-            disabled={!formActive}
-            type="text"
-            placeholder="Address"
-            value={existingUserData?.address2}
-            onChange={(e) => {
-              setExistingUserData({
-                ...existingUserData,
-                address2: e.target.value,
-              });
-            }}
-            className={`w-full cursor-pointer rounded-md  b flex-1
-            px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
-              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
-            }`}
-          />
+        <div className="flex items-start gap-2">
+          <div className="text-nowrap">Appointment fee:</div>
+          <div className="flex text-gray-600 items-center">
+            <span className="mr-1 ">$</span>
+
+            <input
+              type="number"
+              value={existingUserData?.fee}
+              onChange={(e) => {
+                setExistingUserData({
+                  ...existingUserData,
+                  fee: parseInt(e.target.value),
+                });
+              }}
+              className="w-full resize-none text-gray-600 disabled:appearance-none t"
+              disabled={!formActive}
+            />
+          </div>
         </div>
 
-        {/* <div className="underline text-start">BASIC INFORMATION</div> */}
+        <div className="flex gap-1">
+          <label className="text-start w-16">Address</label>
+          <div className="flex flex-col text-gray-600 gap-1">
+            <input
+              disabled={!formActive}
+              type="text"
+              placeholder="Address"
+              value={existingUserData?.address1}
+              onChange={(e) => {
+                setExistingUserData({
+                  ...existingUserData,
+                  address1: e.target.value,
+                });
+              }}
+              className={`w-full cursor-pointer rounded-md  b flex-1
+            px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white "
+            }`}
+            />
 
-        
+            <input
+              disabled={!formActive}
+              type="text"
+              placeholder="Address"
+              value={existingUserData?.address2}
+              onChange={(e) => {
+                setExistingUserData({
+                  ...existingUserData,
+                  address2: e.target.value,
+                });
+              }}
+              className={`w-full cursor-pointer rounded-md  b flex-1
+            px-3 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
+              darkMode ? "bg-gray-800 text-white " : "bg-white "
+            }`}
+            />
+          </div>
+        </div>
 
-     
-
-        
+        <div className="flex gap-2">
+          <input
+          // disabled={!formActive}
+            onChange={() => formActive &&
+              existingUserData.availability === "Available"
+                ? setExistingUserData({
+                    ...existingUserData,
+                    availability: "Not Available",
+                  })
+                : setExistingUserData({
+                    ...existingUserData,
+                    availability: "Available",
+                  })
+            }
+            type="checkbox"
+            checked={existingUserData.availability === "Available"}
+          />
+          {existingUserData?.availability}
+        </div>
       </div>
 
       <div className="flex gap-5 justify-center ">
