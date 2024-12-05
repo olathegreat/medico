@@ -7,7 +7,8 @@ import { useNavigate } from "react-router-dom";
 const Hero = () => {
   const navigate = useNavigate()
   return (
-    <section className="w-full  bg-gradient-to-br from-green-500 to-green-600 rounded-md flex flex-col-reverse md:flex-row  pt-20 px-6 md:px-20 ">
+    <section className="w-full  bg-gradient-to-br from-green-500 to-green-600 rounded-md flex
+     flex-col-reverse md:flex-row  pt-20 px-6 lg:px-20">
       <div className="flex flex-col flex-1 justify-center gap-1 md:gap-4 py-2 md:py-10 mb-10">
         <div className="font-normal text-white text-3xl md:text-5xl  flex flex-col gap-2  md:text-start ">
          
@@ -33,8 +34,8 @@ const Hero = () => {
         </button>
       </div>
 
-      <div className="flex-1  flex justify-center items-center">
-       <img src={headerImg} alt="" className=" w-full h-full object-cover rounded-md" />
+      <div className="flex-1  flex justify-center items-baseline">
+       <img src={headerImg} alt="" className=" w-full h-full md:object-contain lg:object-cover rounded-md" />
 
       </div>
 
