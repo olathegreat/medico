@@ -69,19 +69,19 @@ const Bookings = () => {
         {appointments?.slice(0,5).map((item, index) => (
           <div key={index} className="flex justify-between items-center py-3 px-2 md:px-5 duration-100 ease-linear hover:bg-gray-200">
             <div className="flex gap-3 items-center">
-              {item?.doctor?.picture ? (
+              {item?.user?.picture ? (
                 <img
                   src={item?.doctor?.picture}
                   className="rounded-full w-8 h-8 object-cover"
                 />
               ) : (
                 <span className="rounded-full text-md flex items-center justify-center text-gray-800 w-8 h-8 bg-gray-300">
-                  {item?.doctor?.name.charAt(0).toUpperCase()}
+                { item?.user?.fullname &&  item?.user?.fullname.charAt(0).toUpperCase()}
                 </span>
               )}
 
               <div className="flex flex-col">
-                <div className="font-medium text-sm text-start">Dr {item?.doctor?.name}</div>
+                <div className="font-medium text-sm text-start"> {item?.user?.fullname}</div>
                 <div className="text-xs text-start text-gray-400">Book on {item?.date + "," + item?.time}</div>
                 </div>
             </div>

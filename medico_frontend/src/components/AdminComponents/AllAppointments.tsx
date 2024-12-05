@@ -110,7 +110,7 @@ const AllAppointments = () => {
                 </div>
                 <div> {item?.doctor?.name}</div>
               </td>
-              <td className="text-start text-nowrap px-4 py-2 text-sm">&#8358; {item?.doctor?.fee}</td>
+              <td className="text-start text-nowrap px-4 py-2 text-sm">$ {item?.doctor?.fee}</td>
             </tr>
           ))}
         </tbody>
