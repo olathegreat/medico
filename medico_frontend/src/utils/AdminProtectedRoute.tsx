@@ -1,8 +1,7 @@
 
-import { useState, useEffect } from "react";
+import {  useEffect } from "react";
 import axiosInstance from "./axios";
 import { useDispatch } from "react-redux";
-import { toast } from "sonner";
 import { Navigate, Outlet } from 'react-router-dom'
 import { saveAdmin } from "./appSlice";
 
@@ -10,7 +9,6 @@ function AdminProtectedRoute() {
   const isAuthenticated = true;
   const token = sessionStorage.getItem("token");
   const bearerToken = token ? "Bearer " + token : "";
-  const [userDetails, setUserDetails] = useState({});
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -24,7 +24,7 @@ const MyAppointments = () => {
 
   const email = userInfo?.email;
   const name = userInfo?.fullname;
-  const [phone, setPhone] = useState("");
+  const phone = "";
   const [reload, setReload] = useState(false);
   const [cancelLoading, setCancelLoading] = useState(false);
   const [activeAppointment, setActiveAppointment] = useState<AppointmentType>({

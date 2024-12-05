@@ -1,4 +1,4 @@
-import Footer from "../components/Footer"
+
 import Nav from "../components/Nav"
 import ProfileUpdateForm from "../components/ProfileUpdateForm";
 

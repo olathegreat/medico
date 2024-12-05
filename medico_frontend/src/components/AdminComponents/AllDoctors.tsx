@@ -11,7 +11,7 @@ type Doctors = {
 
 const AllDoctors = () => {
   const [doctors, setDoctors] = useState<Doctors[]>([]);
-  const [reload, setReload] = useState(false);
+
 
   useEffect(() => {
     const getDoctors = async () => {
@@ -21,7 +21,7 @@ const AllDoctors = () => {
     };
 
     getDoctors();
-  }, [reload]);
+  }, []);
 
   const updateDoctorAvailability = async (doctor: Doctors) => {
     const patchUrl = "/doctor/" + doctor._id;

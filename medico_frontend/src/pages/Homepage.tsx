@@ -1,4 +1,4 @@
-import { useSelector } from 'react-redux'
+
 import BookAppointmentBanner from '../components/BookAppointmentBanner'
 import FindBySpeciality from '../components/FindBySpeciality'
 import Footer from '../components/Footer'

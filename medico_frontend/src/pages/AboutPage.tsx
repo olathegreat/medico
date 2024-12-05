@@ -1,6 +1,5 @@
 import Nav from "../components/Nav"
 import aboutImage from "../assets/assets_frontend/about_image.png"
-import Footer from "../components/Footer";
 import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 const AboutPage = () => {
