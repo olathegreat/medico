@@ -24,17 +24,7 @@ cloudinary.config({
  
 const app = express();
 
-
-// app.use(cors());
-const allowedOrigins = ["https://medico-w92y.onrender.com"];
-
-app.use(
-    cors({
-      origin: allowedOrigins,
-      methods: ["GET", "POST", "PUT", "DELETE"], // Allowed HTTP methods
-      credentials: true, // If you're using cookies or auth headers
-    })
-  );
+app.use(cors()) 
 
 app.use(express.json());
 
