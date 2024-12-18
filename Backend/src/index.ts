@@ -15,6 +15,8 @@ mongoose.connect(process.env.DATABASE_LOCAL as string).then(()=>{
 }).catch((err)=>{
     console.log(err)
 })
+mongoose.connection.on("connected", () => console.log("Mongoose connected to DB"));
+mongoose.connection.on("error", (err) => console.error("Mongoose connection error:", err));
 
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,  
@@ -24,9 +26,20 @@ cloudinary.config({
  
 const app = express();
 
-app.use(cors()) 
+// app.use(cors()) 
 
-app.use(express.json());
+
+const allowedOrigins = ["https://medico-w92y.onrender.com", "http://localhost:7000" ];
+
+app.use(cors({
+    origin: "*",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+}));
+
+
+app.use(express.json()); 
+
 
 app.get('/health', async(req:Request, res:Response)=>{ 
     res.send({
