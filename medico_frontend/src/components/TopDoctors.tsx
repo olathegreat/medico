@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 import axiosInstance from "../utils/axios";
 import { useNavigate } from "react-router-dom";
+import LoadingButton from "./loadingButton";
 
 type Doctors = {
   name: string;
@@ -13,13 +14,17 @@ type Doctors = {
 };
 const TopDoctors = () => {
   const [doctors, setDoctors] = useState<Doctors[]>([]);
+  const [requestLoading, setRequestLoading] = useState(true);
 
   useEffect(() => {
     const getDoctors = async () => {
       const response = await axiosInstance.get("/doctor/");
+      setRequestLoading(true)
       console.log(response);
       setDoctors(response.data);
+      setRequestLoading(false);
     };
+
 
     getDoctors();
   }, []);
@@ -38,6 +43,10 @@ const TopDoctors = () => {
       <div className="text-center font-light text-gray-500 mb-8 md:w-[50%]">
         Simply browse through our extensive list of top doctors
       </div>
+
+      {
+        requestLoading ? <LoadingButton color="#16a34a"/> : 
+     
 
       <div className="flex flex-wrap  gap-4 justify-center mb-10">
         {doctors.slice(0, 6).map((doctor, index) => {
@@ -78,6 +87,12 @@ const TopDoctors = () => {
         })}
       </div>
 
+}
+
+{
+  !requestLoading && 
+
+
       <div
         className="flex  gap-4 justify-center items-center cursor-pointer bg-gray-200 rounded-full py-2 px-4 text-gray-700"
         onClick={() => navigate("/doctors")}
@@ -85,6 +100,7 @@ const TopDoctors = () => {
         <span>more</span>
         <ChevronRight />
       </div>
+      }
     </section>
   );
 };

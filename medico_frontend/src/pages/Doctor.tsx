@@ -8,6 +8,7 @@ import Footer from "../components/Footer";
 import { toast } from "sonner";
 import { Toaster } from "../components/ui/sonner";
 import { useSelector } from "react-redux";
+import LoadingButton from "../components/loadingButton";
 
 type DayArrayType = {
   day: string;
@@ -50,6 +51,8 @@ const Doctor = () => {
     });
     const userInfo = useSelector((state:any)=>state.app.user);
     const navigate = useNavigate()
+    const [requestLoading, setRequestLoading] = useState(true);
+    const [requestDoctorsLoading, setRequestDoctorsLoading] = useState(true);
 
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -151,17 +154,20 @@ const Doctor = () => {
 
   useEffect(() => {
     const getDoctor = async () => {
+      setRequestLoading(true);
       const response = await axiosInstance.get(`/doctor/${id}`);
 
       setDoctorData(response.data);
       // console.log(response)
       setSelectedSpeciality(response.data.speciality);
+      setRequestLoading(false); 
     };
     getDoctor();
   }, [id]);
 
   useEffect(() => {
     const getDoctors = async () => {
+      setRequestDoctorsLoading(true)
       const endpoint = selectedSpeciality
         ? `/doctor?speciality=${encodeURIComponent(selectedSpeciality)}`
         : "/doctor";
@@ -171,6 +177,7 @@ const Doctor = () => {
         (doctor: any) => doctor._id !== id
       );
       setRelatedDoctorsArray(filteredDoctors);
+      setRequestDoctorsLoading(false);
     };
 
     getDoctors();
@@ -181,6 +188,16 @@ const Doctor = () => {
   return (
     <div className="flex flex-col gap-5 md:gap-10 text-gray-700">
       <Nav />
+
+      {
+         
+          requestLoading ? 
+          <div className="flex w-full h-[90vh] justify-center items-center">
+            <LoadingButton color="#16a34a"/>
+
+            </div>
+           : 
+      
 
       <div className="flex gap-5 flex-col md:flex-row">
         <div className=" rounded-md  group ">
@@ -287,8 +304,21 @@ const Doctor = () => {
         </div>
       </div>
 
+                }
+
       <div className="flex flex-col my-10">
         <div className="text-xl">Related Doctors</div>
+
+        {
+        requestDoctorsLoading ? 
+          <div className="flex w-full h-[20vh] justify-center items-center">
+
+            
+        <LoadingButton color="#16a34a"/> 
+        </div>
+        : 
+     
+ 
 
         <div className="flex flex-wrap  gap-4 justify-center  md:py-10 mb-10">
           {relatedDoctorsArray.map((item, index) => {
@@ -329,7 +359,9 @@ const Doctor = () => {
             );
           })}
         </div>
+}
       </div>
+        
 
       <Footer />
       <Toaster />
