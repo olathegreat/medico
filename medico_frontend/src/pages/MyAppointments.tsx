@@ -21,7 +21,7 @@ const MyAppointments = () => {
 
   const publicKey = import.meta.env.VITE_PAYSTACK_PUBLIC_KEY;
   const userInfo = useSelector((state: any) => state.app.user);
-
+  const [requestLoading, setRequestLoading] = useState(true);
   const email = userInfo?.email;
   const name = userInfo?.fullname;
   const phone = "";
@@ -76,6 +76,7 @@ const MyAppointments = () => {
 
   useEffect(() => {
     const getUserAppointments = async () => {
+      setRequestLoading(true);
       const response = await axiosInstance.get(
         "/appointment/user-appointment",
         {
@@ -85,6 +86,7 @@ const MyAppointments = () => {
           },
         }
       );
+      setRequestLoading(false);
 
       //   console.log(response);
       setUserAppointments(response.data);
@@ -119,6 +121,15 @@ const MyAppointments = () => {
       <div className="text-gray-700 flex flex-col gap-3">
         <div className="text-start">My Appointments</div>
         <Separator />
+        {
+          
+            requestLoading ? 
+            <div className="flex justify-center"> 
+
+            <LoadingButton color="#16a34a"/> 
+            </div>
+            : 
+       
         <div className="flex flex-col gap-2">
           {userAppointments.map((item) => (
             <div className="flex flex-col md:flex-row gap-2 md:justify-between border-b border-b-gray-200 pb-2">
@@ -194,6 +205,7 @@ const MyAppointments = () => {
             </div>
           ))}
         </div>
+         }
       </div>
     </div>
   );

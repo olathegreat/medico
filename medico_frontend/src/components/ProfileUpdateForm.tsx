@@ -33,6 +33,7 @@ const ProfileUpdateForm = () => {
   const [formLoading, setFormLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const darkMode = DarkModeSetterFunction();
+ 
 useEffect(() => {
     console.log("Dark mode active:", darkMode);
 }, [darkMode]);
@@ -104,6 +105,10 @@ useEffect(() => {
       className="md:w-[400px] px-4 md:px-10 flex flex-col gap-5"
     >
       <Toaster />
+      {
+        existingUserData?.email === "" ? <LoadingButton color="#16a34a"/>
+        :
+      
       <div>
         <label
           htmlFor="picture"
@@ -156,6 +161,7 @@ useEffect(() => {
           hidden
         />
       </div>
+}
       <div className="flex flex-col gap-4">
         <div className="flex gap-10">
           {/* <label className="font-semibold">Full Name</label> */}
