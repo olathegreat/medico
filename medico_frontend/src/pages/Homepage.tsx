@@ -10,7 +10,7 @@ import TopDoctors from '../components/TopDoctors'
 function Homepage() {
 
   return (
-    <div className={`flex flex-col gap-20`}>
+    <div className={`flex flex-col gap-10 sm:gap-20`}>
         <Nav/>
         <Hero/>
         <FindBySpeciality/>
