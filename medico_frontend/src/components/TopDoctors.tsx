@@ -56,15 +56,17 @@ const TopDoctors = () => {
             <div
               onClick={() => navigate(`/doctors/${_id}`)}
               key={index}
-              className="w-[274px] h-[385px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105  border shadow-sm items-start group"
+              className="w-[120px] sm:w-[274px] h-[190px] sm:h-[385px] 
+               rounded-md cursor-pointer flex flex-col duration-300
+                ease-in-out hover:scale-105  border shadow-sm items-start group"
             >
               <img
                 src={picture}
                 alt="doctor"
-                className="w-full h-[272px] rounded-t-md group-hover:bg-green-500 hover:bg-green-500 object-cover"
+                className="w-full h-[190px] sm:h-[272px]  rounded-t-md group-hover:bg-green-500 hover:bg-green-500 object-cover"
               />
 
-              <div className="p-4 flex flex-col gap-2 text-xs items-start">
+              <div className=" p-2 sm:p-4  flex flex-col gap-1 sm:gap-2 text-[9px] sm:text-xs items-start">
                 <div
                   className={` flex items-center justify-start gap-2  ${
                     availability === "Available"
@@ -79,7 +81,7 @@ const TopDoctors = () => {
                       : "Not Available"}
                   </span>
                 </div>
-                <div className="text-sm font-medium">Dr. {name}</div>
+                <div className="sm:text-sm font-medium">Dr. {name}</div>
                 <div>{speciality}</div>
               </div>
             </div>
