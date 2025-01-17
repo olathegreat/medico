@@ -30,7 +30,8 @@ const SignupForm: React.FC = () => {
     try {
       if (userDetails) {
         const response = await axiosInstance.post("/user/", userDetails);
-        const { token } = response as ResponseType;
+        
+        const  token  = response.data.token;
         sessionStorage.setItem("token", token);
         toast.success("Registration successful");
         setApiRequest(false);
@@ -226,7 +227,7 @@ const SignupForm: React.FC = () => {
       </div>
 
       <button
-        className="bg-green-500 py-1 px-4 text-white rounded-md flex justify-center"
+        className="bg-green-500 py-2 px-4 text-white rounded-md flex justify-center"
         disabled={apiRequest}
       >
         {apiRequest ? <LoadingButton /> : "Create Account"}

@@ -32,14 +32,20 @@ const ProfileUpdateForm = () => {
   const storedUser = useSelector((state: any) => state.app.user);
   const [formLoading, setFormLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [requestLoading, setRequestLoading] = useState(true);
   const darkMode = DarkModeSetterFunction();
  
 useEffect(() => {
     console.log("Dark mode active:", darkMode);
 }, [darkMode]);
   useEffect(() => {
+    setRequestLoading(true)
     console.log(storedUser);
     setExistingUserData(storedUser);
+    if(storedUser?.email !== undefined){
+        setRequestLoading(false)
+      
+    }	
     setPreviewImage(storedUser?.picture);
   }, [storedUser]);
 
@@ -100,15 +106,18 @@ useEffect(() => {
   // }
 
   return (
+  <div>
+      {
+      requestLoading ? <div className="flex justify-center items-center"> <LoadingButton color="#16a34a"/> </div> :
+    
+    
     <form
       onSubmit={profileUpdate}
       className="md:w-[400px] px-4 md:px-10 flex flex-col gap-5"
     >
       <Toaster />
-      {
-        existingUserData?.email === "" ? <LoadingButton color="#16a34a"/>
-        :
       
+       
       <div>
         <label
           htmlFor="picture"
@@ -134,7 +143,7 @@ useEffect(() => {
               alt="profile-pics"
             />
           ) : (
-            <span className="text-5xl w-full h-full  bg-green-600 flex items-center  justify-center">
+            <span className=" text-8xl sm:text-5xl w-full h-full text-white  bg-green-600 flex items-center  justify-center">
               {existingUserData?.fullname?.charAt(0)}
             </span>
           )}
@@ -161,9 +170,9 @@ useEffect(() => {
           hidden
         />
       </div>
-}
+
       <div className="flex flex-col gap-4">
-        <div className="flex gap-10">
+        <div className="flex gap-2 sm:gap-10">
           {/* <label className="font-semibold">Full Name</label> */}
           <input
             disabled={!formActive}
@@ -176,7 +185,7 @@ useEffect(() => {
               });
             }}
             value={existingUserData?.fullname}
-            className={`w-full text-xl cursor-pointer ${
+            className={`w-full text-md sm:text-xl cursor-pointer ${
               formActive && "border-b border-gray-300"
             }  ${
               darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
@@ -189,22 +198,22 @@ useEffect(() => {
 
         <div className="underline text-start">CONTACT INFORMATION</div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Email Id</label>
+        <div className="flex gap-2 text-xs sm:text-sm sm:gap-10 flex-col sm:flex-row  sm:items-center">
+          <label className="text-start text-xs sm:text-sm w-[70px]">Email Id</label>
           <input
             disabled
             type="email"
             placeholder="Email"
             value={existingUserData?.email}
-            className={`w-full cursor-pointer rounded-md flex-1
+            className={`w-full cursor-pointer rounded-md flex-1 border border-gray-500
             px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
               darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
             }`}
           />
         </div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Phone</label>
+        <div className="flex text-xs sm:text-sm flex-col sm:flex-row gap-2 sm:gap-10 sm:items-center">
+          <label className="text-start text-xs sm:text-sm w-[70px]">Phone</label>
           <input
             disabled={!formActive}
             type="text"
@@ -216,15 +225,15 @@ useEffect(() => {
                 phone: e.target.value,
               });
             }}
-            className={`w-full cursor-pointer rounded-md  b flex-1
+            className={`w-full cursor-pointer rounded-md  border  border-gray-500 flex-1
             px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500   ${
               darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
             }`}
           />
         </div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Address</label>
+        <div className="flex flex-col text-xs sm:text-sm sm:flex-row gap-2 sm:gap-10 sm:items-center">
+          <label className="text-start text-xs sm:text-sm w-[70px]">Address</label>
           <input
             disabled={!formActive}
             type="text"
@@ -236,17 +245,17 @@ useEffect(() => {
                 address: e.target.value,
               });
             }}
-            className={`w-full cursor-pointer rounded-md  b flex-1
+            className={`w-full cursor-pointer rounded-md  border  border-gray-500 flex-1
             px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500  ${
-              darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
+              darkMode ? "bg-gray-800  text-white " : "bg-white text-black"
             }`}
           />
         </div>
 
         <div className="underline text-start">BASIC INFORMATION</div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Gender</label>
+        <div className="flex flex-col sm:flex-row  gap-2 sm:gap-10 text-xs sm:text-sm sm:items-center">
+          <label className="text-start text-xs sm:text-sm w-[70px]">Gender</label>
           <select
             disabled={!formActive}
             value={existingUserData?.gender}
@@ -256,7 +265,7 @@ useEffect(() => {
                 gender: e.target.value as "male" | "female" | "other",
               });
             }}
-            className={`w-full cursor-pointer rounded-md  b flex-1
+            className={`w-full cursor-pointer rounded-md  border border-gray-500 flex-1
             px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500   ${
               darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
             }`}
@@ -267,8 +276,8 @@ useEffect(() => {
           </select>
         </div>
 
-        <div className="flex gap-10 items-center">
-          <label className="text-start text-sm w-[70px]">Birthday</label>
+        <div className="flex gap-2 sm:gap-10 flex-col sm:flex-row sm:items-center">
+          <label className="text-start text-xs sm:text-sm w-[70px]">Birthday</label>
           <input
             disabled={!formActive}
             type="date"
@@ -280,7 +289,8 @@ useEffect(() => {
               });
             }}
             value={existingUserData?.birthday}
-            className={`w-full cursor-pointer rounded-md  b flex-1
+            className={`w-full cursor-pointer rounded-md
+                border border-gray-500 flex-1
             px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
               darkMode ? "bg-gray-800 text-white " : "bg-white text-black"
             }`}
@@ -291,7 +301,7 @@ useEffect(() => {
       <div className="flex gap-5 justify-center ">
         {!formActive ? (
           <div
-            className="border border-blue-600  rounded-full cursor-pointer py-2 px-6"
+            className="border border-green-600  rounded-full cursor-pointer py-2 px-6"
             onClick={() => setFormActive(true)}
           >
             Edit
@@ -299,7 +309,7 @@ useEffect(() => {
         ) : (
           <button
             disabled={!formActive || formLoading}
-            className={`border border-blue-600 flex
+            className={`border border-green-600 flex
          items-center justify-center  ${
            formLoading && "bg-green-600"
          } rounded-full py-2 px-4`}
@@ -309,7 +319,10 @@ useEffect(() => {
           </button>
         )}
       </div>
+
     </form>
+      }
+      </div>
   );
 };
 
