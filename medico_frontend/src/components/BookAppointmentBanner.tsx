@@ -17,7 +17,7 @@ const BookAppointmentBanner = () => {
         </button>
       </div>
 
-      <div className="flex-1  md:absolute  md:right-5 md:bottom-0 lg:right-20 flex justify-center items-center">
+      <div className="flex-1  md:absolute  md:right-5 md:bottom-0 lg:right-20 hidden sm:flex justify-center items-center">
        <img src={appointmentImg} alt="" className=" w-[330px] h-full  object-cover rounded-md" />
 
       </div>
