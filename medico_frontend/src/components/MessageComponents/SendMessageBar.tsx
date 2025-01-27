@@ -69,7 +69,7 @@ const SendMessageBar = () => {
 
           <div className="absolute bottom-16 right-0" ref={emojiRef}>
             <EmojiPicker
-              theme="dark"
+              className="shadow-gray-500 shadow shadow-md"
               open={emojiPickerOpen}
               onEmojiClick={handleAddEmoji}
               autoFocusSearch={false}
