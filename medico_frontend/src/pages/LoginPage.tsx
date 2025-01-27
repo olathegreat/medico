@@ -3,7 +3,6 @@ import LoginForm from "../components/LoginForm"
 import Nav from "../components/Nav"
 import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
-import { Toaster } from "../components/ui/sonner"
 
 const LoginPage = () => {
  
