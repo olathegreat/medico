@@ -23,7 +23,7 @@ const SendMessageBar = () => {
   };
 
   const handleAttachmentChange = async (e: any) => {
-
+     console.log(e)
   };
 
   useEffect (() => {
@@ -48,7 +48,7 @@ const SendMessageBar = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <Button className="bg-gray-300 h-auto">
+        <Button  onClick={handleAttachmentClick} className="bg-gray-300 h-auto">
           <GrAttachment className="text-4xl text-gray-700" />
         </Button>
 
@@ -69,7 +69,7 @@ const SendMessageBar = () => {
 
           <div className="absolute bottom-16 right-0" ref={emojiRef}>
             <EmojiPicker
-              className="shadow-gray-500 shadow shadow-md"
+              className="shadow-gray-500 shadow-md"
               open={emojiPickerOpen}
               onEmojiClick={handleAddEmoji}
               autoFocusSearch={false}
