@@ -19,6 +19,7 @@ import Doctor from './pages/Doctor'
 import MyAppointments from './pages/MyAppointments'
 import DoctorProtectedRoute from './utils/DoctorProtectedRoute'
 import DoctorProfilePage from './pages/DoctorPages/DoctorProfilePage'
+import MessagesPage from './pages/MessagesPage'
 
 
 
@@ -62,6 +63,14 @@ function App() {
       <Route path="/about" element={<AboutPage/>}/>
       <Route path="/doctors" element={<AllDoctors/>}/>
       <Route path="/doctors/:id" element={<Doctor/>}/>
+      <Route element={<ProtectedRoute />}>
+        <Route
+          path="/messages"
+          element={
+            <MessagesPage/>
+          }
+        />
+      </Route>
       <Route element={<ProtectedRoute />}>
         <Route
           path="/profile"

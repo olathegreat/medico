@@ -152,6 +152,13 @@ function Nav() {
 
             </DropdownMenuItem>
 
+            <DropdownMenuItem className="pl-2 pr-4">
+              <Link to="/messages">
+                Messages
+              </Link>
+
+            </DropdownMenuItem>
+
             
 
             <DropdownMenuItem className="pl-2 pr-4">

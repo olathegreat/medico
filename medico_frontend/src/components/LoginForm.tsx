@@ -5,7 +5,6 @@ import axiosInstance from "../utils/axios";
 import { toast } from "sonner";
 import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
-import { Toaster } from "./ui/sonner";
 import { ResponseType } from "./SignupForm";
 
 const LoginForm: React.FC = () => {
@@ -54,7 +53,7 @@ const LoginForm: React.FC = () => {
       onSubmit={formSubmit}
       className="flex flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full sm:w-[400px]"
     >
-      <Toaster visibleToasts={1} position="top-right" richColors />
+     
       <div className="flex flex-col gap-0 items-start">
         <span className="text-green-700 font-medium text-xl">Login</span>
         <span className="text-gray-800 text-xs">Please login to book an appointment</span>
