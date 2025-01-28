@@ -10,6 +10,12 @@ interface AppState {
     adminDataReload: boolean;
     selectedChatData: UserType | DoctorType | undefined;
     selectedChatMessages: UserMessageDocument[] | DoctorMessageDocument[] | []
+
+    isDownloading: boolean;
+    isUploading:boolean;
+    fileDownloadProgress: number;
+    fileUploadProgress: number;
+
     
 }   
 
@@ -22,7 +28,11 @@ const initialState: AppState = {
     doctor:{},
     selectedChatData:undefined,
     selectedChatMessages:[],
-    adminDataReload:false
+    adminDataReload:false,
+    isDownloading: false,
+    isUploading:false,
+    fileDownloadProgress: 0,
+    fileUploadProgress: 0
 }
 
 const appSlice = createSlice({
@@ -57,6 +67,33 @@ const appSlice = createSlice({
                }]
 
                console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
+        },
+        setSelectedChatData: (state, action)=>{
+            state.selectedChatData =  action.payload
+
+            console.log("new chat selected", state.selectedChatData)
+        },
+        setSelectedChatMessages: (state, action)=>{
+            state.selectedChatMessages = action.payload;
+
+
+            
+        },
+        closeChat: (state)=>{
+            state.selectedChatMessages=[];
+            state.selectedChatData = undefined
+        },
+        setIsUploading: (state) =>{
+            state.isUploading = !state.isUploading
+        },
+        setIsDownloading: (state) =>{
+            state.isUploading = !state.isUploading
+        },
+        setFileUploadProgress: (state, action)=>{
+            state.fileUploadProgress = action.payload;
+        },
+        setFileDownloadProgress: (state, action)=>{
+            state.fileDownloadProgress = action.payload;
         }
 
 
@@ -65,5 +102,6 @@ const appSlice = createSlice({
 
 
 
-export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages} = appSlice.actions    
+export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData,closeChat,setSelectedChatMessages,setFileDownloadProgress,setFileUploadProgress, setIsDownloading, setIsUploading} = appSlice.actions    
+
 export default appSlice.reducer

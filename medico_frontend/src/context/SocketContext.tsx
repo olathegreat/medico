@@ -26,7 +26,7 @@ export interface UserMessageDocument {
   messageType: string;
   content?: string;
   fileUrl?: string;
-  timeStamp: Date;
+  timeStamp?: Date;
 }
 
 export interface DoctorMessageDocument {

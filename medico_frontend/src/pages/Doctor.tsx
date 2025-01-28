@@ -7,8 +7,10 @@ import { BadgeCheckIcon, Circle, InfoIcon } from "lucide-react";
 import Footer from "../components/Footer";
 import { toast } from "sonner";
 import { Toaster } from "../components/ui/sonner";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "../components/loadingButton";
+import { Button } from "../components/ui/button";
+import { setSelectedChatData } from "../utils/appSlice";
 
 type DayArrayType = {
   day: string;
@@ -183,6 +185,15 @@ const Doctor = () => {
     getDoctors();
   }, [selectedSpeciality, id]);
 
+  const dispatch  = useDispatch()
+
+  const messageButtonClick = (doctorData:DoctorType) =>{
+
+    navigate('/messages');
+    dispatch(setSelectedChatData(doctorData))
+
+  }
+
 
 
   return (
@@ -295,10 +306,17 @@ const Doctor = () => {
                   ))}
                 </div>
               </div>
+             <div className="flex gap-5 flex-col sm:flex-row">
 
-              <button className="bg-green-700 text-white rounded-full py-4 px-8 md:w-fit cursor-pointer text-sm ">
+             
+              <Button className="bg-green-700 text-white rounded-full py-4 px-8 md:w-fit cursor-pointer text-sm ">
                 Book an appointment
-              </button>
+              </Button>
+              <Button  className="bg-white-700 text-gray-700 border-[1px] border-gray-500 rounded-full py-4 px-8 md:w-fit cursor-pointer text-sm "  onClick={()=>messageButtonClick(doctorData)}>
+                Message Doctor
+              </Button>
+
+              </div>
             </form>
           </div>
         </div>

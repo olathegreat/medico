@@ -5,13 +5,21 @@ import { IoSend } from "react-icons/io5";
 import { RiEmojiStickerLine } from "react-icons/ri";
 import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useSocket } from "../../context/SocketContext";
+import { addMessages} from "../../utils/appSlice";
+
 
 const SendMessageBar = () => {
   const [message, setMessage] = useState("");
   const emojiRef = useRef<HTMLInputElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const userInfo = useSelector((state:any)=> state.app.user)
+  // const doctorInfo = useSelector((state:any)=> state.app.doctor)
+  const selectedChatData = useSelector((state:any)=> state.app.selectedChatData)
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
+  const socket = useSocket();
 
   const handleAttachmentClick = () => {
     if (fileInputRef.current) {
@@ -37,6 +45,58 @@ const SendMessageBar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [emojiRef]);
+
+  const dispatch = useDispatch();
+
+
+  const handleSendMessage = async()=>{
+    
+      if (!message.trim()) {
+        console.log("Cannot send an empty message");
+        return;
+      }
+  
+      
+       socket!==null && socket.emit("send-message", {
+          sender: userInfo.id,
+          content: message.trim(),
+          recipient: selectedChatData._id,
+          messageType: "text",
+          fileUrl: undefined,
+          recipientModel: userInfo !== null ? 'Doctor' : 'User' ,
+          senderModel: userInfo !== null ? 'User' : 'Doctor',
+          
+        });
+        console.log( {
+          sender: userInfo._id,
+          content: message.trim(),
+          recipient: selectedChatData._id,
+          messageType: "text",
+          fileUrl: undefined,
+          recipientModel: userInfo !== null ? 'Doctor' : 'User' ,
+          senderModel: userInfo !== null ? 'User' : 'Doctor',
+          
+        })
+        dispatch(addMessages({
+          sender: userInfo._id,
+          content: message.trim(),
+          recipient: selectedChatData._id,
+          messageType: "text",
+          fileUrl: undefined,
+          recipientModel: userInfo !== null ? 'Doctor' : 'User' ,
+          senderModel: userInfo !== null ? 'User' : 'Doctor',
+          
+
+        }))
+        
+
+       
+  
+   
+  
+      setMessage("");
+    
+  }
 
   return (
     <div className="absolute bottom-0 w-full flex gap-7  h-16 pl-5">
@@ -80,6 +140,7 @@ const SendMessageBar = () => {
       </div>
       <div>
         <Button
+        onClick={handleSendMessage}
         className="bg-green-500 text-white h-full p-3 rounded-md duration-300 transition-all hover:bg-green-400"
         
         >
