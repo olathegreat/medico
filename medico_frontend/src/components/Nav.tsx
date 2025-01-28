@@ -27,12 +27,14 @@ function Nav() {
   const savedUserData = sessionStorage.getItem("sessionUserInfo")
   ? JSON.parse(sessionStorage.getItem("sessionUserInfo")!)
   : {};
+  
 
   
 
   useEffect(()=>{
      if(savedUserData.fullname){
       setUserInfo(savedUserData);
+      
     
      }else{
       setUserInfo(existinguserInfo);

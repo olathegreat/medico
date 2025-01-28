@@ -25,9 +25,11 @@ interface AppState {
 }
 
 const MessageContainer = () => {
-  const { selectedChatData, selectedChatMessages } = useSelector(
+  const { selectedChatData, selectedChatMessages  } = useSelector(
     (state: AppState) => state.app
   );
+  
+  
 
   const HOST = import.meta.env.VITE_ORIGIN as string;
 
@@ -112,7 +114,7 @@ const MessageContainer = () => {
                   message.sender === selectedChatData._id
                     ? "bg-white border-gray-500 text-gray-500"
                     : "bg-green-600 text-white border-green-500"
-                } border inline-block p-4 rounded my-1 max-w-[50%] break-words`}
+                } border inline-block p-2 sm:px-4 rounded my-1 max-w-[50%] break-words`}
               >
                 {message.content}
               </div>

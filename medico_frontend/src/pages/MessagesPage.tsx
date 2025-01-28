@@ -3,11 +3,37 @@ import { Avatar, AvatarImage } from "../components/ui/avatar";
 import MessageHeader from "../components/MessageComponents/MessageHeader";
 import MessageContainer from "../components/MessageComponents/MessageContainer";
 import SendMessageBar from "../components/MessageComponents/SendMessageBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import axiosInstance from "../utils/axios";
+import { setDirectMessagesContact } from "../utils/appSlice";
+import { DoctorMessageDocument, UserMessageDocument } from "../context/SocketContext";
 
 const MessagesPage = () => {
- 
-  const chatData = useSelector((state: any)=> state.app.selectedChatData)
+  // const chatData = useSelector((state: any)=> state.app.selectedChatData);
+  const token = sessionStorage.getItem("token");
+  const bearerToken = token ? "Bearer " + token : "";
+  const dispatch = useDispatch();
+  const chatMessagesList = useSelector(
+    (state: any) => state.app.directMessagesContact
+  );
+
+  useEffect(() => {
+    const getUserDMMessagesList = async () => {
+      const response = await axiosInstance.get("/messages/get-user-messages-contact", {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: bearerToken,
+        },
+      });
+
+      dispatch(setDirectMessagesContact(response.data.contacts))
+
+      console.log(response);
+    };
+
+    getUserDMMessagesList();
+  }, []);
   return (
     <div>
       <Nav />
@@ -17,32 +43,35 @@ const MessagesPage = () => {
           <h2 className="text-start p-5  text-2xl">Messages</h2>
 
           <div className="flex flex-col ">
-            <div className="flex gap-5 px-5 border-b-2  border-gray-100 h-12 w-full items-center">
-              <Avatar className="w-10 h-10 rounded-full overflow-hidden">
-                <AvatarImage
-                  src={chatData.name && chatData?.picture}
-                  alt="Avatar"
-                  className="object-cover w-full h-full bg-gray-300"
-                />
+            {chatMessagesList.length > 0 ?
+              chatMessagesList.map((chatData:any) => (
+                <div className="flex gap-5 px-5 border-b-2  border-gray-100 h-12 w-full items-center">
+                  <Avatar className="w-10 h-10 rounded-full overflow-hidden">
+                    <AvatarImage
+                      src={chatData.name && chatData?.picture}
+                      alt="Avatar"
+                      className="object-cover w-full h-full bg-gray-300"
+                    />
 
-                <div
-                  className={`bg-gray-200 border-2 border-white/70 uppercase h-10 w-10 text-lg  flex items-center justify-center rounded-full`}
-                >
-                  {chatData?.name && `${chatData.name.charAt(0)}`}
+                    <div
+                      className={`bg-gray-200 border-2 border-white/70 uppercase h-10 w-10 text-lg  flex items-center justify-center rounded-full`}
+                    >
+                      {chatData?.name && `${chatData.name.charAt(0)}`}
+                    </div>
+                  </Avatar>
+
+                  <div>Dr. {chatData?.name && `${chatData.name}`}</div>
                 </div>
-              </Avatar>
-
-              <div >Dr. {chatData?.name && `${chatData.name}`}</div>
-            </div>
+              )): <div>
+                  No chats
+                </div>}
           </div>
         </div>
 
-
-
         <div className="flex-grow relative h-[90vh]">
-            <MessageHeader/>
-            <MessageContainer/>
-            <SendMessageBar/>
+          <MessageHeader />
+          <MessageContainer />
+          <SendMessageBar />
         </div>
       </div>
     </div>

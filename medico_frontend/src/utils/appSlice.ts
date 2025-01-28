@@ -15,6 +15,7 @@ interface AppState {
     isUploading:boolean;
     fileDownloadProgress: number;
     fileUploadProgress: number;
+    directMessagesContact: UserMessageDocument[] | DoctorMessageDocument[] | []
 
     
 }   
@@ -28,6 +29,7 @@ const initialState: AppState = {
     doctor:{},
     selectedChatData:undefined,
     selectedChatMessages:[],
+    directMessagesContact:[],
     adminDataReload:false,
     isDownloading: false,
     isUploading:false,
@@ -79,6 +81,11 @@ const appSlice = createSlice({
 
             
         },
+        setDirectMessagesContact: (state, action) =>{
+            state.directMessagesContact = action.payload
+
+            console.log(state.directMessagesContact)
+        },
         closeChat: (state)=>{
             state.selectedChatMessages=[];
             state.selectedChatData = undefined
@@ -102,6 +109,6 @@ const appSlice = createSlice({
 
 
 
-export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData,closeChat,setSelectedChatMessages,setFileDownloadProgress,setFileUploadProgress, setIsDownloading, setIsUploading} = appSlice.actions    
+export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData,closeChat,setSelectedChatMessages,setFileDownloadProgress,setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact} = appSlice.actions    
 
 export default appSlice.reducer

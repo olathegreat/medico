@@ -20,6 +20,7 @@ const SendMessageBar = () => {
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const socket = useSocket();
+  console.log(socket);
 
   const handleAttachmentClick = () => {
     if (fileInputRef.current) {
@@ -55,10 +56,18 @@ const SendMessageBar = () => {
         console.log("Cannot send an empty message");
         return;
       }
-  
+       console.log(socket);
+
+       if(!socket){
+        console.error("Socket is not connected!");
+    return;
+       }
       
-       socket!==null && socket.emit("send-message", {
-          sender: userInfo.id,
+       if(socket ===null){
+        console.log("socket is not equal to null")
+       }
+        socket.emit("send-message", {
+          sender: userInfo._id,
           content: message.trim(),
           recipient: selectedChatData._id,
           messageType: "text",
@@ -99,7 +108,7 @@ const SendMessageBar = () => {
   }
 
   return (
-    <div className="absolute bottom-0 w-full flex gap-7  h-16 pl-5">
+    <div className="absolute bottom-0 w-full flex gap-3 sm:gap-7  h-10 sm:h-16 sm:pl-5">
       <div className="flex-grow flex bg-gray-300 h-full">
         <Input
           placeholder="Type a message"

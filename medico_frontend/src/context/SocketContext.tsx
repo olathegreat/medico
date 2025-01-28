@@ -15,7 +15,7 @@ import { addMessages } from "../utils/appSlice";
 
 
   
-  const SocketContext = createContext<typeof Socket | null>(null);
+
   
 export interface UserMessageDocument {
   _id: string;
@@ -40,11 +40,12 @@ export interface DoctorMessageDocument {
   fileUrl?: string;
   timeStamp: Date;
 }
+const SocketContext = createContext<any>(null);
 
-export const useSocket = () => useContext(SocketContext);
+export const useSocket = () => (useContext(SocketContext));
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
-  const socket = useRef<typeof Socket | null>(null);
+  const socket = useRef<any>(null);
   const user = useSelector((state: any) => state.app.user);
   const doctor = useSelector((state: any) => state.app.doctor);
   const selectedChatData = useSelector((state: any) => state.app.selectedChatData);
@@ -53,7 +54,8 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const HOST = import.meta.env.VITE_ORIGIN;
 
   useEffect(() => {
-    const currentUser = user || doctor;
+    const currentUser = user ;
+    console.log(currentUser, "this is current user" )
     const userType = user ? "User" : "Doctor";
 
     if (currentUser) {
@@ -69,11 +71,13 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         },
       });
 
-      socket.current.on("connect", () => {
-        console.log("Connected to socket server as", userType);
-      });
+      
 
+      
+         
+      
       const handleReceiveMessage = (message: any) => {
+        console.log("message received/sent")
         if (
           selectedChatData &&
           (selectedChatData._id === message.sender._id ||
@@ -88,14 +92,15 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       socket.current.on("sent-message", handleReceiveMessage);
 
       return () => {
-        socket.current?.disconnect();
+        socket.current.disconnect();
         console.log("Disconnected from socket server");
       };
     }
-  }, [user, doctor, selectedChatData, dispatch, HOST]);
+  }, [user, doctor]);
 
   return (
     <SocketContext.Provider value={socket.current}>
+       
       {children}
     </SocketContext.Provider>
   );
