@@ -6,7 +6,7 @@ import SendMessageBar from "../components/MessageComponents/SendMessageBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axiosInstance from "../utils/axios";
-import { addExistingMessages, setDirectMessagesContact, setSelectedChatData } from "../utils/appSlice";
+import {  setDirectMessagesContact, setSelectedChatData } from "../utils/appSlice";
 // import {
 //   DoctorMessageDocument,
 //   UserMessageDocument,
@@ -93,7 +93,7 @@ const MessagesPage = () => {
         </div>
 
         <div className="flex-grow relative h-[90vh]">
-          {selectedChatData ? (
+          {selectedChatData._id ? (
             <>
               <MessageHeader />
               <MessageContainer />
