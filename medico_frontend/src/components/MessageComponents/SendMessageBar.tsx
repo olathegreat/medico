@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../context/SocketContext";
 import { addMessages } from "../../utils/appSlice";
+import { toast } from "sonner";
 
 const SendMessageBar = () => {
   const [message, setMessage] = useState("");
@@ -86,6 +87,7 @@ const SendMessageBar = () => {
       dispatch(
         addMessages(messageData)
       );
+      toast("message sent to doctor")
 
       setMessage("");
     } catch (err) {

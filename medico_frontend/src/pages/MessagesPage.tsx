@@ -6,7 +6,7 @@ import SendMessageBar from "../components/MessageComponents/SendMessageBar";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axiosInstance from "../utils/axios";
-import { setDirectMessagesContact, setSelectedChatData } from "../utils/appSlice";
+import { addExistingMessages, setDirectMessagesContact, setSelectedChatData } from "../utils/appSlice";
 // import {
 //   DoctorMessageDocument,
 //   UserMessageDocument,
@@ -49,6 +49,7 @@ const MessagesPage = () => {
 
     getUserDMMessagesList();
   }, []);
+
 
   const contactClicked = (contact: any) =>{
     dispatch(setSelectedChatData(contact))
