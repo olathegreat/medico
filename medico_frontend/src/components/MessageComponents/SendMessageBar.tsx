@@ -75,15 +75,7 @@ const SendMessageBar = () => {
       console.log("emitting send message event:", messageData)
 
       socket.emit("send-message", messageData);
-      // console.log({
-      //   sender: userInfo._id,
-      //   content: message.trim(),
-      //   recipient: selectedChatData._id,
-      //   messageType: "text",
-      //   fileUrl: undefined,
-      //   recipientModel: userInfo !== null ? "Doctor" : "User",
-      //   senderModel: userInfo !== null ? "User" : "Doctor",
-      // });
+    
       dispatch(
         addMessages(messageData)
       );

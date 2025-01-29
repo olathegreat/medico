@@ -77,7 +77,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       });
 
       socket.current.on("connect_error", (err: any) => {
-        console.error("Socket connection error:", err); // Add this log
+        console.error("Socket connection error:", err); 
     });
 
       
@@ -99,11 +99,14 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       socket.current.on("receive-message", handleReceiveMessage);
       socket.current.on("sent-message", handleReceiveMessage);
 
-    //   return () => {
-    //     socket.current.disconnect();
-    //     console.log("Disconnected from socket server");
-    //   };
+    
     }
+
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
   }, [user, doctor]);
 
   return (

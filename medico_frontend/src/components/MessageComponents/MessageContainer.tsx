@@ -86,7 +86,7 @@ const MessageContainer = () => {
     const getMessages = async () =>{
 
       try{
-        
+
         const response = await axiosInstance.get(`/messages/get-user-messages/${selectedChatData._id}`,{
           headers: {
             "Content-Type": "application/json",
@@ -198,7 +198,7 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto scrollbar-hidden p-4  px-0 w-full">
+    <div className="flex-1 h-[70vh]  overflow-y-auto scrollbar-hidden p-4  px-0 w-full">
 
       
       {renderMessages()}
