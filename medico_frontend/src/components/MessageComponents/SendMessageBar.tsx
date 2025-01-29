@@ -7,16 +7,17 @@ import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../context/SocketContext";
-import { addMessages} from "../../utils/appSlice";
-
+import { addMessages } from "../../utils/appSlice";
 
 const SendMessageBar = () => {
   const [message, setMessage] = useState("");
   const emojiRef = useRef<HTMLInputElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
-  const userInfo = useSelector((state:any)=> state.app.user)
+  const userInfo = useSelector((state: any) => state.app.user);
   // const doctorInfo = useSelector((state:any)=> state.app.doctor)
-  const selectedChatData = useSelector((state:any)=> state.app.selectedChatData)
+  const selectedChatData = useSelector(
+    (state: any) => state.app.selectedChatData
+  );
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const socket = useSocket();
@@ -32,11 +33,11 @@ const SendMessageBar = () => {
   };
 
   const handleAttachmentChange = async (e: any) => {
-     console.log(e)
+    console.log(e);
   };
 
-  useEffect (() => {
-    function handleClickOutside(event:any) {
+  useEffect(() => {
+    function handleClickOutside(event: any) {
       if (emojiRef.current && !emojiRef.current.contains(event.target)) {
         setEmojiPickerOpen(false);
       }
@@ -49,63 +50,48 @@ const SendMessageBar = () => {
 
   const dispatch = useDispatch();
 
-
-  const handleSendMessage = async()=>{
-    
+  const handleSendMessage = async () => {
+    try {
       if (!message.trim()) {
         console.log("Cannot send an empty message");
         return;
       }
-       console.log(socket);
 
-       if(!socket){
+      if (!socket) {
         console.error("Socket is not connected!");
-    return;
-       }
-      
-       if(socket ===null){
-        console.log("socket is not equal to null")
-       }
-        socket.emit("send-message", {
-          sender: userInfo._id,
-          content: message.trim(),
-          recipient: selectedChatData._id,
-          messageType: "text",
-          fileUrl: undefined,
-          recipientModel: userInfo !== null ? 'Doctor' : 'User' ,
-          senderModel: userInfo !== null ? 'User' : 'Doctor',
-          
-        });
-        console.log( {
-          sender: userInfo._id,
-          content: message.trim(),
-          recipient: selectedChatData._id,
-          messageType: "text",
-          fileUrl: undefined,
-          recipientModel: userInfo !== null ? 'Doctor' : 'User' ,
-          senderModel: userInfo !== null ? 'User' : 'Doctor',
-          
-        })
-        dispatch(addMessages({
-          sender: userInfo._id,
-          content: message.trim(),
-          recipient: selectedChatData._id,
-          messageType: "text",
-          fileUrl: undefined,
-          recipientModel: userInfo !== null ? 'Doctor' : 'User' ,
-          senderModel: userInfo !== null ? 'User' : 'Doctor',
-          
+        return;
+      }
+      const messageData = {
+        sender: userInfo._id,
+        content: message.trim(),
+        recipient: selectedChatData._id,
+        messageType: "text",
+        fileUrl: undefined,
+        recipientModel: userInfo !== null ? "Doctor" : "User",
+        senderModel: userInfo !== null ? "User" : "Doctor",
+      }
 
-        }))
-        
+      console.log("emitting send message event:", messageData)
 
-       
-  
-   
-  
+      socket.emit("send-message", messageData);
+      // console.log({
+      //   sender: userInfo._id,
+      //   content: message.trim(),
+      //   recipient: selectedChatData._id,
+      //   messageType: "text",
+      //   fileUrl: undefined,
+      //   recipientModel: userInfo !== null ? "Doctor" : "User",
+      //   senderModel: userInfo !== null ? "User" : "Doctor",
+      // });
+      dispatch(
+        addMessages(messageData)
+      );
+
       setMessage("");
-    
-  }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="absolute bottom-0 w-full flex gap-3 sm:gap-7  h-10 sm:h-16 sm:pl-5">
@@ -117,7 +103,7 @@ const SendMessageBar = () => {
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        <Button  onClick={handleAttachmentClick} className="bg-gray-300 h-auto">
+        <Button onClick={handleAttachmentClick} className="bg-gray-300 h-auto">
           <GrAttachment className="text-4xl text-gray-700" />
         </Button>
 
@@ -145,15 +131,13 @@ const SendMessageBar = () => {
             />
           </div>
         </div>
-       
       </div>
       <div>
         <Button
-        onClick={handleSendMessage}
-        className="bg-green-500 text-white h-full p-3 rounded-md duration-300 transition-all hover:bg-green-400"
-        
+          onClick={handleSendMessage}
+          className="bg-green-700 text-white h-full p-3 rounded-md duration-300 transition-all hover:bg-green-400"
         >
-            <IoSend className="text-xl sm:text-2xl" />
+          <IoSend className="text-xl sm:text-2xl" />
         </Button>
       </div>
     </div>

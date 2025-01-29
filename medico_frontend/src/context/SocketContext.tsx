@@ -6,7 +6,7 @@ import {
   ReactNode,
 } from "react";
 import io from "socket.io-client";
-import { Socket } from "socket.io-client"; // Ensure proper imports
+// import { Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux";
 import { DoctorType, UserType } from "../utils/types";
 import { addMessages } from "../utils/appSlice";
@@ -42,7 +42,9 @@ export interface DoctorMessageDocument {
 }
 const SocketContext = createContext<any>(null);
 
-export const useSocket = () => (useContext(SocketContext));
+export const useSocket = () => {
+    return useContext(SocketContext);
+};
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const socket = useRef<any>(null);
@@ -54,8 +56,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const HOST = import.meta.env.VITE_ORIGIN;
 
   useEffect(() => {
-    const currentUser = user ;
-    console.log(currentUser, "this is current user" )
+    const currentUser = user ? user  : doctor ;
     const userType = user ? "User" : "Doctor";
 
     if (currentUser) {
@@ -71,13 +72,20 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
         },
       });
 
-      
+      socket.current.on("connect", () => {
+        console.log("connected to socket server");
+      });
+
+      socket.current.on("connect_error", (err: any) => {
+        console.error("Socket connection error:", err); // Add this log
+    });
 
       
          
       
       const handleReceiveMessage = (message: any) => {
-        console.log("message received/sent")
+        
+        
         if (
           selectedChatData &&
           (selectedChatData._id === message.sender._id ||
@@ -91,10 +99,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       socket.current.on("receive-message", handleReceiveMessage);
       socket.current.on("sent-message", handleReceiveMessage);
 
-      return () => {
-        socket.current.disconnect();
-        console.log("Disconnected from socket server");
-      };
+    //   return () => {
+    //     socket.current.disconnect();
+    //     console.log("Disconnected from socket server");
+    //   };
     }
   }, [user, doctor]);
 

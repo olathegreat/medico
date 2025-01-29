@@ -1,8 +1,17 @@
+import { closeChat } from "../../utils/appSlice";
 import { Avatar, AvatarImage } from "../ui/avatar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const MessageHeader = () => {
   const chatData = useSelector((state: any) => state.app.selectedChatData);
+
+  const dispatch = useDispatch();
+
+  const closeChatFunction = () =>{
+
+    dispatch(closeChat());
+
+  }
 
   return (
     <div className="flex justify-between w-full items-center border-b-2 p-3 border-gray-300">
@@ -28,7 +37,9 @@ const MessageHeader = () => {
         </div>
       </div>
 
-      <div className="cursor-pointer text-2xl">X</div>
+      <div
+        onClick= {closeChatFunction}
+      className="cursor-pointer text-2xl">X</div>
     </div>
   );
 };

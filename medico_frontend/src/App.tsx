@@ -9,7 +9,7 @@ import ContactPage from './pages/ContactPage'
 import { useEffect} from "react"
 import AboutPage from './pages/AboutPage'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggleDarkMode } from './utils/appSlice'
+import { setSelectedChatData, toggleDarkMode } from './utils/appSlice'
 import AdminLoginPage from './pages/AdminPages/AdminLoginPage'
 import DoctorLoginPage from './pages/DoctorPages/DoctorLoginPage'
 import AdminProtectedRoute from './utils/AdminProtectedRoute'
@@ -24,13 +24,15 @@ import MessagesPage from './pages/MessagesPage'
 
 
 function App() {
-  const savedSessionDarkModeState = sessionStorage.getItem("darkmode")
-  ? JSON.parse(sessionStorage.getItem("darkmode")!)
-  : false;
+  
   const dispatch = useDispatch();
+
+  const savedSessionDarkModeState = JSON.parse(sessionStorage.getItem("darkmode") || "false");
+  const savedSessionSelectedChatData = JSON.parse(sessionStorage.getItem("sessionSelectedChatData") || "{}");
 
   useEffect(()=>{
     dispatch(toggleDarkMode(savedSessionDarkModeState))
+    dispatch(setSelectedChatData(savedSessionSelectedChatData))
     
 
   },[])

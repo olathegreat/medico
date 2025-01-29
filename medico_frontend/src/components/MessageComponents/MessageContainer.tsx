@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { MdFolderZip } from "react-icons/md";
 import moment from "moment";
 import { IoMdArrowRoundDown, IoMdClose } from "react-icons/io";
-import { setFileDownloadProgress, setIsDownloading } from "../../utils/appSlice";
+import { addExistingMessages, setFileDownloadProgress, setIsDownloading } from "../../utils/appSlice";
 import axiosInstance from "../../utils/axios";
 
 interface Message {
@@ -45,6 +45,8 @@ const MessageContainer = () => {
       /\.(png|jpg|jpeg|gif|bmp|tiff|tif|webp|svg|ico|heic|heif)$/i;
     return imageRegex.test(filePath);
   };
+  const token = sessionStorage.getItem("token");
+  const bearerToken = token ? "Bearer " + token : "";
 
   const downloadFile = async (file: string) => {
     try {
@@ -80,6 +82,30 @@ const MessageContainer = () => {
       dispatch(setFileDownloadProgress(0));
     }
   };
+  useEffect(()=>{
+    const getMessages = async () =>{
+
+      try{
+        
+        const response = await axiosInstance.get(`/messages/get-user-messages/${selectedChatData._id}`,{
+          headers: {
+            "Content-Type": "application/json",
+            authorization: bearerToken,
+          }})
+
+          console.log(response);
+          dispatch(addExistingMessages(response.data.messages))
+
+      }catch(err){
+        console.log(err)
+
+      }
+
+    }
+
+    getMessages()
+
+  },[selectedChatData])
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -173,6 +199,8 @@ const MessageContainer = () => {
 
   return (
     <div className="flex-1 overflow-y-auto scrollbar-hidden p-4  px-0 w-full">
+
+      
       {renderMessages()}
       <div ref={scrollRef}></div>
       {showImage && imageUrl && (

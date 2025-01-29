@@ -61,17 +61,33 @@ const appSlice = createSlice({
             state.adminDataReload = !state.adminDataReload;
             
         },
+        addExistingMessages: (state, action) =>{
+            state.selectedChatMessages = [ ...action.payload
+
+            ]
+         //     {
+         //     ...action.payload,
+         //     sender:  action.payload.sender,
+         //     recipient: action.payload.recipient._id || action.payload.recipient
+         //    }]
+
+            console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
+     },
         addMessages: (state, action) =>{
-               state.selectedChatMessages = [...state.selectedChatMessages,{
+               state.selectedChatMessages = [...state.selectedChatMessages,
+
+               
+                {
                 ...action.payload,
-                sender: action.payload.sender._id || action.payload.sender,
+                sender:  action.payload.sender,
                 recipient: action.payload.recipient._id || action.payload.recipient
                }]
 
                console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
         },
         setSelectedChatData: (state, action)=>{
-            state.selectedChatData =  action.payload
+            state.selectedChatData =  action.payload;
+            sessionStorage.setItem("sessionSelectedChatData", JSON.stringify(action.payload))
 
             console.log("new chat selected", state.selectedChatData)
         },
@@ -88,7 +104,8 @@ const appSlice = createSlice({
         },
         closeChat: (state)=>{
             state.selectedChatMessages=[];
-            state.selectedChatData = undefined
+            state.selectedChatData = undefined;
+            sessionStorage.removeItem("sessionSelectedChatData")
         },
         setIsUploading: (state) =>{
             state.isUploading = !state.isUploading
@@ -109,6 +126,6 @@ const appSlice = createSlice({
 
 
 
-export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData,closeChat,setSelectedChatMessages,setFileDownloadProgress,setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact} = appSlice.actions    
+export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData,closeChat,setSelectedChatMessages,setFileDownloadProgress,setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact, addExistingMessages} = appSlice.actions    
 
 export default appSlice.reducer
