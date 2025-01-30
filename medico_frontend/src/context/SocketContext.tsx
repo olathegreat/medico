@@ -1,22 +1,9 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useRef,
-  ReactNode,
-} from "react";
+import { createContext, useContext, useEffect, useRef, ReactNode } from "react";
 import io from "socket.io-client";
-// import { Socket } from "socket.io-client";
 import { useSelector, useDispatch } from "react-redux";
 import { DoctorType, UserType } from "../utils/types";
 import { addMessages } from "../utils/appSlice";
 
-
-
-
-  
-
-  
 export interface UserMessageDocument {
   _id: string;
   sender: UserType;
@@ -43,29 +30,32 @@ export interface DoctorMessageDocument {
 const SocketContext = createContext<any>(null);
 
 export const useSocket = () => {
-    return useContext(SocketContext);
+  return useContext(SocketContext);
 };
 
 export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const socket = useRef<any>(null);
   const user = useSelector((state: any) => state.app.user);
   const doctor = useSelector((state: any) => state.app.doctor);
-  const selectedChatData = useSelector((state: any) => state.app.selectedChatData);
+  const selectedChatData = useSelector(
+    (state: any) => state.app.selectedChatData
+  );
   const dispatch = useDispatch();
 
   const HOST = import.meta.env.VITE_ORIGIN;
 
   useEffect(() => {
-    const currentUser = user ? user  : doctor ;
+    const currentUser = user ? user : doctor;
     const userType = user ? "User" : "Doctor";
 
     if (currentUser) {
       socket.current = io(HOST, {
         transportOptions: {
             polling: {
-              withCredentials: true,  // Use this in transportOptions
+                withCredentials: true, 
             },
-          },
+        },
+        // withCredentials: true,
         query: {
           userId: currentUser._id,
           userType,
@@ -77,15 +67,10 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       });
 
       socket.current.on("connect_error", (err: any) => {
-        console.error("Socket connection error:", err); 
-    });
+        console.error("Socket connection error:", err);
+      });
 
-      
-         
-      
       const handleReceiveMessage = (message: any) => {
-        
-        
         if (
           selectedChatData &&
           (selectedChatData._id === message.sender._id ||
@@ -99,19 +84,24 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
       socket.current.on("receive-message", handleReceiveMessage);
       socket.current.on("sent-message", handleReceiveMessage);
 
-    
+      //   return () => {
+      //     if (socket.current) {
+      //       socket.current.off("receive-message", handleReceiveMessage);
+      //       socket.current.off("sent-message", handleReceiveMessage);
+      //       socket.current.disconnect();
+      //     }
+      //   };
     }
 
-    return () => {
-      if (socket.current) {
-        socket.current.disconnect();
-      }
-    };
+    // return () => {
+    //   if (socket.current) {
+    //     socket.current.disconnect();
+    //   }
+    // };
   }, [user, doctor]);
 
   return (
     <SocketContext.Provider value={socket.current}>
-       
       {children}
     </SocketContext.Provider>
   );

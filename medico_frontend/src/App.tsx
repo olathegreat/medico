@@ -66,12 +66,12 @@ function App() {
       <Route path="/doctors" element={<AllDoctors/>}/>
       <Route path="/doctors/:id" element={<Doctor/>}/>
       <Route element={<ProtectedRoute />}>
-        <Route
+        {/* <Route
           path="/messages"
           element={
             <MessagesPage/>
           }
-        />
+        /> */}
       </Route>
       <Route element={<ProtectedRoute />}>
         <Route
