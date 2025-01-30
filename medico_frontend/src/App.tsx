@@ -19,7 +19,7 @@ import Doctor from './pages/Doctor'
 import MyAppointments from './pages/MyAppointments'
 import DoctorProtectedRoute from './utils/DoctorProtectedRoute'
 import DoctorProfilePage from './pages/DoctorPages/DoctorProfilePage'
-import MessagesPage from './pages/MessagesPage'
+// import MessagesPage from './pages/MessagesPage'
 
 
 
