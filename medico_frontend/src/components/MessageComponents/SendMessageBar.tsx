@@ -14,6 +14,7 @@ import {
 } from "../../utils/appSlice";
 import { toast } from "sonner";
 import axiosInstance from "../../utils/axios";
+import { AiOutlinePicture } from "react-icons/ai";
 
 const SendMessageBar = () => {
   const [message, setMessage] = useState("");
@@ -146,7 +147,8 @@ const SendMessageBar = () => {
         />
 
         <Button onClick={handleAttachmentClick} className="bg-gray-300 h-auto">
-          <GrAttachment className="text-4xl text-gray-700" />
+          {/* <GrAttachment className="text-4xl text-gray-700" /> */}
+          <AiOutlinePicture  className="text-4xl text-gray-700" />
         </Button>
 
         <input
@@ -154,6 +156,7 @@ const SendMessageBar = () => {
           className="hidden"
           ref={fileInputRef}
           onChange={handleAttachmentChange}
+          accept="image/*"
         />
 
         <div className="relative">
