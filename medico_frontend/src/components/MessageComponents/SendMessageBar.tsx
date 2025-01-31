@@ -1,6 +1,5 @@
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
-import { GrAttachment } from "react-icons/gr";
 import { IoSend } from "react-icons/io5";
 import { RiEmojiStickerLine } from "react-icons/ri";
 import EmojiPicker from "emoji-picker-react";
@@ -53,10 +52,12 @@ const SendMessageBar = () => {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: "Bearer " + sessionStorage.getItem("token"),
-          } ,
+          },
           onUploadProgress: (data) => {
             const percent =
-              data.loaded && data.total ? Math.round((100 * data.loaded) / data!.total) : 0;
+              data.loaded && data.total
+                ? Math.round((100 * data.loaded) / data!.total)
+                : 0;
             dispatch(setFileUploadProgress(percent));
           },
         });
@@ -65,7 +66,7 @@ const SendMessageBar = () => {
 
         if (res.status === 200 && res.data) {
           dispatch(setIsUploading());
-          
+
           const message = {
             sender: userInfo._id,
             content: undefined,
@@ -73,14 +74,12 @@ const SendMessageBar = () => {
             messageType: "file",
             fileUrl: res.data.filePath,
             recipientModel: userInfo !== null ? "Doctor" : "User",
-        senderModel: userInfo !== null ? "User" : "Doctor",
-          }
-          console.log(message)
-          socket.emit("send-message", message
-          )
+            senderModel: userInfo !== null ? "User" : "Doctor",
+          };
+          console.log(message);
+          socket.emit("send-message", message);
+          dispatch(addMessages(message));
         }
-
-
       }
     } catch (err: any) {
       console.log(err);
@@ -148,7 +147,7 @@ const SendMessageBar = () => {
 
         <Button onClick={handleAttachmentClick} className="bg-gray-300 h-auto">
           {/* <GrAttachment className="text-4xl text-gray-700" /> */}
-          <AiOutlinePicture  className="text-4xl text-gray-700" />
+          <AiOutlinePicture className="text-4xl text-gray-700" />
         </Button>
 
         <input
