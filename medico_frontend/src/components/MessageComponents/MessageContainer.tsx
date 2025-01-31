@@ -202,7 +202,7 @@ const MessageContainer = () => {
 
       
       {renderMessages()}
-      <div ref={scrollRef}></div>
+      <div ref={scrollRef} className="h-10 w-full"></div>
       {showImage && imageUrl && (
         <div className="fixed z-[1000] top-0 left-0 right-0 bottom-0 flex items-center justify-center backdrop-blur-lg flex-col">
           <div>
