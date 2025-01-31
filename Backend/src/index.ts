@@ -7,6 +7,8 @@ import UserRoutes from "./routes/UserRoutes"
 import DoctorRoutes from "./routes/DoctorRoutes"
 import AdminRoutes from "./routes/AdminRoutes"
 import AppointmentRoutes from "./routes/AppointmentRoutes"
+import setupSocket from "./socket"
+import messagesRoutes from "./routes/MessageRoutes"
 
 
 dotenv.config();
@@ -32,7 +34,7 @@ const app = express();
 const allowedOrigins = ["https://medico-w92y.onrender.com", "http://localhost:7000" ];
 
 app.use(cors({
-    origin: "*",
+    origin: allowedOrigins,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
 }));
@@ -48,11 +50,16 @@ app.get('/health', async(req:Request, res:Response)=>{
     })
 }) 
 
+
+
 app.use('/api/v1/user', UserRoutes)
 app.use('/api/v1/doctor', DoctorRoutes)
 app.use('/api/v1/admin', AdminRoutes)
 app.use('/api/v1/appointment' , AppointmentRoutes)
+app.use("/api/v1/messages", messagesRoutes)
         
-app.listen(process.env.PORT, ()=>{
+const server = app.listen(process.env.PORT, ()=>{
     console.log(`server is running on port ${process.env.PORT}`)
 })
+
+setupSocket(server);
