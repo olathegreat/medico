@@ -7,8 +7,13 @@ import EmojiPicker from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../context/SocketContext";
-import { addMessages } from "../../utils/appSlice";
+import {
+  addMessages,
+  setFileUploadProgress,
+  setIsUploading,
+} from "../../utils/appSlice";
 import { toast } from "sonner";
+import axiosInstance from "../../utils/axios";
 
 const SendMessageBar = () => {
   const [message, setMessage] = useState("");
@@ -34,7 +39,52 @@ const SendMessageBar = () => {
   };
 
   const handleAttachmentChange = async (e: any) => {
-    console.log(e);
+    try {
+      const file = e.target.files[0];
+
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        dispatch(setIsUploading());
+
+        const res = await axiosInstance.post("/messages/upload", formData, {
+          withCredentials: true,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: "Bearer " + sessionStorage.getItem("token"),
+          } ,
+          onUploadProgress: (data) => {
+            const percent =
+              data.loaded && data.total ? Math.round((100 * data.loaded) / data!.total) : 0;
+            dispatch(setFileUploadProgress(percent));
+          },
+        });
+
+        console.log(res);
+
+        if (res.status === 200 && res.data) {
+          dispatch(setIsUploading());
+          
+          const message = {
+            sender: userInfo._id,
+            content: undefined,
+            recipient: selectedChatData._id,
+            messageType: "file",
+            fileUrl: res.data.filePath,
+            recipientModel: userInfo !== null ? "Doctor" : "User",
+        senderModel: userInfo !== null ? "User" : "Doctor",
+          }
+          console.log(message)
+          socket.emit("send-message", message
+          )
+        }
+
+
+      }
+    } catch (err: any) {
+      console.log(err);
+      dispatch(setIsUploading());
+    }
   };
 
   useEffect(() => {
@@ -70,16 +120,14 @@ const SendMessageBar = () => {
         fileUrl: undefined,
         recipientModel: userInfo !== null ? "Doctor" : "User",
         senderModel: userInfo !== null ? "User" : "Doctor",
-      }
+      };
 
-      console.log("emitting send message event:", messageData)
+      console.log("emitting send message event:", messageData);
 
       socket.emit("send-message", messageData);
-    
-      dispatch(
-        addMessages(messageData)
-      );
-      toast("message sent to doctor")
+
+      dispatch(addMessages(messageData));
+      toast("message sent to doctor");
 
       setMessage("");
     } catch (err) {

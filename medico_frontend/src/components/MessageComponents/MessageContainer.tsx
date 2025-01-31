@@ -48,32 +48,33 @@ const MessageContainer = () => {
   const token = sessionStorage.getItem("token");
   const bearerToken = token ? "Bearer " + token : "";
 
-  const downloadFile = async (file: string) => {
+  const downloadFile = async (fileUrl: string) => {
     try {
       dispatch(setIsDownloading());
       dispatch(setFileDownloadProgress(0));
-
-      const response = await axiosInstance.get(`${HOST}/${file}`, {
+  
+      const isExternal = fileUrl.startsWith("http");
+  
+      const response = await axiosInstance.get(isExternal ? fileUrl : `${HOST}/${fileUrl}`, {
         responseType: "blob",
         onDownloadProgress: (progressEvent) => {
           const { loaded, total } = progressEvent;
-
           if (loaded && total) {
             const percentCompleted = Math.round((loaded * 100) / total);
             dispatch(setFileDownloadProgress(percentCompleted));
           }
         },
       });
-
+  
       const urlBlob = window.URL.createObjectURL(response.data);
       const link = document.createElement("a");
       link.href = urlBlob;
-      link.setAttribute("download", file.split("/").pop() || "file");
+      link.setAttribute("download", fileUrl.split("/").pop() || "file");
       document.body.appendChild(link);
       link.click();
       link.remove();
       window.URL.revokeObjectURL(urlBlob);
-
+  
       dispatch(setIsDownloading());
       dispatch(setFileDownloadProgress(0));
     } catch (error) {
@@ -82,6 +83,7 @@ const MessageContainer = () => {
       dispatch(setFileDownloadProgress(0));
     }
   };
+  
   useEffect(()=>{
     const getMessages = async () =>{
 
@@ -153,7 +155,7 @@ const MessageContainer = () => {
                     message.sender === selectedChatData._id
                       ? "bg-white border-gray-500 text-gray-500"
                       : "bg-green-600 text-white border-green-500"
-                  } border inline-block p-4 rounded my-1 max-w-[50%] break-words`}
+                  } border inline-block  rounded my-1 max-w-[50%] break-words`}
                 >
                   {checkIfImage(message.fileUrl) ? (
                     <div
@@ -164,7 +166,7 @@ const MessageContainer = () => {
                       }}
                     >
                       <img
-                        src={`${HOST}/${message.fileUrl}`}
+                        src={message.fileUrl}
                         height={300}
                         width={300}
                         alt="img"
@@ -198,16 +200,16 @@ const MessageContainer = () => {
   };
 
   return (
-    <div className="flex-1 h-[70vh]  overflow-y-auto scrollbar-hidden p-4  px-0 w-full">
+    <div className="flex-1 h-[65vh]  overflow-y-auto scrollbar-hidden p-4  px-0 w-full">
 
       
       {renderMessages()}
-      <div ref={scrollRef} className="h-10 w-full"></div>
+      <div ref={scrollRef}></div>
       {showImage && imageUrl && (
         <div className="fixed z-[1000] top-0 left-0 right-0 bottom-0 flex items-center justify-center backdrop-blur-lg flex-col">
           <div>
             <img
-              src={`${HOST}/${imageUrl}`}
+              src={imageUrl}
               className="h-[80vh] w-full bg-cover"
               alt="preview"
             />

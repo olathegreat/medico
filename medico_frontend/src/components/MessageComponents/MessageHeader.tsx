@@ -32,14 +32,14 @@ const MessageHeader = () => {
           )}
         </Avatar>
 
-        <div className="text-xl">
+        <div className="sm:text-xl">
           {chatData?.name ? `Dr. ${chatData.name}` : "No Name"}
         </div>
       </div>
 
       <div
         onClick= {closeChatFunction}
-      className="cursor-pointer text-2xl">X</div>
+      className="cursor-pointer sm:text-2xl">X</div>
     </div>
   );
 };

@@ -225,9 +225,9 @@ const Doctor = () => {
         </div>
 
         <div className="flex flex-col gap-10 items-start md:max-w-[900px] overflow-hidden">
-          <div className="flex flex-col p-5 gap-3 rounded-md items-start border  border-gray-300 flex-grow md:h-[300px]">
+          <div className="flex w-full flex-col p-5 gap-3 rounded-md items-start border  border-gray-300 flex-grow md:h-[300px]">
             <div className="flex gap-1 items-center">
-              <span className="font-medium text-2xl">
+              <span className="font-medium text-xl sm:text-2xl">
                 Dr. {doctorData?.name}
               </span>{" "}
               <BadgeCheckIcon className="text-green-500" /> <span></span>{" "}

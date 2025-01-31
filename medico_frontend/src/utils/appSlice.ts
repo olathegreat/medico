@@ -109,15 +109,18 @@ const appSlice = createSlice({
         },
         setIsUploading: (state) =>{
             state.isUploading = !state.isUploading
+            
         },
         setIsDownloading: (state) =>{
-            state.isUploading = !state.isUploading
+            state.isDownloading = !state.isDownloading
         },
         setFileUploadProgress: (state, action)=>{
             state.fileUploadProgress = action.payload;
+            console.log(state.fileUploadProgress)
         },
         setFileDownloadProgress: (state, action)=>{
             state.fileDownloadProgress = action.payload;
+            console.log(state.fileDownloadProgress)
         }
 
 
