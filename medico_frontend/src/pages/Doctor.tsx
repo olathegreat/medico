@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Nav from "../components/Nav";
 import { DoctorType } from "../utils/types";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../utils/axios";
 import { BadgeCheckIcon, Circle, InfoIcon } from "lucide-react";
 import Footer from "../components/Footer";
@@ -45,7 +45,7 @@ const Doctor = () => {
   const [days, setDays] = useState<DayArrayType[]>([]);
   const [relatedDoctorsArray, setRelatedDoctorsArray] = useState([]);
   const [selectedSpeciality, setSelectedSpeciality] = useState<string>("");
-  const location = useLocation();
+  // const location = useLocation();
 
   const [appointmentDetails, setAppointmentDetails] =
     useState<AppointmentDetails>({
