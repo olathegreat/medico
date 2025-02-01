@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
 import { ResponseType } from "./SignupForm";
+import { useSelector } from "react-redux";
 
 const LoginForm: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserType | null>(null);
@@ -14,6 +15,7 @@ const LoginForm: React.FC = () => {
   const [passwordShow, setPasswordShow] = useState(false);
   const [apiRequest, setApiRequest] = useState(false);
   const navigate = useNavigate();
+  const redirectUrl = useSelector((state:any)=>state.app.redirectUrl)
 
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -30,7 +32,12 @@ const LoginForm: React.FC = () => {
         toast.success("login successful");
         setApiRequest(false);
         setTimeout(() => {
-          navigate("/profile");
+          if(redirectUrl){
+            navigate(redirectUrl)
+          }else{
+            navigate("/profile");
+          }
+        
         }, 1000);   
       
       } else {

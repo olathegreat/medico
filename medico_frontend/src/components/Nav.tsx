@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
 import { ChevronDown } from "lucide-react";
-import { saveUser, toggleDarkMode } from "../utils/appSlice";
+import { saveUser, setRedirectUrl, toggleDarkMode } from "../utils/appSlice";
 import { Switch } from "./ui/switch";
 
 
@@ -64,6 +64,7 @@ function Nav() {
   
   const logOutFunction = () =>{
     dispatch(saveUser({}));
+    dispatch(setRedirectUrl(""));
     navigate("/");
     sessionStorage.removeItem("sessionUserInfo")
     

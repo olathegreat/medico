@@ -1,4 +1,4 @@
-import {createSlice} from "@reduxjs/toolkit"
+import { createSlice } from "@reduxjs/toolkit"
 import { AdminType, DoctorType, UserType } from "./types";
 import { DoctorMessageDocument, UserMessageDocument } from "../context/SocketContext";
 
@@ -10,31 +10,32 @@ interface AppState {
     adminDataReload: boolean;
     selectedChatData: UserType | DoctorType | undefined;
     selectedChatMessages: UserMessageDocument[] | DoctorMessageDocument[] | []
-
+    redirectUrl: string,
     isDownloading: boolean;
-    isUploading:boolean;
+    isUploading: boolean;
     fileDownloadProgress: number;
     fileUploadProgress: number;
     directMessagesContact: UserMessageDocument[] | DoctorMessageDocument[] | []
 
-    
-}   
+
+}
 
 
 
 const initialState: AppState = {
     darkMode: false,
-    user:{},
-    admin:{},
-    doctor:{},
-    selectedChatData:undefined,
-    selectedChatMessages:[],
-    directMessagesContact:[],
-    adminDataReload:false,
+    user: {},
+    admin: {},
+    doctor: {},
+    selectedChatData: undefined,
+    selectedChatMessages: [],
+    directMessagesContact: [],
+    adminDataReload: false,
     isDownloading: false,
-    isUploading:false,
+    isUploading: false,
     fileDownloadProgress: 0,
-    fileUploadProgress: 0
+    fileUploadProgress: 0,
+    redirectUrl: ""
 }
 
 const appSlice = createSlice({
@@ -45,82 +46,81 @@ const appSlice = createSlice({
             state.darkMode = action.payload;
             sessionStorage.setItem("darkmode", JSON.stringify(state.darkMode));
         },
-        saveUser: (state, action) =>{
+        saveUser: (state, action) => {
             state.user = action.payload;
-            
+
         },
-        saveAdmin: (state, action) =>{
+        saveAdmin: (state, action) => {
             state.admin = action.payload;
-            
+
         },
-        saveDoctor: (state, action) =>{
+        saveDoctor: (state, action) => {
             state.doctor = action.payload;
-            
+
         },
         toggleAdminDataReload: (state) => {
             state.adminDataReload = !state.adminDataReload;
-            
+
         },
-        addExistingMessages: (state, action) =>{
-            state.selectedChatMessages = [ ...action.payload
+        addExistingMessages: (state, action) => {
+            state.selectedChatMessages = [...action.payload
 
             ]
-         //     {
-         //     ...action.payload,
-         //     sender:  action.payload.sender,
-         //     recipient: action.payload.recipient._id || action.payload.recipient
-         //    }]
+
 
             console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
-     },
-        addMessages: (state, action) =>{
-               state.selectedChatMessages = [...state.selectedChatMessages,
-
-               
-                {
-                ...action.payload,
-                sender:  action.payload.sender,
-                recipient: action.payload.recipient._id || action.payload.recipient
-               }]
-
-               console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
         },
-        setSelectedChatData: (state, action)=>{
-            state.selectedChatData =  action.payload;
+        addMessages: (state, action) => {
+            state.selectedChatMessages = [...state.selectedChatMessages,
+
+
+            {
+                ...action.payload,
+                sender: action.payload.sender,
+                recipient: action.payload.recipient._id || action.payload.recipient
+            }]
+
+            console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
+        },
+        setSelectedChatData: (state, action) => {
+            state.selectedChatData = action.payload;
             sessionStorage.setItem("sessionSelectedChatData", JSON.stringify(action.payload))
 
             console.log("new chat selected", state.selectedChatData)
         },
-        setSelectedChatMessages: (state, action)=>{
+        setSelectedChatMessages: (state, action) => {
             state.selectedChatMessages = action.payload;
 
 
-            
+
         },
-        setDirectMessagesContact: (state, action) =>{
+        setDirectMessagesContact: (state, action) => {
             state.directMessagesContact = action.payload
 
             console.log(state.directMessagesContact)
         },
-        closeChat: (state)=>{
-            state.selectedChatMessages=[];
+        closeChat: (state) => {
+            state.selectedChatMessages = [];
             state.selectedChatData = undefined;
             sessionStorage.removeItem("sessionSelectedChatData")
         },
-        setIsUploading: (state) =>{
+        setIsUploading: (state) => {
             state.isUploading = !state.isUploading
-            
+
         },
-        setIsDownloading: (state) =>{
+        setIsDownloading: (state) => {
             state.isDownloading = !state.isDownloading
         },
-        setFileUploadProgress: (state, action)=>{
+        setFileUploadProgress: (state, action) => {
             state.fileUploadProgress = action.payload;
             console.log(state.fileUploadProgress)
         },
-        setFileDownloadProgress: (state, action)=>{
+        setFileDownloadProgress: (state, action) => {
             state.fileDownloadProgress = action.payload;
             console.log(state.fileDownloadProgress)
+        },
+        setRedirectUrl:(state, action)=>{
+            state.redirectUrl = action.payload
         }
 
 
@@ -129,6 +129,6 @@ const appSlice = createSlice({
 
 
 
-export const {toggleDarkMode,saveUser, saveDoctor,toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData,closeChat,setSelectedChatMessages,setFileDownloadProgress,setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact, addExistingMessages} = appSlice.actions    
+export const { toggleDarkMode,setRedirectUrl, saveUser, saveDoctor, toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData, closeChat, setSelectedChatMessages, setFileDownloadProgress, setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact, addExistingMessages } = appSlice.actions
 
 export default appSlice.reducer
