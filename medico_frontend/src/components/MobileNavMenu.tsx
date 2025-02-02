@@ -11,7 +11,8 @@ import {
 import Logo from "./Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { saveUser } from "../utils/appSlice";
+import { saveUser, toggleDarkMode } from "../utils/appSlice";
+import { Switch } from "./ui/switch";
 
 type NavLinks = {
   title: string;
@@ -21,6 +22,14 @@ type NavLinks = {
 const MobileNavMenu = () => {
   const [userInfo, setUserInfo] = useState<any>({});
   const existinguserInfo = useSelector((state: any) => state.app.user);
+  const darkMode = useSelector((state: any) => state.app.darkMode);
+  const [darkModeState, setDarkModeState] = useState(false);
+
+  useEffect(()=>{
+    setDarkModeState(darkMode);
+
+
+},[darkMode])
 
   useEffect(() => {
     setUserInfo(existinguserInfo);
@@ -46,20 +55,19 @@ const MobileNavMenu = () => {
   ];
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
-  const logOutFunction = () =>{
+
+  const logOutFunction = () => {
     dispatch(saveUser({}));
     navigate("/");
-    sessionStorage.removeItem("sessionUserInfo")
-
-  }
+    sessionStorage.removeItem("sessionUserInfo");
+  };
   return (
     <Sheet>
       <SheetTrigger>
         <MenuIcon className="text-green-600" />
       </SheetTrigger>
 
-      <SheetContent className="flex flex-col items-start">
+      <SheetContent className={`flex flex-col items-start  ${darkModeState ? "bg-gray-900" : "bg-white"} `}>
         <SheetTitle>
           <Logo />
         </SheetTitle>
@@ -78,24 +86,9 @@ const MobileNavMenu = () => {
           </div>
         )}
         <SheetDescription className="flex flex-col gap-4">
-          {
-            userInfo?.fullname && 
-            <Link to="/profile">
-              Profile
-            </Link>
-          }
-           {
-            userInfo?.fullname && 
-            <Link to="/appointment">
-              My Appointment
-            </Link>
-          }
-          {
-            userInfo?.fullname && 
-            <Link to="/messages">
-              Messages
-            </Link>
-          }
+          {userInfo?.fullname && <Link to="/profile">Profile</Link>}
+          {userInfo?.fullname && <Link to="/appointment">My Appointment</Link>}
+          {userInfo?.fullname && <Link to="/messages">Messages</Link>}
           {navLinks.map((navItem, index) => {
             const { title, link } = navItem;
             return (
@@ -109,12 +102,30 @@ const MobileNavMenu = () => {
             );
           })}
 
-{
-            userInfo?.fullname && 
-            <button onClick={logOutFunction} className="pl-0 ml-0 text-start text-red-600">
+          {
+            <div className=" flex items-center gap-4">
+              Dark Mode{" "}
+              <span className="cursor-pointer mt-1">
+                {" "}
+                <Switch
+                  className="border border-green-500"
+                  checked={darkModeState}
+                  onCheckedChange={() => {
+                    dispatch(toggleDarkMode(!darkMode));
+                  }}
+                />
+              </span>
+            </div>
+          }
+
+          {userInfo?.fullname && (
+            <button
+              onClick={logOutFunction}
+              className="pl-0 ml-0 text-start text-red-600"
+            >
               Logout
             </button>
-          }
+          )}
 
           {!userInfo.fullname && (
             <button

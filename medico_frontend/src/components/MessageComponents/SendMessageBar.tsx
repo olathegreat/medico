@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoSend } from "react-icons/io5";
 import { RiEmojiStickerLine } from "react-icons/ri";
-import EmojiPicker, {Theme} from "emoji-picker-react";
+import EmojiPicker, { Theme } from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../context/SocketContext";
@@ -28,7 +28,6 @@ const SendMessageBar = () => {
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const socket = useSocket();
-  
 
   const handleAttachmentClick = () => {
     if (fileInputRef.current) {
@@ -63,11 +62,7 @@ const SendMessageBar = () => {
           },
         });
 
-        
-
         if (res.status === 200 && res.data) {
-          
-
           const message = {
             sender: userInfo._id,
             content: undefined,
@@ -77,7 +72,7 @@ const SendMessageBar = () => {
             recipientModel: userInfo !== null ? "Doctor" : "User",
             senderModel: userInfo !== null ? "User" : "Doctor",
           };
-        
+
           socket.emit("send-message", message);
           dispatch(addMessages(message));
           dispatch(setIsUploading());
@@ -124,8 +119,6 @@ const SendMessageBar = () => {
         senderModel: userInfo !== null ? "User" : "Doctor",
       };
 
-      
-
       socket.emit("send-message", messageData);
 
       dispatch(addMessages(messageData));
@@ -140,12 +133,18 @@ const SendMessageBar = () => {
   const darkMode = DarkModeSetterFunction();
 
   return (
-    <div className={`${darkMode && "text-gray-700"} absolute bottom-0 w-full flex gap-3 sm:gap-7  h-10 sm:h-16 sm:pl-5`}>
+    <div
+      className={`${
+        darkMode && "text-gray-700"
+      } absolute bottom-0 w-full flex gap-3 sm:gap-7  h-10 sm:h-16 sm:pl-5`}
+    >
       <div className="flex-grow flex bg-gray-300 h-full">
         <Input
           placeholder="Type a message"
           value={message}
-          className="border-gray-400 flex-grow h-full"
+          className={`border-gray-400 flex-grow h-full ${
+            darkMode && "text-gray-700"
+          }`}
           onChange={(e) => setMessage(e.target.value)}
         />
 
@@ -174,7 +173,6 @@ const SendMessageBar = () => {
             <EmojiPicker
               className="shadow-gray-500 shadow-md"
               open={emojiPickerOpen}
-              
               onEmojiClick={handleAddEmoji}
               autoFocusSearch={false}
               theme={darkMode ? Theme.DARK : Theme.LIGHT}

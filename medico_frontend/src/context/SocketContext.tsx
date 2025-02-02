@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useRef, ReactNode } from "react";
 import io from "socket.io-client";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { DoctorType, UserType } from "../utils/types";
-import { addMessages } from "../utils/appSlice";
+
 
 export interface UserMessageDocument {
   _id: string;
@@ -40,7 +40,7 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
   const selectedChatData = useSelector(
     (state: any) => state.app.selectedChatData
   );
-  const dispatch = useDispatch();
+  
 
   const HOST = import.meta.env.VITE_ORIGIN;
 
