@@ -4,6 +4,7 @@ import { Circle } from "lucide-react";
 import axiosInstance from "../utils/axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import LoadingButton from "../components/loadingButton";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 const AllDoctors = () => {
   const [doctors, setDoctors] = useState([]);
@@ -39,13 +40,16 @@ const AllDoctors = () => {
   }, [selectedSpeciality]);
 
   const navigate = useNavigate();
+  const darkMode = DarkModeSetterFunction();
 
   return (
     <div className="flex flex-col gap-5 md:gap-10 text-gray-700">
       <Nav />
       <div className="flex flex-col md:flex-row gap-5 md:gap-10">
         <div className="flex flex-col gap-4">
-          <p className="text-sm">Browse through the specialists</p>
+          <p className={`${DarkModeSetterFunction() && "text-white/60"} text-sm`}>
+            Browse through the specialists
+          </p>
           <div className="flex flex-row justify-center md:justify-start flex-wrap md:flex-col text-xs md:text-[16px] gap-1 md:gap-3">
             {specialityArray.map((item, index) => (
               <button
@@ -55,7 +59,10 @@ const AllDoctors = () => {
                   selectedSpeciality === item
                     ? "bg-green-100 border-green-800"
                     : "hover:bg-gray-100"
-                } duration-100 ease-linear text-[8px] md:text-[16px] rounded-md py-1 md:py-2 px-2 md:px-8`}
+                }
+                    ${DarkModeSetterFunction() && "text-white/60"} 
+                    
+                duration-100 ease-linear text-[8px] md:text-[16px] rounded-md py-1 md:py-2 px-2 md:px-8`}
               >
                 {item}
               </button>
@@ -86,7 +93,15 @@ const AllDoctors = () => {
                 <div
                   onClick={() => navigate(`/doctors/${_id}`)}
                   key={index}
-                  className="w-[200px] h-[300px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105   border shadow-sm items-start group"
+                  className={`w-[200px] h-[300px] rounded-md cursor-pointer flex flex-col duration-300 ease-in-out hover:scale-105   border shadow-sm items-start group
+
+                     ${
+                      darkMode
+                        && "text-white/80"
+                        
+                    } 
+                     
+                    `}
                 >
                   <img
                     src={picture}

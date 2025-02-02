@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { IoSend } from "react-icons/io5";
 import { RiEmojiStickerLine } from "react-icons/ri";
-import EmojiPicker from "emoji-picker-react";
+import EmojiPicker, {Theme} from "emoji-picker-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSocket } from "../../context/SocketContext";
@@ -14,6 +14,7 @@ import {
 import { toast } from "sonner";
 import axiosInstance from "../../utils/axios";
 import { AiOutlinePicture } from "react-icons/ai";
+import DarkModeSetterFunction from "../../utils/DarkModeSetterFunction";
 
 const SendMessageBar = () => {
   const [message, setMessage] = useState("");
@@ -136,8 +137,10 @@ const SendMessageBar = () => {
     }
   };
 
+  const darkMode = DarkModeSetterFunction();
+
   return (
-    <div className="absolute bottom-0 w-full flex gap-3 sm:gap-7  h-10 sm:h-16 sm:pl-5">
+    <div className={`${darkMode && "text-gray-700"} absolute bottom-0 w-full flex gap-3 sm:gap-7  h-10 sm:h-16 sm:pl-5`}>
       <div className="flex-grow flex bg-gray-300 h-full">
         <Input
           placeholder="Type a message"
@@ -171,8 +174,10 @@ const SendMessageBar = () => {
             <EmojiPicker
               className="shadow-gray-500 shadow-md"
               open={emojiPickerOpen}
+              
               onEmojiClick={handleAddEmoji}
               autoFocusSearch={false}
+              theme={darkMode ? Theme.DARK : Theme.LIGHT}
             />
           </div>
         </div>

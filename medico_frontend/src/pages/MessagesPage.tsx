@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import axiosInstance from "../utils/axios";
 import {  setDirectMessagesContact, setSelectedChatData } from "../utils/appSlice";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 // import {
 //   DoctorMessageDocument,
 //   UserMessageDocument,
@@ -60,12 +61,15 @@ const MessagesPage = () => {
   const contactClicked = (contact: any) =>{
     dispatch(setSelectedChatData(contact))
   }
+
+  const darkMode = DarkModeSetterFunction();
+
   return (
     <div className="">
       <Nav />
 
       <div className="flex flex-col sm:flex-row">
-        <div className="w-full  sm:w-[320px]  sm:shadow h-[100px] sm:h-[90vh] shadow-black  flex  flex-col">
+        <div className={`w-full  sm:w-[320px]  sm:shadow h-[100px] sm:h-[90vh] ${darkMode && "border-white border-b sm:border-r"} shadow-black  flex  flex-col`}>
           <h2 className="text-start py-1 sm:p-5  sm:text-2xl">Messages</h2>
 
           <div className="flex sm:flex-col  gap-2 sm:gap-0  overflow-x-scroll sm:overflow-hidden">

@@ -36,8 +36,8 @@ const Footer = () => {
   return (
     <footer
       className={`flex flex-col ${
-        DarkModeSetterFunction() ? "text-gray-400" : "text-gray-700"
-      }  bg-gray-100 p-5  gap-10  justify-between items-center md:items-start `}
+        DarkModeSetterFunction() ? "text-gray-400" : "text-gray-700 bg-gray-100"
+      }   p-5  gap-10  justify-between items-center md:items-start `}
     >
       <div className=" flex flex-col md:flex-row gap-10 md:gap-20">
         <div className="flex md:w-[50%] flex-col gap-4 items-start">

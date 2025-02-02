@@ -7,6 +7,7 @@ import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
 import { Toaster } from "./ui/sonner";
 import { AxiosResponse } from "axios";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 export interface ResponseType extends AxiosResponse {
   token: string;
@@ -76,11 +77,12 @@ const SignupForm: React.FC = () => {
       setApiRequest(false);
     }
   };
+  const darkMode = DarkModeSetterFunction()
 
   return (
     <form
       onSubmit={formSubmit}
-      className="flex flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full sm:w-[400px]"
+      className={`flex ${darkMode && "bg-white text-gray-700"} flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full sm:w-[400px]`}
     >
       <Toaster visibleToasts={1} position="top-right" richColors />
       <div className="flex flex-col gap-0 items-start">
@@ -233,7 +235,7 @@ const SignupForm: React.FC = () => {
         {apiRequest ? <LoadingButton /> : "Create Account"}
       </button>
 
-      <div>
+      <div className="text-gray-700">
         Already have an account?{" "}
         <Link to="/login" className="text-green-500">
           Login

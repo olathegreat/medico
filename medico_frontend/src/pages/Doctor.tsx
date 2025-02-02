@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import LoadingButton from "../components/loadingButton";
 import { Button } from "../components/ui/button";
 import { setRedirectUrl, setSelectedChatData } from "../utils/appSlice";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 type DayArrayType = {
   day: string;
@@ -207,6 +208,8 @@ const Doctor = () => {
     }
   };
 
+  const darkMode = DarkModeSetterFunction()
+
   return (
     <div className="flex flex-col gap-5 md:gap-10 text-gray-700">
       <Nav />
@@ -216,10 +219,10 @@ const Doctor = () => {
           <LoadingButton color="#16a34a" />
         </div>
       ) : (
-        <div className="flex gap-5 flex-col md:flex-row">
+        <div className={`${darkMode && "text-white/80"} flex gap-5 flex-col md:flex-row`}>
           <div className=" rounded-md  group ">
             {doctorData?.picture ? (
-              <div className="bg-green-500 w-full md:w-[300px] h-[300px] flex justify-center rounded-md">
+              <div className={`${darkMode ? "bg-green-500/70" : "bg-green-500"}  w-full md:w-[300px] h-[300px] flex justify-center rounded-md`}>
                 <img
                   className=" rounded-md   object-cover"
                   src={doctorData?.picture}
@@ -230,8 +233,8 @@ const Doctor = () => {
             )}
           </div>
 
-          <div className="flex flex-col gap-10 items-start md:max-w-[900px] overflow-hidden">
-            <div className="flex w-full flex-col p-5 gap-3 rounded-md items-start border  border-gray-300 flex-grow md:h-[300px]">
+          <div className="flex flex-col gap-10  items-start md:max-w-[900px] overflow-hidden">
+            <div className={`flex w-full flex-col p-5 gap-3 rounded-md items-start border  border-gray-300 flex-grow md:h-[300px] `}>
               <div className="flex gap-1 items-center">
                 <span className="font-medium text-xl sm:text-2xl">
                   Dr. {doctorData?.name}
@@ -246,7 +249,7 @@ const Doctor = () => {
                 </span>
               </div>
 
-              <div className="flex flex-col items-start gap-1 md:mt-5">
+              <div className="flex flex-col items-start gap-1 lg:mt-5">
                 <div className="flex gap-1 items-center text-sm font-medium">
                   About{" "}
                   <span className="text-xs">
@@ -258,7 +261,7 @@ const Doctor = () => {
                 </p>
               </div>
 
-              <div className="font-medium md:mt-10">
+              <div className="font-medium lg:mt-10">
                 Appointment fee: ${doctorData?.fee}
               </div>
             </div>
@@ -327,7 +330,7 @@ const Doctor = () => {
                     Book an appointment
                   </Button>
                   <Button
-                    className="bg-white-700 text-gray-700 border-[1px] border-gray-500 rounded-full py-4 px-8 md:w-fit cursor-pointer text-sm "
+                    className={`bg-white-700 ${darkMode ? "text-white" :"text-gray-700" } border-[1px] border-gray-500 rounded-full py-4 px-8 md:w-fit cursor-pointer text-sm `}
                     onClick={() => messageButtonClick(doctorData)}
                   >
                     Message Doctor
@@ -339,7 +342,7 @@ const Doctor = () => {
         </div>
       )}
 
-      <div className="flex flex-col my-10">
+      <div className={`flex flex-col my-10 ${darkMode && "text-white/70"}`}>
         <div className="text-xl">Related Doctors</div>
 
         {requestDoctorsLoading ? (
