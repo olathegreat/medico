@@ -63,11 +63,7 @@ const MyAppointments = () => {
     },
     publicKey,
     text: "Pay Now with card",
-    // onSuccess: () =>{
-    //     // alert("Thanks for your payment!");
-    //       updateAppointmentPayment();
-
-    // },
+  
     onClose: () => alert("Transaction closed!"),
   };
 
@@ -131,8 +127,8 @@ const MyAppointments = () => {
             : 
        
         <div className="flex flex-col gap-2">
-          {userAppointments.map((item) => (
-            <div className="flex flex-col md:flex-row gap-2 md:justify-between border-b border-b-gray-200 pb-2">
+          {userAppointments.map((item, index:any) => (
+            <div key={index} className="flex flex-col md:flex-row gap-2 md:justify-between border-b border-b-gray-200 pb-2">
               <div className="flex gap-4">
                 <div className="w-32 h-44 bg-gray-200 rounded-md">
                   <img

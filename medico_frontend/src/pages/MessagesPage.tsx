@@ -46,7 +46,7 @@ const MessagesPage = () => {
 
       dispatch(setDirectMessagesContact(response.data.contacts));
 
-      console.log(response);
+      
 
     }catch(err){
       console.log(err)
@@ -72,6 +72,7 @@ const MessagesPage = () => {
             {chatMessagesList.length > 0 ? (
               chatMessagesList.map((chatData: any) => (
                 <div
+                key={chatData._id}
                 onClick={()=>contactClicked(chatData)}
                 
                 className="flex  gap-2 sm:gap-5 sm:px-5  border-b-2  border-gray-100 h-16 sm:w-full items-center hover:bg-gray-200 active:bg-gray-400 cursor-pointer transition-all duration-300">

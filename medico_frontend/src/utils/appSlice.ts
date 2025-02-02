@@ -68,7 +68,7 @@ const appSlice = createSlice({
             ]
 
 
-            console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
+            
         },
         addMessages: (state, action) => {
             state.selectedChatMessages = [...state.selectedChatMessages,
@@ -80,13 +80,13 @@ const appSlice = createSlice({
                 recipient: action.payload.recipient._id || action.payload.recipient
             }]
 
-            console.log("this new selectedChatMessages", action.payload, state.selectedChatMessages)
+            
         },
         setSelectedChatData: (state, action) => {
             state.selectedChatData = action.payload;
             sessionStorage.setItem("sessionSelectedChatData", JSON.stringify(action.payload))
 
-            console.log("new chat selected", state.selectedChatData)
+            
         },
         setSelectedChatMessages: (state, action) => {
             state.selectedChatMessages = action.payload;
@@ -97,7 +97,7 @@ const appSlice = createSlice({
         setDirectMessagesContact: (state, action) => {
             state.directMessagesContact = action.payload
 
-            console.log(state.directMessagesContact)
+        
         },
         closeChat: (state) => {
             state.selectedChatMessages = [];
@@ -113,11 +113,11 @@ const appSlice = createSlice({
         },
         setFileUploadProgress: (state, action) => {
             state.fileUploadProgress = action.payload;
-            console.log(state.fileUploadProgress)
+            
         },
         setFileDownloadProgress: (state, action) => {
             state.fileDownloadProgress = action.payload;
-            console.log(state.fileDownloadProgress)
+            
         },
         setRedirectUrl:(state, action)=>{
             state.redirectUrl = action.payload

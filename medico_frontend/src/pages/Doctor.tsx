@@ -68,7 +68,7 @@ const Doctor = () => {
       return;
     }
 
-    console.log(appointmentDetails);
+    
     const token = sessionStorage.getItem("token");
     const bearerToken = token ? "Bearer " + token : "";
 
@@ -112,7 +112,9 @@ const Doctor = () => {
           },
         }
       );
-      console.log(response);
+      if(!response){
+        console.log("no response, try again")
+      }
 
       toast.success("appointment set");
       setAppointmentDetails({
@@ -180,7 +182,7 @@ const Doctor = () => {
         ? `/doctor?speciality=${encodeURIComponent(selectedSpeciality)}`
         : "/doctor";
       const response = await axiosInstance.get(endpoint);
-      console.log(response);
+      
       const filteredDoctors = response.data.filter(
         (doctor: any) => doctor._id !== id
       );
@@ -269,8 +271,9 @@ const Doctor = () => {
                 className="flex flex-col  w-full gap-8 "
               >
                 <div className="flex gap-4 md:gap-6 flex-wrap ">
-                  {days?.map((item) => (
+                  {days?.map((item, index:any) => (
                     <div
+                    key={index}
                       onClick={() => {
                         setAppointmentDetails({
                           ...appointmentDetails,
@@ -293,7 +296,7 @@ const Doctor = () => {
 
                 <div className="w-full  overflow-x-scroll scrollbar-thin scrollbar-thumb-gray-400 scrollbar-m scrollbar-track-gray-200">
                   <div className="flex gap-3 w-fit mb-2">
-                    {appointmentTimeArray.map((item) => (
+                    {appointmentTimeArray.map((item, index:any) => (
                       <div
                         // onClick={() => {
                         //   setAppointmentDetails({
@@ -307,6 +310,7 @@ const Doctor = () => {
                             time: item,
                           })
                         }
+                        key={index}
                         className={` ${
                           item === appointmentDetails.time &&
                           "bg-green-600 text-white"

@@ -77,31 +77,24 @@ export const SocketProvider = ({ children }: { children: ReactNode }) => {
             selectedChatData._id === message.recipient._id)
         ) {
           console.log("Message received:", message);
-          dispatch(addMessages(message));
+          // dispatch(addMessages(message));
         }
       };
 
       socket.current.on("receive-message", handleReceiveMessage);
       socket.current.on("sent-message", handleReceiveMessage);
-
-      //   return () => {
-      //     if (socket.current) {
-      //       socket.current.off("receive-message", handleReceiveMessage);
-      //       socket.current.off("sent-message", handleReceiveMessage);
-      //       socket.current.disconnect();
-      //     }
-      //   };
+      return () => {
+        socket.current.off("receive-message", handleReceiveMessage);
+        socket.current.off("sent-message", handleReceiveMessage);
+      };
+     
     }
 
-    // return () => {
-    //   if (socket.current) {
-    //     socket.current.disconnect();
-    //   }
-    // };
+
   }, [user, doctor]);
 
   return (
-    <SocketContext.Provider value={socket.current}>
+    <SocketContext.Provider value={socket.current ? socket.current : null}>
       {children}
     </SocketContext.Provider>
   );

@@ -31,7 +31,6 @@ const AllDoctors = () => {
         ? `/doctor?speciality=${encodeURIComponent(selectedSpeciality)}`
         : "/doctor";
       const response = await axiosInstance.get(endpoint);
-      console.log(response);
       setDoctors(response.data);
       setRequestLoading(false);
     };

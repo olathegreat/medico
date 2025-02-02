@@ -35,12 +35,9 @@ const ProfileUpdateForm = () => {
   const [requestLoading, setRequestLoading] = useState(true);
   const darkMode = DarkModeSetterFunction();
  
-useEffect(() => {
-    console.log("Dark mode active:", darkMode);
-}, [darkMode]);
+
   useEffect(() => {
     setRequestLoading(true)
-    console.log(storedUser);
     setExistingUserData(storedUser);
     if(storedUser?.email !== undefined){
         setRequestLoading(false)

@@ -20,7 +20,6 @@ const TopDoctors = () => {
     const getDoctors = async () => {
       const response = await axiosInstance.get("/doctor/");
       setRequestLoading(true)
-      console.log(response);
       setDoctors(response.data);
       setRequestLoading(false);
     };

@@ -27,7 +27,7 @@ const SendMessageBar = () => {
 
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
   const socket = useSocket();
-  console.log(socket);
+  
 
   const handleAttachmentClick = () => {
     if (fileInputRef.current) {
@@ -62,10 +62,10 @@ const SendMessageBar = () => {
           },
         });
 
-        console.log(res);
+        
 
         if (res.status === 200 && res.data) {
-          dispatch(setIsUploading());
+          
 
           const message = {
             sender: userInfo._id,
@@ -76,9 +76,10 @@ const SendMessageBar = () => {
             recipientModel: userInfo !== null ? "Doctor" : "User",
             senderModel: userInfo !== null ? "User" : "Doctor",
           };
-          console.log(message);
+        
           socket.emit("send-message", message);
           dispatch(addMessages(message));
+          dispatch(setIsUploading());
         }
       }
     } catch (err: any) {
@@ -122,7 +123,7 @@ const SendMessageBar = () => {
         senderModel: userInfo !== null ? "User" : "Doctor",
       };
 
-      console.log("emitting send message event:", messageData);
+      
 
       socket.emit("send-message", messageData);
 

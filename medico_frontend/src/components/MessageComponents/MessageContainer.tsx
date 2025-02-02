@@ -95,7 +95,7 @@ const MessageContainer = () => {
             authorization: bearerToken,
           }})
 
-          console.log(response);
+          
           dispatch(addExistingMessages(response.data.messages))
 
       }catch(err){
@@ -113,19 +113,19 @@ const MessageContainer = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollIntoView({ behavior: "smooth" });
     }
-    console.log(selectedChatMessages);
+    
   }, [selectedChatMessages]);
 
   const renderMessages = () => {
     let lastDate: string | null = null;
 
-    return selectedChatMessages.map((message) => {
+    return selectedChatMessages.map((message, index:any) => {
       const messageDate = moment(message.timeStamp).format("YYYY-MM-DD");
       const showDate = messageDate !== lastDate;
       lastDate = messageDate;
 
       return (
-        <div key={message._id}>
+        <div key={index}>
           {showDate && (
             <div className="text-center text-gray-500 my-2">
               {moment(message.timeStamp).format("LL")}

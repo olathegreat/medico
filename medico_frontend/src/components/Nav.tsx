@@ -107,7 +107,7 @@ function Nav() {
         {navLinks.map((navItem, index) => {
           const { title, link } = navItem;
           return (
-            <span>
+            <span key={title}>
               <Link
                 className={`hover:border-b-green-600 hover:border-b-2 ${darkModeState ? "text-gray-300" : "text-gray-700"}`}
                 key={index}

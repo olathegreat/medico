@@ -58,7 +58,7 @@ const Footer = () => {
             {navLinks.map((navItem, index) => {
               const { title, link } = navItem;
               return (
-                <span>
+                <span key={title}>
                   <Link
                     className="hover:border-b-green-600 hover:border-b-2 "
                     key={index}
