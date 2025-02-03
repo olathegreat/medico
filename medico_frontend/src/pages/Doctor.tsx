@@ -68,12 +68,13 @@ const Doctor = () => {
     const token = sessionStorage.getItem("token");
     const bearerToken = token ? "Bearer " + token : "";
 
-    if (!bearerToken) {
+    if (!token) {
+      toast("Please login to book an appointment");
       dispatch(setRedirectUrl(`/doctors/${doctorData._id}`));
 
       navigate("/login");
-      return;
-    }
+      
+    }else{
 
     // Format the selected date
     const selectedDay = days.find(
@@ -129,6 +130,7 @@ const Doctor = () => {
     } catch (err) {
       console.log(err);
     }
+  }
   };
 
   useEffect(() => {

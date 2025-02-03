@@ -32,19 +32,24 @@ const LoginForm: React.FC = () => {
         const { token } = response.data as ResponseType;
 
         sessionStorage.setItem("token", token);
-        toast.success("login successful");
+        
         
         dispatch(saveUser(response.data.data.user));
-        console.log(typeof redirectUrl)
+        
         setApiRequest(false);
+        
+        
         setTimeout(() => {
-          if (redirectUrl!== "") {
-            navigate(redirectUrl);
-            dispatch(setRedirectUrl(null));
-          } else {
-            navigate("/profile");
-          }
+          navigate(`${redirectUrl}`); 
+          console.log(redirectUrl);
         }, 1000);
+
+        toast.success("login successful");
+            dispatch(setRedirectUrl(""));
+          
+            // navigate("/profile");
+          
+        
       } else {
         toast.error("User details are missing");
         throw new Error("User details are missing");

@@ -1,20 +1,10 @@
-import { useSelector } from "react-redux"
+
 import LoginForm from "../components/LoginForm"
 import Nav from "../components/Nav"
-import { useNavigate } from "react-router-dom"
-import { toast } from "sonner"
 
 const LoginPage = () => {
  
-  const savedUserInfo = useSelector((state: any)=>state.app.user)
-  const navigate = useNavigate();
-
-  if(savedUserInfo.fullname){
-    toast.success("You are already logged in")
-    
-    setTimeout(()=>navigate("/profile"), 1000)
-        
-  }
+  
 
   return (
     <div className="flex flex-col gap-20">
@@ -23,7 +13,7 @@ const LoginPage = () => {
       <div className="flex justify-center">
         <LoginForm/>
       </div>
-      {/* <Footer/> */}
+     
       
     </div>
   )

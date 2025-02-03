@@ -5,9 +5,9 @@ import axiosInstance from "../utils/axios";
 import { toast } from "sonner";
 import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
-import { Toaster } from "./ui/sonner";
 import { AxiosResponse } from "axios";
 import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
+import { useSelector } from "react-redux";
 
 export interface ResponseType extends AxiosResponse {
   token: string;
@@ -22,11 +22,13 @@ const SignupForm: React.FC = () => {
   const [passwordShow, setPasswordShow] = useState(false);
   const [apiRequest, setApiRequest] = useState(false);
   const navigate = useNavigate();
+  const redirectUrl = useSelector((state:any)=>state.app.redirectUrl)
+      
 
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setApiRequest(true);
-    setErrorMessages({}); // Clear previous errors on form submission
+    setErrorMessages({}); 
 
     try {
       if (userDetails) {
@@ -36,14 +38,22 @@ const SignupForm: React.FC = () => {
         sessionStorage.setItem("token", token);
         toast.success("Registration successful");
         setApiRequest(false);
-        setTimeout(() => {
+        
+        
+
+          if(redirectUrl){
+            navigate(redirectUrl);
+          }
           navigate("/profile");
-        }, 2000);
+          
+
+          
+  
       } else {
         throw new Error("User details are missing");
       }
     } catch (err: any) {
-      console.log(err.response?.data?.message);
+      console.log(err);
       let messages: { [key: string]: string } = {};
       const errorDetails = err.response?.data?.errors;
       if (err.response?.data?.message) {
@@ -70,9 +80,7 @@ const SignupForm: React.FC = () => {
 
         setErrorMessages(messages);
       }
-      // else {
-      //   setErrorMessages({ general: "An error occurred during registration." });
-      // }
+      
 
       setApiRequest(false);
     }
@@ -84,7 +92,7 @@ const SignupForm: React.FC = () => {
       onSubmit={formSubmit}
       className={`flex ${darkMode && "bg-white text-gray-700"} flex-col gap-4 rounded-md shadow p-4 md:p-12 border-gray-400 border w-full sm:w-[400px]`}
     >
-      <Toaster visibleToasts={1} position="top-right" richColors />
+    
       <div className="flex flex-col gap-0 items-start">
         <span className="text-green-700 font-medium text-xl">
           Create Account

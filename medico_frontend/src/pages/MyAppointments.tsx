@@ -41,7 +41,7 @@ const MyAppointments = () => {
     _id: "",
   });
   const updateAppointmentPayment = async (appointment: AppointmentType) => {
-    console.log(activeAppointment);
+    
     const patchUrl = "/appointment/" + appointment._id;
 
     const response = await axiosInstance.patch(
@@ -54,9 +54,10 @@ const MyAppointments = () => {
         },
       }
     );
+    console.log(response.status)
     setReload(!reload);
 
-    console.log(response);
+    
   };
 
   const componentProps = {
