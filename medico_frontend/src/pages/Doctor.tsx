@@ -62,16 +62,18 @@ const Doctor = () => {
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!userInfo?.fullname) {
+    
+
+    
+    const token = sessionStorage.getItem("token");
+    const bearerToken = token ? "Bearer " + token : "";
+
+    if (!bearerToken) {
       dispatch(setRedirectUrl(`/doctors/${doctorData._id}`));
 
       navigate("/login");
       return;
     }
-
-    
-    const token = sessionStorage.getItem("token");
-    const bearerToken = token ? "Bearer " + token : "";
 
     // Format the selected date
     const selectedDay = days.find(
