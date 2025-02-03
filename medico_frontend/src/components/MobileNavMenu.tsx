@@ -11,7 +11,7 @@ import {
 import Logo from "./Logo";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { saveUser, toggleDarkMode } from "../utils/appSlice";
+import { saveUser, setRedirectUrl, toggleDarkMode } from "../utils/appSlice";
 import { Switch } from "./ui/switch";
 
 type NavLinks = {
@@ -58,8 +58,12 @@ const MobileNavMenu = () => {
 
   const logOutFunction = () => {
     dispatch(saveUser({}));
-    navigate("/");
-    sessionStorage.removeItem("sessionUserInfo");
+    
+        sessionStorage.removeItem("token")
+        sessionStorage.removeItem("sessionUserInfo")
+        dispatch(setRedirectUrl(""));
+        navigate("/");
+   
   };
   return (
     <Sheet>

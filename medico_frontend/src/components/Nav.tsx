@@ -64,9 +64,11 @@ function Nav() {
   
   const logOutFunction = () =>{
     dispatch(saveUser({}));
+    sessionStorage.removeItem("token")
+    sessionStorage.removeItem("sessionUserInfo")
     dispatch(setRedirectUrl(""));
     navigate("/");
-    sessionStorage.removeItem("sessionUserInfo")
+    
     
 
   }

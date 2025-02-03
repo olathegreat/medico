@@ -10,6 +10,7 @@ import { setRedirectUrl, setSelectedChatData } from "../utils/appSlice";
 import { toast } from "sonner";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
+import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
 
 const MyAppointments = () => {
   const [userAppointments, setUserAppointments] = useState<AppointmentType[]>([
@@ -129,10 +130,11 @@ const MyAppointments = () => {
       dispatch(setSelectedChatData(doctorData));
     }
   };
+  const darkMode = DarkModeSetterFunction()
   return (
     <div className="flex flex-col  gap-5">
       <Nav />
-      <div className="text-gray-700 flex flex-col gap-3">
+      <div className={`${darkMode && "text-gray-200/50"} text-gray-700 flex flex-col gap-3`}>
         <div className="text-start">My Appointments</div>
         <Separator />
         {requestLoading ? (
@@ -156,7 +158,7 @@ const MyAppointments = () => {
 
                   <div className="flex flex-col justify-between text-xs py-3">
                     <div className="flex flex-col items-start">
-                      <span className="text-black text-xl mb-1 ">
+                      <span className={`${darkMode && "text-white"} text-black text-xl mb-1 `}>
                         {item?.doctor?.name}
                       </span>
                       <span className="text-xs">
@@ -174,7 +176,7 @@ const MyAppointments = () => {
                     </div>
 
                     <div className="text-start">
-                      <span className="mr-1 text-gray-900">Date & Time:</span>
+                      <span className={`${darkMode ? "text-gray-500" : "text-gray-900"} mr-1 `}>Date & Time:</span>
                       <span>
                         {item?.date} | {item?.time}
                       </span>
@@ -192,7 +194,7 @@ const MyAppointments = () => {
 
                 <div className="flex flex-col justify-end gap-2">
                   {!item?.payment ? (
-                    <Button onClick={() => setActiveAppointment(item)}>
+                    <Button className="bg-green-600" onClick={() => setActiveAppointment(item)}>
                       <PaystackButton
                         amount={item?.doctor?.fee ? item?.doctor.fee * 100 : 0}
                         onSuccess={() => {

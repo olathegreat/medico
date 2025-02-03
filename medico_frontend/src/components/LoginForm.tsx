@@ -6,8 +6,9 @@ import { toast } from "sonner";
 import { UserType } from "../utils/types";
 import LoadingButton from "./loadingButton";
 import { ResponseType } from "./SignupForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import DarkModeSetterFunction from "../utils/DarkModeSetterFunction";
+import { saveUser, setRedirectUrl } from "../utils/appSlice";
 
 const LoginForm: React.FC = () => {
   const [userDetails, setUserDetails] = useState<UserType | null>(null);
@@ -17,6 +18,7 @@ const LoginForm: React.FC = () => {
   const [apiRequest, setApiRequest] = useState(false);
   const navigate = useNavigate();
   const redirectUrl = useSelector((state: any) => state.app.redirectUrl);
+  const dispatch = useDispatch();
 
   const formSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -31,10 +33,14 @@ const LoginForm: React.FC = () => {
 
         sessionStorage.setItem("token", token);
         toast.success("login successful");
+        
+        dispatch(saveUser(response.data.data.user));
+        console.log(typeof redirectUrl)
         setApiRequest(false);
         setTimeout(() => {
-          if (redirectUrl) {
+          if (redirectUrl!== "") {
             navigate(redirectUrl);
+            dispatch(setRedirectUrl(null));
           } else {
             navigate("/profile");
           }
