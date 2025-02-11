@@ -54,7 +54,7 @@ const MyAppointments = () => {
         },
       }
     );
-    console.log(response.status)
+    console.log(response.status);
     setReload(!reload);
 
     
@@ -89,8 +89,6 @@ const MyAppointments = () => {
         }
       );
       setRequestLoading(false);
-
-      //   console.log(response);
       setUserAppointments(response.data);
     };
 
@@ -169,6 +167,7 @@ const MyAppointments = () => {
 
                     <div className="flex flex-col items-start">
                       <span>Address:</span>
+                      
                       <span className="text-sm text-start">
                         {item?.doctor?.address1}
                         <br />

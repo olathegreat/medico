@@ -68,7 +68,7 @@ const appSlice = createSlice({
             ]
 
 
-            
+
         },
         addMessages: (state, action) => {
             state.selectedChatMessages = [...state.selectedChatMessages,
@@ -80,13 +80,13 @@ const appSlice = createSlice({
                 recipient: action.payload.recipient._id || action.payload.recipient
             }]
 
-            
+
         },
         setSelectedChatData: (state, action) => {
             state.selectedChatData = action.payload;
             sessionStorage.setItem("sessionSelectedChatData", JSON.stringify(action.payload))
 
-            
+
         },
         setSelectedChatMessages: (state, action) => {
             state.selectedChatMessages = action.payload;
@@ -97,7 +97,7 @@ const appSlice = createSlice({
         setDirectMessagesContact: (state, action) => {
             state.directMessagesContact = action.payload
 
-        
+
         },
         closeChat: (state) => {
             state.selectedChatMessages = [];
@@ -113,13 +113,13 @@ const appSlice = createSlice({
         },
         setFileUploadProgress: (state, action) => {
             state.fileUploadProgress = action.payload;
-            
+
         },
         setFileDownloadProgress: (state, action) => {
             state.fileDownloadProgress = action.payload;
-            
+
         },
-        setRedirectUrl:(state, action)=>{
+        setRedirectUrl: (state, action) => {
             state.redirectUrl = action.payload
         }
 
@@ -129,6 +129,6 @@ const appSlice = createSlice({
 
 
 
-export const { toggleDarkMode,setRedirectUrl, saveUser, saveDoctor, toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData, closeChat, setSelectedChatMessages, setFileDownloadProgress, setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact, addExistingMessages } = appSlice.actions
+export const { toggleDarkMode, setRedirectUrl, saveUser, saveDoctor, toggleAdminDataReload, saveAdmin, addMessages, setSelectedChatData, closeChat, setSelectedChatMessages, setFileDownloadProgress, setFileUploadProgress, setIsDownloading, setIsUploading, setDirectMessagesContact, addExistingMessages } = appSlice.actions
 
 export default appSlice.reducer
